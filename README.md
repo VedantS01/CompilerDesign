@@ -23,6 +23,6 @@ The Final Work involves Full Compilation of MacroJava language specifications to
 
 **Run Test Samples**
 
-<Intrcutions?>
+<Instructions?>
 
 **NOTE: THIS PROJECT IS A SOLE PROPERTY OF THE AUTHOR. ANY COPYING OR IMMITATING OF THE CODE WORK FOR NON LEARNER PURPOSES WITHOUT AN AUTHORISATION FROM THE AUTHOR HIMSELF WILL NOT BE LEGAL**
