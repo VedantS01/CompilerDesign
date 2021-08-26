@@ -1,0 +1,2684 @@
+Grammar
+
+    0 $accept: goal $end
+
+    1 goal: MacroDefStar MainClass TypeDecStar
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    3 TypeDecStar: %empty
+    4            | TypeDec TypeDecStar
+
+    5 TypeDec: CLASS Identifier LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC
+    6        | CLASS Identifier EXTENDS Identifier LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC
+
+    7 MethodStar: %empty
+    8           | MethodDec MethodStar
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+
+   10 TypeIdStar: %empty
+   11           | TypeIdStar Type Identifier SEMICOLON
+
+   12 Type: INT
+   13     | INT_ARRAY
+   14     | INT LEFT_SQR_BRAC RIGHT_SQR_BRAC
+   15     | BOOLEAN
+   16     | Identifier
+
+   17 ArgList: %empty
+   18        | ArgListT
+
+   19 ArgListT: Type Identifier
+   20         | Type Identifier COMMA ArgListT
+
+   21 StmtStar: %empty
+   22         | Stmt StmtStar
+
+   23 Stmt: LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+   24     | SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON
+   25     | Identifier EQTO Expr SEMICOLON
+   26     | Identifier LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC EQTO Expr SEMICOLON
+   27     | IfStmt
+   28     | WHILE LEFT_BRAC Expr RIGHT_BRAC Stmt
+   29     | Identifier LEFT_BRAC ExprList RIGHT_BRAC SEMICOLON
+
+   30 IfStmt: IF LEFT_BRAC Expr RIGHT_BRAC Stmt
+   31       | IF LEFT_BRAC Expr RIGHT_BRAC Stmt ELSE Stmt
+
+   32 ExprList: %empty
+   33         | ExprListT
+
+   34 ExprListT: Expr
+   35          | Expr COMMA ExprListT
+
+   36 Expr: PE AND PE
+   37     | PE OR PE
+   38     | PE NOTEQ PE
+   39     | PE LTE PE
+   40     | PE ADD PE
+   41     | PE SUB PE
+   42     | PE MUL PE
+   43     | PE DIV PE
+   44     | PE LEFT_SQR_BRAC PE RIGHT_SQR_BRAC
+   45     | PE DOT LENGTH
+   46     | PE
+   47     | PE DOT Identifier LEFT_BRAC ExprList RIGHT_BRAC
+   48     | Identifier LEFT_BRAC ExprList RIGHT_BRAC
+
+   49 PE: PES
+   50   | NEW INT LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC
+   51   | NEW Identifier LEFT_BRAC RIGHT_BRAC
+   52   | NOT Expr
+   53   | LEFT_BRAC Expr RIGHT_BRAC
+
+   54 PES: Number
+   55    | TRUE
+   56    | FALSE
+   57    | Identifier
+   58    | THIS
+
+   59 MacroDefStar: %empty
+   60             | MacroDef MacroDefStar
+
+   61 MacroDef: MacroDefExpr
+   62         | MacroDefStmt
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+   64             | DEFSTMT0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+   65             | DEFSTMT1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+   66             | DEFSTMT2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+   68             | DEFEXPR0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+   69             | DEFEXPR1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+   70             | DEFEXPR2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+   71 CommaIdStar: %empty
+   72            | COMMA Identifier CommaIdStar
+
+   73 Number: NUMBER
+
+   74 Identifier: ID
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    CLASS (258) 2 5 6
+    PUBLIC (259) 2 9
+    STATIC (260) 2
+    VOID (261) 2
+    MAIN (262) 2
+    RETURN (263) 9
+    SYS_OUT_PRINTLN (264) 2 24
+    EXTENDS (265) 6
+    INT_ARRAY (266) 13
+    INT (267) 12 14 50
+    BOOLEAN (268) 15
+    STRING (269) 2
+    TRUE (270) 55
+    FALSE (271) 56
+    THIS (272) 58
+    NEW (273) 50 51
+    IF (274) 30 31
+    ELSE (275) 31
+    WHILE (276) 28
+    NOT (277) 52
+    EQTO (278) 25 26
+    LEFT_BRAC (279) 2 9 24 28 29 30 31 47 48 51 53 63 64 65 66 67 68 69 70
+    RIGHT_BRAC (280) 2 9 24 28 29 30 31 47 48 51 53 63 64 65 66 67 68 69 70
+    LEFT_CURL_BRAC (281) 2 5 6 9 23 63 64 65 66
+    RIGHT_CURL_BRAC (282) 2 5 6 9 23 63 64 65 66
+    LEFT_SQR_BRAC (283) 2 14 26 44 50
+    RIGHT_SQR_BRAC (284) 2 14 26 44 50
+    DEFEXPR0 (285) 68
+    DEFEXPR1 (286) 69
+    DEFEXPR2 (287) 70
+    DEFEXPR (288) 67
+    DEFSTMT0 (289) 64
+    DEFSTMT1 (290) 65
+    DEFSTMT2 (291) 66
+    DEFSTMT (292) 63
+    SEMICOLON (293) 2 9 11 24 25 26 29
+    NUMBER <name> (294) 73
+    ID <name> (295) 74
+    COMMA (296) 20 35 63 66 67 70 72
+    LENGTH (297) 45
+    NO_PE (298)
+    AND (299) 36
+    OR (300) 37
+    LTE (301) 39
+    NOTEQ (302) 38
+    ADD (303) 40
+    SUB (304) 41
+    MUL (305) 42
+    DIV (306) 43
+    DOT (307) 45 47
+    NO_ELSE (308)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (54)
+        on left: 0
+    goal <genList> (55)
+        on left: 1
+        on right: 0
+    MainClass <genList> (56)
+        on left: 2
+        on right: 1
+    TypeDecStar <genList> (57)
+        on left: 3 4
+        on right: 1 4
+    TypeDec <genList> (58)
+        on left: 5 6
+        on right: 4
+    MethodStar <genList> (59)
+        on left: 7 8
+        on right: 5 6 8
+    MethodDec <genList> (60)
+        on left: 9
+        on right: 8
+    TypeIdStar <genList> (61)
+        on left: 10 11
+        on right: 2 5 6 9 11
+    Type <name> (62)
+        on left: 12 13 14 15 16
+        on right: 9 11 19 20
+    ArgList <genList> (63)
+        on left: 17 18
+        on right: 9
+    ArgListT <genList> (64)
+        on left: 19 20
+        on right: 18 20
+    StmtStar <genList> (65)
+        on left: 21 22
+        on right: 9 22 23 63 64 65 66
+    Stmt <genList> (66)
+        on left: 23 24 25 26 27 28 29
+        on right: 22 28 30 31
+    IfStmt <genList> (67)
+        on left: 30 31
+        on right: 27
+    ExprList <genList> (68)
+        on left: 32 33
+        on right: 29 47 48
+    ExprListT <genList> (69)
+        on left: 34 35
+        on right: 33 35
+    Expr <genList> (70)
+        on left: 36 37 38 39 40 41 42 43 44 45 46 47 48
+        on right: 2 9 24 25 26 28 30 31 34 35 50 52 53 67 68 69 70
+    PE <genList> (71)
+        on left: 49 50 51 52 53
+        on right: 36 37 38 39 40 41 42 43 44 45 46 47
+    PES <genList> (72)
+        on left: 54 55 56 57 58
+        on right: 49
+    MacroDefStar <genList> (73)
+        on left: 59 60
+        on right: 1 60
+    MacroDef <genList> (74)
+        on left: 61 62
+        on right: 60
+    MacroDefStmt <genList> (75)
+        on left: 63 64 65 66
+        on right: 62
+    MacroDefExpr <genList> (76)
+        on left: 67 68 69 70
+        on right: 61
+    CommaIdStar <genList> (77)
+        on left: 71 72
+        on right: 63 67 72
+    Number <name> (78)
+        on left: 73
+        on right: 54
+    Identifier <name> (79)
+        on left: 74
+        on right: 2 5 6 9 11 16 19 20 25 26 29 47 48 51 57 63 64 65 66 67 68 69 70 72
+
+
+State 0
+
+    0 $accept: . goal $end
+
+    DEFEXPR0  shift, and go to state 1
+    DEFEXPR1  shift, and go to state 2
+    DEFEXPR2  shift, and go to state 3
+    DEFEXPR   shift, and go to state 4
+    DEFSTMT0  shift, and go to state 5
+    DEFSTMT1  shift, and go to state 6
+    DEFSTMT2  shift, and go to state 7
+    DEFSTMT   shift, and go to state 8
+
+    $default  reduce using rule 59 (MacroDefStar)
+
+    goal          go to state 9
+    MacroDefStar  go to state 10
+    MacroDef      go to state 11
+    MacroDefStmt  go to state 12
+    MacroDefExpr  go to state 13
+
+
+State 1
+
+   68 MacroDefExpr: DEFEXPR0 . Identifier LEFT_BRAC RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 15
+
+
+State 2
+
+   69 MacroDefExpr: DEFEXPR1 . Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 16
+
+
+State 3
+
+   70 MacroDefExpr: DEFEXPR2 . Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 17
+
+
+State 4
+
+   67 MacroDefExpr: DEFEXPR . Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 18
+
+
+State 5
+
+   64 MacroDefStmt: DEFSTMT0 . Identifier LEFT_BRAC RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 19
+
+
+State 6
+
+   65 MacroDefStmt: DEFSTMT1 . Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 20
+
+
+State 7
+
+   66 MacroDefStmt: DEFSTMT2 . Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 21
+
+
+State 8
+
+   63 MacroDefStmt: DEFSTMT . Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 22
+
+
+State 9
+
+    0 $accept: goal . $end
+
+    $end  shift, and go to state 23
+
+
+State 10
+
+    1 goal: MacroDefStar . MainClass TypeDecStar
+
+    CLASS  shift, and go to state 24
+
+    MainClass  go to state 25
+
+
+State 11
+
+   60 MacroDefStar: MacroDef . MacroDefStar
+
+    DEFEXPR0  shift, and go to state 1
+    DEFEXPR1  shift, and go to state 2
+    DEFEXPR2  shift, and go to state 3
+    DEFEXPR   shift, and go to state 4
+    DEFSTMT0  shift, and go to state 5
+    DEFSTMT1  shift, and go to state 6
+    DEFSTMT2  shift, and go to state 7
+    DEFSTMT   shift, and go to state 8
+
+    $default  reduce using rule 59 (MacroDefStar)
+
+    MacroDefStar  go to state 26
+    MacroDef      go to state 11
+    MacroDefStmt  go to state 12
+    MacroDefExpr  go to state 13
+
+
+State 12
+
+   62 MacroDef: MacroDefStmt .
+
+    $default  reduce using rule 62 (MacroDef)
+
+
+State 13
+
+   61 MacroDef: MacroDefExpr .
+
+    $default  reduce using rule 61 (MacroDef)
+
+
+State 14
+
+   74 Identifier: ID .
+
+    $default  reduce using rule 74 (Identifier)
+
+
+State 15
+
+   68 MacroDefExpr: DEFEXPR0 Identifier . LEFT_BRAC RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 27
+
+
+State 16
+
+   69 MacroDefExpr: DEFEXPR1 Identifier . LEFT_BRAC Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 28
+
+
+State 17
+
+   70 MacroDefExpr: DEFEXPR2 Identifier . LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 29
+
+
+State 18
+
+   67 MacroDefExpr: DEFEXPR Identifier . LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 30
+
+
+State 19
+
+   64 MacroDefStmt: DEFSTMT0 Identifier . LEFT_BRAC RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    LEFT_BRAC  shift, and go to state 31
+
+
+State 20
+
+   65 MacroDefStmt: DEFSTMT1 Identifier . LEFT_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    LEFT_BRAC  shift, and go to state 32
+
+
+State 21
+
+   66 MacroDefStmt: DEFSTMT2 Identifier . LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    LEFT_BRAC  shift, and go to state 33
+
+
+State 22
+
+   63 MacroDefStmt: DEFSTMT Identifier . LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    LEFT_BRAC  shift, and go to state 34
+
+
+State 23
+
+    0 $accept: goal $end .
+
+    $default  accept
+
+
+State 24
+
+    2 MainClass: CLASS . Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 35
+
+
+State 25
+
+    1 goal: MacroDefStar MainClass . TypeDecStar
+
+    CLASS  shift, and go to state 36
+
+    $default  reduce using rule 3 (TypeDecStar)
+
+    TypeDecStar  go to state 37
+    TypeDec      go to state 38
+
+
+State 26
+
+   60 MacroDefStar: MacroDef MacroDefStar .
+
+    $default  reduce using rule 60 (MacroDefStar)
+
+
+State 27
+
+   68 MacroDefExpr: DEFEXPR0 Identifier LEFT_BRAC . RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 39
+
+
+State 28
+
+   69 MacroDefExpr: DEFEXPR1 Identifier LEFT_BRAC . Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 40
+
+
+State 29
+
+   70 MacroDefExpr: DEFEXPR2 Identifier LEFT_BRAC . Identifier COMMA Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 41
+
+
+State 30
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC . Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 42
+
+
+State 31
+
+   64 MacroDefStmt: DEFSTMT0 Identifier LEFT_BRAC . RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    RIGHT_BRAC  shift, and go to state 43
+
+
+State 32
+
+   65 MacroDefStmt: DEFSTMT1 Identifier LEFT_BRAC . Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 44
+
+
+State 33
+
+   66 MacroDefStmt: DEFSTMT2 Identifier LEFT_BRAC . Identifier COMMA Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 45
+
+
+State 34
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC . Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 46
+
+
+State 35
+
+    2 MainClass: CLASS Identifier . LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    LEFT_CURL_BRAC  shift, and go to state 47
+
+
+State 36
+
+    5 TypeDec: CLASS . Identifier LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC
+    6        | CLASS . Identifier EXTENDS Identifier LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 48
+
+
+State 37
+
+    1 goal: MacroDefStar MainClass TypeDecStar .
+
+    $default  reduce using rule 1 (goal)
+
+
+State 38
+
+    4 TypeDecStar: TypeDec . TypeDecStar
+
+    CLASS  shift, and go to state 36
+
+    $default  reduce using rule 3 (TypeDecStar)
+
+    TypeDecStar  go to state 49
+    TypeDec      go to state 38
+
+
+State 39
+
+   68 MacroDefExpr: DEFEXPR0 Identifier LEFT_BRAC RIGHT_BRAC . LEFT_BRAC Expr RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 50
+
+
+State 40
+
+   69 MacroDefExpr: DEFEXPR1 Identifier LEFT_BRAC Identifier . RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 51
+
+
+State 41
+
+   70 MacroDefExpr: DEFEXPR2 Identifier LEFT_BRAC Identifier . COMMA Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    COMMA  shift, and go to state 52
+
+
+State 42
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier . COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    COMMA  shift, and go to state 53
+
+
+State 43
+
+   64 MacroDefStmt: DEFSTMT0 Identifier LEFT_BRAC RIGHT_BRAC . LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    LEFT_CURL_BRAC  shift, and go to state 54
+
+
+State 44
+
+   65 MacroDefStmt: DEFSTMT1 Identifier LEFT_BRAC Identifier . RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    RIGHT_BRAC  shift, and go to state 55
+
+
+State 45
+
+   66 MacroDefStmt: DEFSTMT2 Identifier LEFT_BRAC Identifier . COMMA Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    COMMA  shift, and go to state 56
+
+
+State 46
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier . COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    COMMA  shift, and go to state 57
+
+
+State 47
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC . TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    $default  reduce using rule 10 (TypeIdStar)
+
+    TypeIdStar  go to state 58
+
+
+State 48
+
+    5 TypeDec: CLASS Identifier . LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC
+    6        | CLASS Identifier . EXTENDS Identifier LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC
+
+    EXTENDS         shift, and go to state 59
+    LEFT_CURL_BRAC  shift, and go to state 60
+
+
+State 49
+
+    4 TypeDecStar: TypeDec TypeDecStar .
+
+    $default  reduce using rule 4 (TypeDecStar)
+
+
+State 50
+
+   68 MacroDefExpr: DEFEXPR0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_BRAC . Expr RIGHT_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 68
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 51
+
+   69 MacroDefExpr: DEFEXPR1 Identifier LEFT_BRAC Identifier RIGHT_BRAC . LEFT_BRAC Expr RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 73
+
+
+State 52
+
+   70 MacroDefExpr: DEFEXPR2 Identifier LEFT_BRAC Identifier COMMA . Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 74
+
+
+State 53
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA . Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 75
+
+
+State 54
+
+   64 MacroDefStmt: DEFSTMT0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_CURL_BRAC . StmtStar RIGHT_CURL_BRAC
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    $default  reduce using rule 21 (StmtStar)
+
+    StmtStar    go to state 80
+    Stmt        go to state 81
+    IfStmt      go to state 82
+    Identifier  go to state 83
+
+
+State 55
+
+   65 MacroDefStmt: DEFSTMT1 Identifier LEFT_BRAC Identifier RIGHT_BRAC . LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    LEFT_CURL_BRAC  shift, and go to state 84
+
+
+State 56
+
+   66 MacroDefStmt: DEFSTMT2 Identifier LEFT_BRAC Identifier COMMA . Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 85
+
+
+State 57
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA . Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 86
+
+
+State 58
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar . PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+   11 TypeIdStar: TypeIdStar . Type Identifier SEMICOLON
+
+    PUBLIC     shift, and go to state 87
+    INT_ARRAY  shift, and go to state 88
+    INT        shift, and go to state 89
+    BOOLEAN    shift, and go to state 90
+    ID         shift, and go to state 14
+
+    Type        go to state 91
+    Identifier  go to state 92
+
+
+State 59
+
+    6 TypeDec: CLASS Identifier EXTENDS . Identifier LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 93
+
+
+State 60
+
+    5 TypeDec: CLASS Identifier LEFT_CURL_BRAC . TypeIdStar MethodStar RIGHT_CURL_BRAC
+
+    $default  reduce using rule 10 (TypeIdStar)
+
+    TypeIdStar  go to state 94
+
+
+State 61
+
+   55 PES: TRUE .
+
+    $default  reduce using rule 55 (PES)
+
+
+State 62
+
+   56 PES: FALSE .
+
+    $default  reduce using rule 56 (PES)
+
+
+State 63
+
+   58 PES: THIS .
+
+    $default  reduce using rule 58 (PES)
+
+
+State 64
+
+   50 PE: NEW . INT LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC
+   51   | NEW . Identifier LEFT_BRAC RIGHT_BRAC
+
+    INT  shift, and go to state 95
+    ID   shift, and go to state 14
+
+    Identifier  go to state 96
+
+
+State 65
+
+   52 PE: NOT . Expr
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 97
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 66
+
+   53 PE: LEFT_BRAC . Expr RIGHT_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 98
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 67
+
+   73 Number: NUMBER .
+
+    $default  reduce using rule 73 (Number)
+
+
+State 68
+
+   68 MacroDefExpr: DEFEXPR0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_BRAC Expr . RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 99
+
+
+State 69
+
+   36 Expr: PE . AND PE
+   37     | PE . OR PE
+   38     | PE . NOTEQ PE
+   39     | PE . LTE PE
+   40     | PE . ADD PE
+   41     | PE . SUB PE
+   42     | PE . MUL PE
+   43     | PE . DIV PE
+   44     | PE . LEFT_SQR_BRAC PE RIGHT_SQR_BRAC
+   45     | PE . DOT LENGTH
+   46     | PE .
+   47     | PE . DOT Identifier LEFT_BRAC ExprList RIGHT_BRAC
+
+    LEFT_SQR_BRAC  shift, and go to state 100
+    AND            shift, and go to state 101
+    OR             shift, and go to state 102
+    LTE            shift, and go to state 103
+    NOTEQ          shift, and go to state 104
+    ADD            shift, and go to state 105
+    SUB            shift, and go to state 106
+    MUL            shift, and go to state 107
+    DIV            shift, and go to state 108
+    DOT            shift, and go to state 109
+
+    $default  reduce using rule 46 (Expr)
+
+
+State 70
+
+   49 PE: PES .
+
+    $default  reduce using rule 49 (PE)
+
+
+State 71
+
+   54 PES: Number .
+
+    $default  reduce using rule 54 (PES)
+
+
+State 72
+
+   48 Expr: Identifier . LEFT_BRAC ExprList RIGHT_BRAC
+   57 PES: Identifier .
+
+    LEFT_BRAC  shift, and go to state 110
+
+    $default  reduce using rule 57 (PES)
+
+
+State 73
+
+   69 MacroDefExpr: DEFEXPR1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_BRAC . Expr RIGHT_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 111
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 74
+
+   70 MacroDefExpr: DEFEXPR2 Identifier LEFT_BRAC Identifier COMMA Identifier . RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 112
+
+
+State 75
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier . COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    COMMA  shift, and go to state 113
+
+
+State 76
+
+   24 Stmt: SYS_OUT_PRINTLN . LEFT_BRAC Expr RIGHT_BRAC SEMICOLON
+
+    LEFT_BRAC  shift, and go to state 114
+
+
+State 77
+
+   30 IfStmt: IF . LEFT_BRAC Expr RIGHT_BRAC Stmt
+   31       | IF . LEFT_BRAC Expr RIGHT_BRAC Stmt ELSE Stmt
+
+    LEFT_BRAC  shift, and go to state 115
+
+
+State 78
+
+   28 Stmt: WHILE . LEFT_BRAC Expr RIGHT_BRAC Stmt
+
+    LEFT_BRAC  shift, and go to state 116
+
+
+State 79
+
+   23 Stmt: LEFT_CURL_BRAC . StmtStar RIGHT_CURL_BRAC
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    $default  reduce using rule 21 (StmtStar)
+
+    StmtStar    go to state 117
+    Stmt        go to state 81
+    IfStmt      go to state 82
+    Identifier  go to state 83
+
+
+State 80
+
+   64 MacroDefStmt: DEFSTMT0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_CURL_BRAC StmtStar . RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 118
+
+
+State 81
+
+   22 StmtStar: Stmt . StmtStar
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    $default  reduce using rule 21 (StmtStar)
+
+    StmtStar    go to state 119
+    Stmt        go to state 81
+    IfStmt      go to state 82
+    Identifier  go to state 83
+
+
+State 82
+
+   27 Stmt: IfStmt .
+
+    $default  reduce using rule 27 (Stmt)
+
+
+State 83
+
+   25 Stmt: Identifier . EQTO Expr SEMICOLON
+   26     | Identifier . LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC EQTO Expr SEMICOLON
+   29     | Identifier . LEFT_BRAC ExprList RIGHT_BRAC SEMICOLON
+
+    EQTO           shift, and go to state 120
+    LEFT_BRAC      shift, and go to state 121
+    LEFT_SQR_BRAC  shift, and go to state 122
+
+
+State 84
+
+   65 MacroDefStmt: DEFSTMT1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC . StmtStar RIGHT_CURL_BRAC
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    $default  reduce using rule 21 (StmtStar)
+
+    StmtStar    go to state 123
+    Stmt        go to state 81
+    IfStmt      go to state 82
+    Identifier  go to state 83
+
+
+State 85
+
+   66 MacroDefStmt: DEFSTMT2 Identifier LEFT_BRAC Identifier COMMA Identifier . RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    RIGHT_BRAC  shift, and go to state 124
+
+
+State 86
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier . COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    COMMA  shift, and go to state 125
+
+
+State 87
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC . STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    STATIC  shift, and go to state 126
+
+
+State 88
+
+   13 Type: INT_ARRAY .
+
+    $default  reduce using rule 13 (Type)
+
+
+State 89
+
+   12 Type: INT .
+   14     | INT . LEFT_SQR_BRAC RIGHT_SQR_BRAC
+
+    LEFT_SQR_BRAC  shift, and go to state 127
+
+    $default  reduce using rule 12 (Type)
+
+
+State 90
+
+   15 Type: BOOLEAN .
+
+    $default  reduce using rule 15 (Type)
+
+
+State 91
+
+   11 TypeIdStar: TypeIdStar Type . Identifier SEMICOLON
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 128
+
+
+State 92
+
+   16 Type: Identifier .
+
+    $default  reduce using rule 16 (Type)
+
+
+State 93
+
+    6 TypeDec: CLASS Identifier EXTENDS Identifier . LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC
+
+    LEFT_CURL_BRAC  shift, and go to state 129
+
+
+State 94
+
+    5 TypeDec: CLASS Identifier LEFT_CURL_BRAC TypeIdStar . MethodStar RIGHT_CURL_BRAC
+   11 TypeIdStar: TypeIdStar . Type Identifier SEMICOLON
+
+    PUBLIC     shift, and go to state 130
+    INT_ARRAY  shift, and go to state 88
+    INT        shift, and go to state 89
+    BOOLEAN    shift, and go to state 90
+    ID         shift, and go to state 14
+
+    $default  reduce using rule 7 (MethodStar)
+
+    MethodStar  go to state 131
+    MethodDec   go to state 132
+    Type        go to state 91
+    Identifier  go to state 92
+
+
+State 95
+
+   50 PE: NEW INT . LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC
+
+    LEFT_SQR_BRAC  shift, and go to state 133
+
+
+State 96
+
+   51 PE: NEW Identifier . LEFT_BRAC RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 134
+
+
+State 97
+
+   52 PE: NOT Expr .
+
+    $default  reduce using rule 52 (PE)
+
+
+State 98
+
+   53 PE: LEFT_BRAC Expr . RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 135
+
+
+State 99
+
+   68 MacroDefExpr: DEFEXPR0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC .
+
+    $default  reduce using rule 68 (MacroDefExpr)
+
+
+State 100
+
+   44 Expr: PE LEFT_SQR_BRAC . PE RIGHT_SQR_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    PE          go to state 136
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 137
+
+
+State 101
+
+   36 Expr: PE AND . PE
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    PE          go to state 138
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 137
+
+
+State 102
+
+   37 Expr: PE OR . PE
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    PE          go to state 139
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 137
+
+
+State 103
+
+   39 Expr: PE LTE . PE
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    PE          go to state 140
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 137
+
+
+State 104
+
+   38 Expr: PE NOTEQ . PE
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    PE          go to state 141
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 137
+
+
+State 105
+
+   40 Expr: PE ADD . PE
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    PE          go to state 142
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 137
+
+
+State 106
+
+   41 Expr: PE SUB . PE
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    PE          go to state 143
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 137
+
+
+State 107
+
+   42 Expr: PE MUL . PE
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    PE          go to state 144
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 137
+
+
+State 108
+
+   43 Expr: PE DIV . PE
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    PE          go to state 145
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 137
+
+
+State 109
+
+   45 Expr: PE DOT . LENGTH
+   47     | PE DOT . Identifier LEFT_BRAC ExprList RIGHT_BRAC
+
+    ID      shift, and go to state 14
+    LENGTH  shift, and go to state 146
+
+    Identifier  go to state 147
+
+
+State 110
+
+   48 Expr: Identifier LEFT_BRAC . ExprList RIGHT_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    $default  reduce using rule 32 (ExprList)
+
+    ExprList    go to state 148
+    ExprListT   go to state 149
+    Expr        go to state 150
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 111
+
+   69 MacroDefExpr: DEFEXPR1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_BRAC Expr . RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 151
+
+
+State 112
+
+   70 MacroDefExpr: DEFEXPR2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC . LEFT_BRAC Expr RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 152
+
+
+State 113
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA . Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 153
+
+
+State 114
+
+   24 Stmt: SYS_OUT_PRINTLN LEFT_BRAC . Expr RIGHT_BRAC SEMICOLON
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 154
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 115
+
+   30 IfStmt: IF LEFT_BRAC . Expr RIGHT_BRAC Stmt
+   31       | IF LEFT_BRAC . Expr RIGHT_BRAC Stmt ELSE Stmt
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 155
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 116
+
+   28 Stmt: WHILE LEFT_BRAC . Expr RIGHT_BRAC Stmt
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 156
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 117
+
+   23 Stmt: LEFT_CURL_BRAC StmtStar . RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 157
+
+
+State 118
+
+   64 MacroDefStmt: DEFSTMT0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC .
+
+    $default  reduce using rule 64 (MacroDefStmt)
+
+
+State 119
+
+   22 StmtStar: Stmt StmtStar .
+
+    $default  reduce using rule 22 (StmtStar)
+
+
+State 120
+
+   25 Stmt: Identifier EQTO . Expr SEMICOLON
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 158
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 121
+
+   29 Stmt: Identifier LEFT_BRAC . ExprList RIGHT_BRAC SEMICOLON
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    $default  reduce using rule 32 (ExprList)
+
+    ExprList    go to state 159
+    ExprListT   go to state 149
+    Expr        go to state 150
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 122
+
+   26 Stmt: Identifier LEFT_SQR_BRAC . Expr RIGHT_SQR_BRAC EQTO Expr SEMICOLON
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 160
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 123
+
+   65 MacroDefStmt: DEFSTMT1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar . RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 161
+
+
+State 124
+
+   66 MacroDefStmt: DEFSTMT2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC . LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    LEFT_CURL_BRAC  shift, and go to state 162
+
+
+State 125
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA . Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 163
+
+
+State 126
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC . VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    VOID  shift, and go to state 164
+
+
+State 127
+
+   14 Type: INT LEFT_SQR_BRAC . RIGHT_SQR_BRAC
+
+    RIGHT_SQR_BRAC  shift, and go to state 165
+
+
+State 128
+
+   11 TypeIdStar: TypeIdStar Type Identifier . SEMICOLON
+
+    SEMICOLON  shift, and go to state 166
+
+
+State 129
+
+    6 TypeDec: CLASS Identifier EXTENDS Identifier LEFT_CURL_BRAC . TypeIdStar MethodStar RIGHT_CURL_BRAC
+
+    $default  reduce using rule 10 (TypeIdStar)
+
+    TypeIdStar  go to state 167
+
+
+State 130
+
+    9 MethodDec: PUBLIC . Type Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+
+    INT_ARRAY  shift, and go to state 88
+    INT        shift, and go to state 89
+    BOOLEAN    shift, and go to state 90
+    ID         shift, and go to state 14
+
+    Type        go to state 168
+    Identifier  go to state 92
+
+
+State 131
+
+    5 TypeDec: CLASS Identifier LEFT_CURL_BRAC TypeIdStar MethodStar . RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 169
+
+
+State 132
+
+    8 MethodStar: MethodDec . MethodStar
+
+    PUBLIC  shift, and go to state 130
+
+    $default  reduce using rule 7 (MethodStar)
+
+    MethodStar  go to state 170
+    MethodDec   go to state 132
+
+
+State 133
+
+   50 PE: NEW INT LEFT_SQR_BRAC . Expr RIGHT_SQR_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 171
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 134
+
+   51 PE: NEW Identifier LEFT_BRAC . RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 172
+
+
+State 135
+
+   53 PE: LEFT_BRAC Expr RIGHT_BRAC .
+
+    $default  reduce using rule 53 (PE)
+
+
+State 136
+
+   44 Expr: PE LEFT_SQR_BRAC PE . RIGHT_SQR_BRAC
+
+    RIGHT_SQR_BRAC  shift, and go to state 173
+
+
+State 137
+
+   57 PES: Identifier .
+
+    $default  reduce using rule 57 (PES)
+
+
+State 138
+
+   36 Expr: PE AND PE .
+
+    $default  reduce using rule 36 (Expr)
+
+
+State 139
+
+   37 Expr: PE OR PE .
+
+    $default  reduce using rule 37 (Expr)
+
+
+State 140
+
+   39 Expr: PE LTE PE .
+
+    $default  reduce using rule 39 (Expr)
+
+
+State 141
+
+   38 Expr: PE NOTEQ PE .
+
+    $default  reduce using rule 38 (Expr)
+
+
+State 142
+
+   40 Expr: PE ADD PE .
+
+    $default  reduce using rule 40 (Expr)
+
+
+State 143
+
+   41 Expr: PE SUB PE .
+
+    $default  reduce using rule 41 (Expr)
+
+
+State 144
+
+   42 Expr: PE MUL PE .
+
+    $default  reduce using rule 42 (Expr)
+
+
+State 145
+
+   43 Expr: PE DIV PE .
+
+    $default  reduce using rule 43 (Expr)
+
+
+State 146
+
+   45 Expr: PE DOT LENGTH .
+
+    $default  reduce using rule 45 (Expr)
+
+
+State 147
+
+   47 Expr: PE DOT Identifier . LEFT_BRAC ExprList RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 174
+
+
+State 148
+
+   48 Expr: Identifier LEFT_BRAC ExprList . RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 175
+
+
+State 149
+
+   33 ExprList: ExprListT .
+
+    $default  reduce using rule 33 (ExprList)
+
+
+State 150
+
+   34 ExprListT: Expr .
+   35          | Expr . COMMA ExprListT
+
+    COMMA  shift, and go to state 176
+
+    $default  reduce using rule 34 (ExprListT)
+
+
+State 151
+
+   69 MacroDefExpr: DEFEXPR1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC .
+
+    $default  reduce using rule 69 (MacroDefExpr)
+
+
+State 152
+
+   70 MacroDefExpr: DEFEXPR2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_BRAC . Expr RIGHT_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 177
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 153
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier . CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    COMMA  shift, and go to state 178
+
+    $default  reduce using rule 71 (CommaIdStar)
+
+    CommaIdStar  go to state 179
+
+
+State 154
+
+   24 Stmt: SYS_OUT_PRINTLN LEFT_BRAC Expr . RIGHT_BRAC SEMICOLON
+
+    RIGHT_BRAC  shift, and go to state 180
+
+
+State 155
+
+   30 IfStmt: IF LEFT_BRAC Expr . RIGHT_BRAC Stmt
+   31       | IF LEFT_BRAC Expr . RIGHT_BRAC Stmt ELSE Stmt
+
+    RIGHT_BRAC  shift, and go to state 181
+
+
+State 156
+
+   28 Stmt: WHILE LEFT_BRAC Expr . RIGHT_BRAC Stmt
+
+    RIGHT_BRAC  shift, and go to state 182
+
+
+State 157
+
+   23 Stmt: LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC .
+
+    $default  reduce using rule 23 (Stmt)
+
+
+State 158
+
+   25 Stmt: Identifier EQTO Expr . SEMICOLON
+
+    SEMICOLON  shift, and go to state 183
+
+
+State 159
+
+   29 Stmt: Identifier LEFT_BRAC ExprList . RIGHT_BRAC SEMICOLON
+
+    RIGHT_BRAC  shift, and go to state 184
+
+
+State 160
+
+   26 Stmt: Identifier LEFT_SQR_BRAC Expr . RIGHT_SQR_BRAC EQTO Expr SEMICOLON
+
+    RIGHT_SQR_BRAC  shift, and go to state 185
+
+
+State 161
+
+   65 MacroDefStmt: DEFSTMT1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC .
+
+    $default  reduce using rule 65 (MacroDefStmt)
+
+
+State 162
+
+   66 MacroDefStmt: DEFSTMT2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_CURL_BRAC . StmtStar RIGHT_CURL_BRAC
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    $default  reduce using rule 21 (StmtStar)
+
+    StmtStar    go to state 186
+    Stmt        go to state 81
+    IfStmt      go to state 82
+    Identifier  go to state 83
+
+
+State 163
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier . CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    COMMA  shift, and go to state 178
+
+    $default  reduce using rule 71 (CommaIdStar)
+
+    CommaIdStar  go to state 187
+
+
+State 164
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID . MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    MAIN  shift, and go to state 188
+
+
+State 165
+
+   14 Type: INT LEFT_SQR_BRAC RIGHT_SQR_BRAC .
+
+    $default  reduce using rule 14 (Type)
+
+
+State 166
+
+   11 TypeIdStar: TypeIdStar Type Identifier SEMICOLON .
+
+    $default  reduce using rule 11 (TypeIdStar)
+
+
+State 167
+
+    6 TypeDec: CLASS Identifier EXTENDS Identifier LEFT_CURL_BRAC TypeIdStar . MethodStar RIGHT_CURL_BRAC
+   11 TypeIdStar: TypeIdStar . Type Identifier SEMICOLON
+
+    PUBLIC     shift, and go to state 130
+    INT_ARRAY  shift, and go to state 88
+    INT        shift, and go to state 89
+    BOOLEAN    shift, and go to state 90
+    ID         shift, and go to state 14
+
+    $default  reduce using rule 7 (MethodStar)
+
+    MethodStar  go to state 189
+    MethodDec   go to state 132
+    Type        go to state 91
+    Identifier  go to state 92
+
+
+State 168
+
+    9 MethodDec: PUBLIC Type . Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 190
+
+
+State 169
+
+    5 TypeDec: CLASS Identifier LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC .
+
+    $default  reduce using rule 5 (TypeDec)
+
+
+State 170
+
+    8 MethodStar: MethodDec MethodStar .
+
+    $default  reduce using rule 8 (MethodStar)
+
+
+State 171
+
+   50 PE: NEW INT LEFT_SQR_BRAC Expr . RIGHT_SQR_BRAC
+
+    RIGHT_SQR_BRAC  shift, and go to state 191
+
+
+State 172
+
+   51 PE: NEW Identifier LEFT_BRAC RIGHT_BRAC .
+
+    $default  reduce using rule 51 (PE)
+
+
+State 173
+
+   44 Expr: PE LEFT_SQR_BRAC PE RIGHT_SQR_BRAC .
+
+    $default  reduce using rule 44 (Expr)
+
+
+State 174
+
+   47 Expr: PE DOT Identifier LEFT_BRAC . ExprList RIGHT_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    $default  reduce using rule 32 (ExprList)
+
+    ExprList    go to state 192
+    ExprListT   go to state 149
+    Expr        go to state 150
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 175
+
+   48 Expr: Identifier LEFT_BRAC ExprList RIGHT_BRAC .
+
+    $default  reduce using rule 48 (Expr)
+
+
+State 176
+
+   35 ExprListT: Expr COMMA . ExprListT
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    ExprListT   go to state 193
+    Expr        go to state 150
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 177
+
+   70 MacroDefExpr: DEFEXPR2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_BRAC Expr . RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 194
+
+
+State 178
+
+   72 CommaIdStar: COMMA . Identifier CommaIdStar
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 195
+
+
+State 179
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar . RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 196
+
+
+State 180
+
+   24 Stmt: SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC . SEMICOLON
+
+    SEMICOLON  shift, and go to state 197
+
+
+State 181
+
+   30 IfStmt: IF LEFT_BRAC Expr RIGHT_BRAC . Stmt
+   31       | IF LEFT_BRAC Expr RIGHT_BRAC . Stmt ELSE Stmt
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    Stmt        go to state 198
+    IfStmt      go to state 82
+    Identifier  go to state 83
+
+
+State 182
+
+   28 Stmt: WHILE LEFT_BRAC Expr RIGHT_BRAC . Stmt
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    Stmt        go to state 199
+    IfStmt      go to state 82
+    Identifier  go to state 83
+
+
+State 183
+
+   25 Stmt: Identifier EQTO Expr SEMICOLON .
+
+    $default  reduce using rule 25 (Stmt)
+
+
+State 184
+
+   29 Stmt: Identifier LEFT_BRAC ExprList RIGHT_BRAC . SEMICOLON
+
+    SEMICOLON  shift, and go to state 200
+
+
+State 185
+
+   26 Stmt: Identifier LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC . EQTO Expr SEMICOLON
+
+    EQTO  shift, and go to state 201
+
+
+State 186
+
+   66 MacroDefStmt: DEFSTMT2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar . RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 202
+
+
+State 187
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar . RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    RIGHT_BRAC  shift, and go to state 203
+
+
+State 188
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN . LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    LEFT_BRAC  shift, and go to state 204
+
+
+State 189
+
+    6 TypeDec: CLASS Identifier EXTENDS Identifier LEFT_CURL_BRAC TypeIdStar MethodStar . RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 205
+
+
+State 190
+
+    9 MethodDec: PUBLIC Type Identifier . LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+
+    LEFT_BRAC  shift, and go to state 206
+
+
+State 191
+
+   50 PE: NEW INT LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC .
+
+    $default  reduce using rule 50 (PE)
+
+
+State 192
+
+   47 Expr: PE DOT Identifier LEFT_BRAC ExprList . RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 207
+
+
+State 193
+
+   35 ExprListT: Expr COMMA ExprListT .
+
+    $default  reduce using rule 35 (ExprListT)
+
+
+State 194
+
+   70 MacroDefExpr: DEFEXPR2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC .
+
+    $default  reduce using rule 70 (MacroDefExpr)
+
+
+State 195
+
+   72 CommaIdStar: COMMA Identifier . CommaIdStar
+
+    COMMA  shift, and go to state 178
+
+    $default  reduce using rule 71 (CommaIdStar)
+
+    CommaIdStar  go to state 208
+
+
+State 196
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC . LEFT_BRAC Expr RIGHT_BRAC
+
+    LEFT_BRAC  shift, and go to state 209
+
+
+State 197
+
+   24 Stmt: SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON .
+
+    $default  reduce using rule 24 (Stmt)
+
+
+State 198
+
+   30 IfStmt: IF LEFT_BRAC Expr RIGHT_BRAC Stmt .
+   31       | IF LEFT_BRAC Expr RIGHT_BRAC Stmt . ELSE Stmt
+
+    ELSE  shift, and go to state 210
+
+    $default  reduce using rule 30 (IfStmt)
+
+
+State 199
+
+   28 Stmt: WHILE LEFT_BRAC Expr RIGHT_BRAC Stmt .
+
+    $default  reduce using rule 28 (Stmt)
+
+
+State 200
+
+   29 Stmt: Identifier LEFT_BRAC ExprList RIGHT_BRAC SEMICOLON .
+
+    $default  reduce using rule 29 (Stmt)
+
+
+State 201
+
+   26 Stmt: Identifier LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC EQTO . Expr SEMICOLON
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 211
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 202
+
+   66 MacroDefStmt: DEFSTMT2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC .
+
+    $default  reduce using rule 66 (MacroDefStmt)
+
+
+State 203
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC . LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
+
+    LEFT_CURL_BRAC  shift, and go to state 212
+
+
+State 204
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC . STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    STRING  shift, and go to state 213
+
+
+State 205
+
+    6 TypeDec: CLASS Identifier EXTENDS Identifier LEFT_CURL_BRAC TypeIdStar MethodStar RIGHT_CURL_BRAC .
+
+    $default  reduce using rule 6 (TypeDec)
+
+
+State 206
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC . ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+
+    INT_ARRAY  shift, and go to state 88
+    INT        shift, and go to state 89
+    BOOLEAN    shift, and go to state 90
+    ID         shift, and go to state 14
+
+    $default  reduce using rule 17 (ArgList)
+
+    Type        go to state 214
+    ArgList     go to state 215
+    ArgListT    go to state 216
+    Identifier  go to state 92
+
+
+State 207
+
+   47 Expr: PE DOT Identifier LEFT_BRAC ExprList RIGHT_BRAC .
+
+    $default  reduce using rule 47 (Expr)
+
+
+State 208
+
+   72 CommaIdStar: COMMA Identifier CommaIdStar .
+
+    $default  reduce using rule 72 (CommaIdStar)
+
+
+State 209
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC . Expr RIGHT_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 217
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 210
+
+   31 IfStmt: IF LEFT_BRAC Expr RIGHT_BRAC Stmt ELSE . Stmt
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    Stmt        go to state 218
+    IfStmt      go to state 82
+    Identifier  go to state 83
+
+
+State 211
+
+   26 Stmt: Identifier LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC EQTO Expr . SEMICOLON
+
+    SEMICOLON  shift, and go to state 219
+
+
+State 212
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC . StmtStar RIGHT_CURL_BRAC
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    $default  reduce using rule 21 (StmtStar)
+
+    StmtStar    go to state 220
+    Stmt        go to state 81
+    IfStmt      go to state 82
+    Identifier  go to state 83
+
+
+State 213
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING . LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    LEFT_SQR_BRAC  shift, and go to state 221
+
+
+State 214
+
+   19 ArgListT: Type . Identifier
+   20         | Type . Identifier COMMA ArgListT
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 222
+
+
+State 215
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList . RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+
+    RIGHT_BRAC  shift, and go to state 223
+
+
+State 216
+
+   18 ArgList: ArgListT .
+
+    $default  reduce using rule 18 (ArgList)
+
+
+State 217
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr . RIGHT_BRAC
+
+    RIGHT_BRAC  shift, and go to state 224
+
+
+State 218
+
+   31 IfStmt: IF LEFT_BRAC Expr RIGHT_BRAC Stmt ELSE Stmt .
+
+    $default  reduce using rule 31 (IfStmt)
+
+
+State 219
+
+   26 Stmt: Identifier LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC EQTO Expr SEMICOLON .
+
+    $default  reduce using rule 26 (Stmt)
+
+
+State 220
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar . RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 225
+
+
+State 221
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC . RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    RIGHT_SQR_BRAC  shift, and go to state 226
+
+
+State 222
+
+   19 ArgListT: Type Identifier .
+   20         | Type Identifier . COMMA ArgListT
+
+    COMMA  shift, and go to state 227
+
+    $default  reduce using rule 19 (ArgListT)
+
+
+State 223
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList RIGHT_BRAC . LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+
+    LEFT_CURL_BRAC  shift, and go to state 228
+
+
+State 224
+
+   67 MacroDefExpr: DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC .
+
+    $default  reduce using rule 67 (MacroDefExpr)
+
+
+State 225
+
+   63 MacroDefStmt: DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC .
+
+    $default  reduce using rule 63 (MacroDefStmt)
+
+
+State 226
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC . Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    ID  shift, and go to state 14
+
+    Identifier  go to state 229
+
+
+State 227
+
+   20 ArgListT: Type Identifier COMMA . ArgListT
+
+    INT_ARRAY  shift, and go to state 88
+    INT        shift, and go to state 89
+    BOOLEAN    shift, and go to state 90
+    ID         shift, and go to state 14
+
+    Type        go to state 214
+    ArgListT    go to state 230
+    Identifier  go to state 92
+
+
+State 228
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC . TypeIdStar StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+
+    $default  reduce using rule 10 (TypeIdStar)
+
+    TypeIdStar  go to state 231
+
+
+State 229
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier . RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    RIGHT_BRAC  shift, and go to state 232
+
+
+State 230
+
+   20 ArgListT: Type Identifier COMMA ArgListT .
+
+    $default  reduce using rule 20 (ArgListT)
+
+
+State 231
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar . StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+   11 TypeIdStar: TypeIdStar . Type Identifier SEMICOLON
+
+    SYS_OUT_PRINTLN  shift, and go to state 76
+    INT_ARRAY        shift, and go to state 88
+    INT              shift, and go to state 89
+    BOOLEAN          shift, and go to state 90
+    IF               shift, and go to state 77
+    WHILE            shift, and go to state 78
+    LEFT_CURL_BRAC   shift, and go to state 79
+    ID               shift, and go to state 14
+
+    $default  reduce using rule 21 (StmtStar)
+
+    Type        go to state 91
+    StmtStar    go to state 233
+    Stmt        go to state 81
+    IfStmt      go to state 82
+    Identifier  go to state 234
+
+
+State 232
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC . LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    LEFT_CURL_BRAC  shift, and go to state 235
+
+
+State 233
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar . RETURN Expr SEMICOLON RIGHT_CURL_BRAC
+
+    RETURN  shift, and go to state 236
+
+
+State 234
+
+   16 Type: Identifier .
+   25 Stmt: Identifier . EQTO Expr SEMICOLON
+   26     | Identifier . LEFT_SQR_BRAC Expr RIGHT_SQR_BRAC EQTO Expr SEMICOLON
+   29     | Identifier . LEFT_BRAC ExprList RIGHT_BRAC SEMICOLON
+
+    EQTO           shift, and go to state 120
+    LEFT_BRAC      shift, and go to state 121
+    LEFT_SQR_BRAC  shift, and go to state 122
+
+    $default  reduce using rule 16 (Type)
+
+
+State 235
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC . SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    SYS_OUT_PRINTLN  shift, and go to state 237
+
+
+State 236
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN . Expr SEMICOLON RIGHT_CURL_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 238
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 237
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN . LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    LEFT_BRAC  shift, and go to state 239
+
+
+State 238
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr . SEMICOLON RIGHT_CURL_BRAC
+
+    SEMICOLON  shift, and go to state 240
+
+
+State 239
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC . Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    TRUE       shift, and go to state 61
+    FALSE      shift, and go to state 62
+    THIS       shift, and go to state 63
+    NEW        shift, and go to state 64
+    NOT        shift, and go to state 65
+    LEFT_BRAC  shift, and go to state 66
+    NUMBER     shift, and go to state 67
+    ID         shift, and go to state 14
+
+    Expr        go to state 241
+    PE          go to state 69
+    PES         go to state 70
+    Number      go to state 71
+    Identifier  go to state 72
+
+
+State 240
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr SEMICOLON . RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 242
+
+
+State 241
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr . RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    RIGHT_BRAC  shift, and go to state 243
+
+
+State 242
+
+    9 MethodDec: PUBLIC Type Identifier LEFT_BRAC ArgList RIGHT_BRAC LEFT_CURL_BRAC TypeIdStar StmtStar RETURN Expr SEMICOLON RIGHT_CURL_BRAC .
+
+    $default  reduce using rule 9 (MethodDec)
+
+
+State 243
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC . SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    SEMICOLON  shift, and go to state 244
+
+
+State 244
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON . RIGHT_CURL_BRAC RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 245
+
+
+State 245
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC . RIGHT_CURL_BRAC
+
+    RIGHT_CURL_BRAC  shift, and go to state 246
+
+
+State 246
+
+    2 MainClass: CLASS Identifier LEFT_CURL_BRAC TypeIdStar PUBLIC STATIC VOID MAIN LEFT_BRAC STRING LEFT_SQR_BRAC RIGHT_SQR_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC SYS_OUT_PRINTLN LEFT_BRAC Expr RIGHT_BRAC SEMICOLON RIGHT_CURL_BRAC RIGHT_CURL_BRAC .
+
+    $default  reduce using rule 2 (MainClass)
