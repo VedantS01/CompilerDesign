@@ -14,6 +14,7 @@
 #include <stdio.h>
 
 void yyerror(char*);
+int yylex();
 
 typedef struct Token {
 	// int tokenId;
@@ -272,10 +273,10 @@ Token* expandMacro(char* nameT, Token* argList) {
 %token<name> NUMBER ID
 %token COMMA
 %token LENGTH
-%nonassoc NO_PE
-%nonassoc AND OR LTE NOTEQ ADD SUB MUL DIV DOT LEFT_SQR_BRAC
-%nonassoc NO_ELSE
-%nonassoc ELSE
+%precedence NO_PE
+%precedence AND OR LTE NOTEQ ADD SUB MUL DIV DOT LEFT_SQR_BRAC
+%precedence NO_ELSE
+%precedence ELSE
 
 // %type<name> goal expr term factor NUMBER
 %type<name> Identifier Type Number

@@ -7,8 +7,10 @@
 
 %{
     #include "A1.tab.h"
+	extern void yyerror(char*);
 %}
-
+%option nounput
+%option noinput
 %%
 "//".*						;
 "class"						{

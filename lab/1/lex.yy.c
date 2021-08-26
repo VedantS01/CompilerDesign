@@ -543,10 +543,18 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "A1.l"
-#line 3 "A1.l"
+/**
+*		A1.l -- MacroJava to MiniJava Converter Flex file
+*
+*		Author -- Vedant Saboo, CS19B074
+*		Version -- 1.0
+**/
+#line 9 "A1.l"
     #include "A1.tab.h"
-#line 549 "lex.yy.c"
-#line 550 "lex.yy.c"
+	extern void yyerror(char*);
+#line 556 "lex.yy.c"
+#define YY_NO_INPUT 1
+#line 558 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -606,8 +614,6 @@ extern int yywrap ( void );
 #endif
 
 #ifndef YY_NO_UNPUT
-    
-    static void yyunput ( int c, char *buf_ptr  );
     
 #endif
 
@@ -763,9 +769,9 @@ YY_DECL
 		}
 
 	{
-#line 6 "A1.l"
+#line 14 "A1.l"
 
-#line 769 "lex.yy.c"
+#line 775 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -824,348 +830,348 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 7 "A1.l"
+#line 15 "A1.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 8 "A1.l"
+#line 16 "A1.l"
 {
 								return CLASS;
 							}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 11 "A1.l"
+#line 19 "A1.l"
 {
 								return PUBLIC;
 							}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 14 "A1.l"
+#line 22 "A1.l"
 {
 								return STATIC;
 							}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 17 "A1.l"
+#line 25 "A1.l"
 {
 								return VOID;
 							}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "A1.l"
+#line 28 "A1.l"
 {
 								return MAIN;
 							}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 23 "A1.l"
+#line 31 "A1.l"
 {
 								return RETURN;
 							}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 26 "A1.l"
+#line 34 "A1.l"
 {
 								return SYS_OUT_PRINTLN;
 							}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 29 "A1.l"
+#line 37 "A1.l"
 {
 								return EXTENDS;
 							}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 32 "A1.l"
+#line 40 "A1.l"
 {
 								return LENGTH;
 							}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 35 "A1.l"
+#line 43 "A1.l"
 {
 								return INT;
 							}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 38 "A1.l"
+#line 46 "A1.l"
 {
 								return INT_ARRAY;
 							}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 41 "A1.l"
+#line 49 "A1.l"
 {
 								return INT;
 							}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 44 "A1.l"
+#line 52 "A1.l"
 {
 								return BOOLEAN;
 							}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 47 "A1.l"
+#line 55 "A1.l"
 {
 								return STRING;
 							}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 50 "A1.l"
+#line 58 "A1.l"
 {
 								return TRUE;
 							}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 53 "A1.l"
+#line 61 "A1.l"
 {
 								return FALSE;
 							}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 56 "A1.l"
+#line 64 "A1.l"
 {
 								return THIS;
 							}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 59 "A1.l"
+#line 67 "A1.l"
 {
 								return NEW;
 							}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 62 "A1.l"
+#line 70 "A1.l"
 {
 								return IF;
 							}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 65 "A1.l"
+#line 73 "A1.l"
 {
 								return ELSE;
 							}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 68 "A1.l"
+#line 76 "A1.l"
 {
 								return WHILE;
 							}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 71 "A1.l"
+#line 79 "A1.l"
 {
 								return AND;
 							}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 74 "A1.l"
+#line 82 "A1.l"
 {
 								return OR;
 							}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 77 "A1.l"
+#line 85 "A1.l"
 {
 								return LTE;
 							}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 80 "A1.l"
+#line 88 "A1.l"
 {
 								return NOTEQ;
 							}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 83 "A1.l"
+#line 91 "A1.l"
 {
 								return ADD;
 							}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 86 "A1.l"
+#line 94 "A1.l"
 {
 								return SUB;
 							}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 89 "A1.l"
+#line 97 "A1.l"
 {
 								return MUL;
 							}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 92 "A1.l"
+#line 100 "A1.l"
 {
 								return DIV;
 							}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 95 "A1.l"
+#line 103 "A1.l"
 {
 								return NOT;
 							}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 98 "A1.l"
+#line 106 "A1.l"
 {
 								return EQTO;
 							}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 101 "A1.l"
+#line 109 "A1.l"
 {
 								return LEFT_BRAC;
 							}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 104 "A1.l"
+#line 112 "A1.l"
 {
 								return RIGHT_BRAC;
 							}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 107 "A1.l"
+#line 115 "A1.l"
 {
 								return LEFT_CURL_BRAC;
 							}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 110 "A1.l"
+#line 118 "A1.l"
 {
 								return RIGHT_CURL_BRAC;
 							}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 113 "A1.l"
+#line 121 "A1.l"
 {
 								return LEFT_SQR_BRAC;
 							}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 116 "A1.l"
+#line 124 "A1.l"
 {
 								return RIGHT_SQR_BRAC;
 							}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 119 "A1.l"
+#line 127 "A1.l"
 {
 								return DEFEXPR0;
 							}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 122 "A1.l"
+#line 130 "A1.l"
 {
 								return DEFEXPR1;
 							}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 125 "A1.l"
+#line 133 "A1.l"
 {
 								return DEFEXPR2;
 							}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 128 "A1.l"
+#line 136 "A1.l"
 {
 								return DEFEXPR;
 							}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 131 "A1.l"
+#line 139 "A1.l"
 {
 								return DEFSTMT0;
 							}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 134 "A1.l"
+#line 142 "A1.l"
 {
 								return DEFSTMT1;
 							}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 137 "A1.l"
+#line 145 "A1.l"
 {
 								return DEFSTMT2;
 							}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 140 "A1.l"
+#line 148 "A1.l"
 {
 								return DEFSTMT;
 							}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 143 "A1.l"
+#line 151 "A1.l"
 {
 								return SEMICOLON;
 							}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 146 "A1.l"
+#line 154 "A1.l"
 {
 								return COMMA;
 							}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 149 "A1.l"
+#line 157 "A1.l"
 {
 								return DOT;
 							}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 152 "A1.l"
+#line 160 "A1.l"
 {  
 						yylval.name = malloc((strlen(yytext)+1)*sizeof(char));
 						strcpy(yylval.name, yytext);
@@ -1174,7 +1180,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 158 "A1.l"
+#line 166 "A1.l"
 {
 							yylval.name = malloc(sizeof(char)*(strlen(yytext)+1));
 							strcpy(yylval.name, yytext);
@@ -1184,21 +1190,20 @@ YY_RULE_SETUP
 case 52:
 /* rule 52 can match eol */
 YY_RULE_SETUP
-#line 163 "A1.l"
+#line 171 "A1.l"
 { /* ignore whitespace */ }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 164 "A1.l"
-{fprintf(stderr,"!%d\n", yytext[0]);
-yyerror("Lexical error: unrecogninized character"); exit(0);}
+#line 172 "A1.l"
+{yyerror("Lexical error: unrecogninized character"); exit(0);}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 166 "A1.l"
+#line 173 "A1.l"
 ECHO;
 	YY_BREAK
-#line 1202 "lex.yy.c"
+#line 1207 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1533,43 +1538,6 @@ static int yy_get_next_buffer (void)
 }
 
 #ifndef YY_NO_UNPUT
-
-    static void yyunput (int c, char * yy_bp )
-{
-	char *yy_cp;
-    
-    yy_cp = (yy_c_buf_p);
-
-	/* undo effects of setting up yytext */
-	*yy_cp = (yy_hold_char);
-
-	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-		{ /* need to shift things up to make room */
-		/* +2 for EOB chars. */
-		int number_to_move = (yy_n_chars) + 2;
-		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
-					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
-		char *source =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
-
-		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
-			*--dest = *--source;
-
-		yy_cp += (int) (dest - source);
-		yy_bp += (int) (dest - source);
-		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
-			(yy_n_chars) = (int) YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
-
-		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
-		}
-
-	*--yy_cp = (char) c;
-
-	(yytext_ptr) = yy_bp;
-	(yy_hold_char) = *yy_cp;
-	(yy_c_buf_p) = yy_cp;
-}
 
 #endif
 
@@ -2203,7 +2171,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 166 "A1.l"
+#line 173 "A1.l"
 
 // main(int argc, char **argv)
 // {
