@@ -17,12 +17,12 @@ This repository includes -
 
 The Final Work involves Full Compilation of MacroJava language specifications to <MachineCode?>, ready for execution. It compiles a legal MacroJava code (a subset of Java proper) into machine executable.
 
-** Usage **
+**Usage**
 
-<Usage>
+<Usage?>
 
-** Run Test Samples **
+**Run Test Samples**
 
-<Intrcutions>
+<Intrcutions?>
 
-** NOTE: THIS PROJECT IS A SOLE PROPERTY OF THE AUTHOR. ANY COPYING OR IMMITATING OF THE CODE WORK FOR NON LEARNER PURPOSES WITHOUT AN AUTHORISATION FROM THE AUTHOR HIMSELF WILL NOT BE LEGAL **
+**NOTE: THIS PROJECT IS A SOLE PROPERTY OF THE AUTHOR. ANY COPYING OR IMMITATING OF THE CODE WORK FOR NON LEARNER PURPOSES WITHOUT AN AUTHORISATION FROM THE AUTHOR HIMSELF WILL NOT BE LEGAL**
