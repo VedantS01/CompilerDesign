@@ -1,8 +1,8 @@
 /**
+*		A1.y -- MacroJava to MiniJava Converter Bison file
 *
-*
-*
-*
+*		Author -- Vedant Saboo, CS19B074
+*		Version -- 1.0
 **/
 
 

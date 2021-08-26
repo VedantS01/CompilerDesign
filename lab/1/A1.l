@@ -1,3 +1,9 @@
+/**
+*		A1.l -- MacroJava to MiniJava Converter Flex file
+*
+*		Author -- Vedant Saboo, CS19B074
+*		Version -- 1.0
+**/
 
 %{
     #include "A1.tab.h"
@@ -161,8 +167,7 @@
 						 	return ID;
 						}
 [ \t\n\f\v\x0d]  { /* ignore whitespace */ }
-.		{fprintf(stderr,"!%d\n", yytext[0]);
-yyerror("Lexical error: unrecogninized character"); exit(0);}
+.		{yyerror("Lexical error: unrecogninized character"); exit(0);}
 %%
 // main(int argc, char **argv)
 // {
