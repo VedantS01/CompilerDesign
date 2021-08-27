@@ -189,10 +189,11 @@ void registerMacro(char* nameT, /*int nArgsT,*/ Token* argList, Token* tokenStre
 			if(strcmp(a->val,t->val)==0) {
 				//match!
 				free(t->val);
-				t->val = (char*) malloc(3*sizeof(char));
-				t->val[0] = '$';
-				t->val[1] = '0'+argpos;
-				t->val[2] = '\0';
+				t->val = (char*) malloc(10*sizeof(char));
+				t->val[0] = '@';
+				// t->val[1] = '0'+argpos;
+				// t->val[2] = '\0';
+				sprintf(t->val+1, "%d", argpos);
 				break;
 			}
 			//no match, check next
@@ -297,7 +298,7 @@ Token* expandMacro(char* nameT, Token* argList) {
 	Token* t = NULL;
 	t1 = m1->tokenStream;
 	while(t1 != NULL) {
-		if(t1->val[0] == '$') {
+		if(t1->val[0] == '@') {
 			//operand match!
 			i = atoi(t1->val+1);
 			t = insertRecursive(t, args[i-1]);
@@ -322,7 +323,7 @@ Token* expandMacro(char* nameT, Token* argList) {
 }
 
 
-#line 326 "A1.tab.c"
+#line 327 "A1.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -428,13 +429,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 265 "A1.y"
+#line 266 "A1.y"
 
 	int	int_val;
 	char* name;
 	struct Token* genList;
 
-#line 438 "A1.tab.c"
+#line 439 "A1.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -814,14 +815,14 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   308,   308,   317,   344,   347,   353,   363,   376,   379,
-     385,   403,   406,   414,   421,   428,   435,   442,   450,   453,
-     458,   464,   473,   476,   482,   489,   498,   506,   517,   521,
-     530,   540,   549,   561,   564,   569,   574,   602,   609,   616,
-     623,   630,   637,   644,   651,   658,   666,   673,   678,   688,
-     697,   701,   710,   718,   724,   731,   736,   741,   746,   751,
-     757,   760,   766,   770,   774,   788,   798,   809,   821,   835,
-     845,   856,   869,   872,   878,   885
+       0,   309,   309,   318,   345,   348,   354,   364,   377,   380,
+     386,   404,   407,   415,   422,   429,   436,   443,   451,   454,
+     459,   465,   474,   477,   483,   490,   499,   507,   518,   522,
+     531,   541,   550,   562,   565,   570,   575,   603,   610,   617,
+     624,   631,   638,   645,   652,   659,   667,   674,   679,   689,
+     698,   702,   711,   719,   725,   732,   737,   742,   747,   752,
+     758,   761,   767,   771,   775,   789,   799,   810,   822,   836,
+     846,   857,   870,   873,   879,   886
 };
 #endif
 
@@ -1764,7 +1765,7 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 309 "A1.y"
+#line 310 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
@@ -1773,11 +1774,11 @@ yyreduce:
 	printall((yyval.genList));
 	printf("\n");
 }
-#line 1777 "A1.tab.c"
+#line 1778 "A1.tab.c"
     break;
 
   case 3:
-#line 318 "A1.y"
+#line 319 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "class");
@@ -1803,29 +1804,29 @@ yyreduce:
 	(yyval.genList) = insert((yyval.genList), "}");
 	(yyval.genList) = insert((yyval.genList), "}");	
 }
-#line 1807 "A1.tab.c"
+#line 1808 "A1.tab.c"
     break;
 
   case 4:
-#line 344 "A1.y"
+#line 345 "A1.y"
         {
 	(yyval.genList) = NULL;
 }
-#line 1815 "A1.tab.c"
+#line 1816 "A1.tab.c"
     break;
 
   case 5:
-#line 348 "A1.y"
+#line 349 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 1825 "A1.tab.c"
+#line 1826 "A1.tab.c"
     break;
 
   case 6:
-#line 354 "A1.y"
+#line 355 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "class");
@@ -1835,11 +1836,11 @@ yyreduce:
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = insert((yyval.genList), "}");
 }
-#line 1839 "A1.tab.c"
+#line 1840 "A1.tab.c"
     break;
 
   case 7:
-#line 364 "A1.y"
+#line 365 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "class");
@@ -1851,29 +1852,29 @@ yyreduce:
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = insert((yyval.genList), "}");
 }
-#line 1855 "A1.tab.c"
+#line 1856 "A1.tab.c"
     break;
 
   case 8:
-#line 376 "A1.y"
+#line 377 "A1.y"
         {
 	(yyval.genList) = NULL;
 }
-#line 1863 "A1.tab.c"
+#line 1864 "A1.tab.c"
     break;
 
   case 9:
-#line 380 "A1.y"
+#line 381 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 1873 "A1.tab.c"
+#line 1874 "A1.tab.c"
     break;
 
   case 10:
-#line 386 "A1.y"
+#line 387 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "public");
@@ -1890,19 +1891,19 @@ yyreduce:
 	(yyval.genList) = insert((yyval.genList), ";");
 	(yyval.genList) = insert((yyval.genList), "}");
 }
-#line 1894 "A1.tab.c"
+#line 1895 "A1.tab.c"
     break;
 
   case 11:
-#line 403 "A1.y"
+#line 404 "A1.y"
         {
 	(yyval.genList) = NULL;
 }
-#line 1902 "A1.tab.c"
+#line 1903 "A1.tab.c"
     break;
 
   case 12:
-#line 407 "A1.y"
+#line 408 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-3].genList));
@@ -1910,93 +1911,93 @@ yyreduce:
 	(yyval.genList) = insert((yyval.genList), (yyvsp[-1].name));
 	(yyval.genList) = insert((yyval.genList), ";");
 }
-#line 1914 "A1.tab.c"
+#line 1915 "A1.tab.c"
     break;
 
   case 13:
-#line 415 "A1.y"
+#line 416 "A1.y"
 {
 	int len = strlen("int");
 	(yyval.name) = (char*) malloc((len + 1) * sizeof(char));
 	(yyval.name)[0] = '\0';
 	strcat((yyval.name),"int");
 }
-#line 1925 "A1.tab.c"
+#line 1926 "A1.tab.c"
     break;
 
   case 14:
-#line 422 "A1.y"
+#line 423 "A1.y"
 {
 	int len = strlen("int[]");
 	(yyval.name) = (char*) malloc((len + 1) * sizeof(char));
 	(yyval.name)[0] = '\0';
 	strcat((yyval.name),"int[]");
 }
-#line 1936 "A1.tab.c"
+#line 1937 "A1.tab.c"
     break;
 
   case 15:
-#line 429 "A1.y"
+#line 430 "A1.y"
 {
 	int len = strlen("int[]");
 	(yyval.name) = (char*) malloc((len + 1) * sizeof(char));
 	(yyval.name)[0] = '\0';
 	strcat((yyval.name),"int[]");
 }
-#line 1947 "A1.tab.c"
+#line 1948 "A1.tab.c"
     break;
 
   case 16:
-#line 436 "A1.y"
+#line 437 "A1.y"
 {
 	int len = strlen("boolean");
 	(yyval.name) = (char*) malloc((len + 1) * sizeof(char));
 	(yyval.name)[0] = '\0';
 	strcat((yyval.name),"boolean");
 }
-#line 1958 "A1.tab.c"
+#line 1959 "A1.tab.c"
     break;
 
   case 17:
-#line 443 "A1.y"
+#line 444 "A1.y"
 {
 	int len = strlen((yyvsp[0].name));
 	(yyval.name) = (char*) malloc((len + 1) * sizeof(char));
 	(yyval.name)[0] = '\0';
 	strcat((yyval.name),(yyvsp[0].name));
 }
-#line 1969 "A1.tab.c"
+#line 1970 "A1.tab.c"
     break;
 
   case 18:
-#line 450 "A1.y"
+#line 451 "A1.y"
         {
 	(yyval.genList) = NULL;
 }
-#line 1977 "A1.tab.c"
+#line 1978 "A1.tab.c"
     break;
 
   case 19:
-#line 454 "A1.y"
+#line 455 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 1986 "A1.tab.c"
+#line 1987 "A1.tab.c"
     break;
 
   case 20:
-#line 459 "A1.y"
+#line 460 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), (yyvsp[-1].name));
 	(yyval.genList) = insert((yyval.genList), (yyvsp[0].name));
 }
-#line 1996 "A1.tab.c"
+#line 1997 "A1.tab.c"
     break;
 
   case 21:
-#line 465 "A1.y"
+#line 466 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), (yyvsp[-3].name));
@@ -2004,40 +2005,40 @@ yyreduce:
 	(yyval.genList) = insert((yyval.genList), ",");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2008 "A1.tab.c"
+#line 2009 "A1.tab.c"
     break;
 
   case 22:
-#line 473 "A1.y"
+#line 474 "A1.y"
         {
 	(yyval.genList) = NULL;
 }
-#line 2016 "A1.tab.c"
+#line 2017 "A1.tab.c"
     break;
 
   case 23:
-#line 477 "A1.y"
+#line 478 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2026 "A1.tab.c"
+#line 2027 "A1.tab.c"
     break;
 
   case 24:
-#line 483 "A1.y"
+#line 484 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "{");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = insert((yyval.genList), "}");
 }
-#line 2037 "A1.tab.c"
+#line 2038 "A1.tab.c"
     break;
 
   case 25:
-#line 490 "A1.y"
+#line 491 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "System.out.println");
@@ -2046,11 +2047,11 @@ yyreduce:
 	(yyval.genList) = insert((yyval.genList), ")");
 	(yyval.genList) = insert((yyval.genList), ";");
 }
-#line 2050 "A1.tab.c"
+#line 2051 "A1.tab.c"
     break;
 
   case 26:
-#line 499 "A1.y"
+#line 500 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), (yyvsp[-3].name));
@@ -2058,11 +2059,11 @@ yyreduce:
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = insert((yyval.genList), ";");
 }
-#line 2062 "A1.tab.c"
+#line 2063 "A1.tab.c"
     break;
 
   case 27:
-#line 507 "A1.y"
+#line 508 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), (yyvsp[-6].name));
@@ -2073,19 +2074,19 @@ yyreduce:
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = insert((yyval.genList), ";");
 }
-#line 2077 "A1.tab.c"
+#line 2078 "A1.tab.c"
     break;
 
   case 28:
-#line 518 "A1.y"
+#line 519 "A1.y"
 {
 	(yyval.genList) = (yyvsp[0].genList);
 }
-#line 2085 "A1.tab.c"
+#line 2086 "A1.tab.c"
     break;
 
   case 29:
-#line 522 "A1.y"
+#line 523 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "while");
@@ -2094,11 +2095,11 @@ yyreduce:
 	(yyval.genList) = insert((yyval.genList), ")");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2098 "A1.tab.c"
+#line 2099 "A1.tab.c"
     break;
 
   case 30:
-#line 531 "A1.y"
+#line 532 "A1.y"
 {
 	(yyval.genList) = expandMacro((yyvsp[-4].name), (yyvsp[-2].genList));
 	// $$ = insert($$, $1);
@@ -2108,11 +2109,11 @@ yyreduce:
 	// $$ = insert($$, ";");
 
 }
-#line 2112 "A1.tab.c"
+#line 2113 "A1.tab.c"
     break;
 
   case 31:
-#line 541 "A1.y"
+#line 542 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "if");
@@ -2121,11 +2122,11 @@ yyreduce:
 	(yyval.genList) = insert((yyval.genList), ")");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2125 "A1.tab.c"
+#line 2126 "A1.tab.c"
     break;
 
   case 32:
-#line 550 "A1.y"
+#line 551 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "if");
@@ -2136,136 +2137,136 @@ yyreduce:
 	(yyval.genList) = insert((yyval.genList), "else");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2140 "A1.tab.c"
+#line 2141 "A1.tab.c"
     break;
 
   case 33:
-#line 561 "A1.y"
+#line 562 "A1.y"
         {
 	(yyval.genList) = NULL;
 }
-#line 2148 "A1.tab.c"
+#line 2149 "A1.tab.c"
     break;
 
   case 34:
-#line 565 "A1.y"
+#line 566 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2157 "A1.tab.c"
+#line 2158 "A1.tab.c"
     break;
 
   case 35:
-#line 570 "A1.y"
+#line 571 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2166 "A1.tab.c"
+#line 2167 "A1.tab.c"
     break;
 
   case 36:
-#line 575 "A1.y"
+#line 576 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), ",");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2177 "A1.tab.c"
+#line 2178 "A1.tab.c"
     break;
 
   case 37:
-#line 603 "A1.y"
+#line 604 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), "&&");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2188 "A1.tab.c"
+#line 2189 "A1.tab.c"
     break;
 
   case 38:
-#line 610 "A1.y"
+#line 611 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), "||");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2199 "A1.tab.c"
+#line 2200 "A1.tab.c"
     break;
 
   case 39:
-#line 617 "A1.y"
+#line 618 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), "!=");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2210 "A1.tab.c"
+#line 2211 "A1.tab.c"
     break;
 
   case 40:
-#line 624 "A1.y"
+#line 625 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), "<=");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2221 "A1.tab.c"
+#line 2222 "A1.tab.c"
     break;
 
   case 41:
-#line 631 "A1.y"
+#line 632 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), "+");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2232 "A1.tab.c"
+#line 2233 "A1.tab.c"
     break;
 
   case 42:
-#line 638 "A1.y"
+#line 639 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), "-");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2243 "A1.tab.c"
+#line 2244 "A1.tab.c"
     break;
 
   case 43:
-#line 645 "A1.y"
+#line 646 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), "*");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2254 "A1.tab.c"
+#line 2255 "A1.tab.c"
     break;
 
   case 44:
-#line 652 "A1.y"
+#line 653 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), "/");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2265 "A1.tab.c"
+#line 2266 "A1.tab.c"
     break;
 
   case 45:
-#line 659 "A1.y"
+#line 660 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-3].genList));
@@ -2273,31 +2274,31 @@ yyreduce:
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = insert((yyval.genList), "]");
 }
-#line 2277 "A1.tab.c"
+#line 2278 "A1.tab.c"
     break;
 
   case 46:
-#line 667 "A1.y"
+#line 668 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-2].genList));
 	(yyval.genList) = insert((yyval.genList), ".");
 	(yyval.genList) = insert((yyval.genList), "length");
 }
-#line 2288 "A1.tab.c"
+#line 2289 "A1.tab.c"
     break;
 
   case 47:
-#line 674 "A1.y"
+#line 675 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2297 "A1.tab.c"
+#line 2298 "A1.tab.c"
     break;
 
   case 48:
-#line 679 "A1.y"
+#line 680 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-5].genList));
@@ -2307,11 +2308,11 @@ yyreduce:
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = insert((yyval.genList), ")");
 }
-#line 2311 "A1.tab.c"
+#line 2312 "A1.tab.c"
     break;
 
   case 49:
-#line 689 "A1.y"
+#line 690 "A1.y"
 {
 	(yyval.genList) = expandMacro((yyvsp[-3].name), (yyvsp[-1].genList));
 	// $$ = NULL;
@@ -2320,19 +2321,19 @@ yyreduce:
 	// $$ = cat($$, $3);
 	// $$ = insert($$, ")");
 }
-#line 2324 "A1.tab.c"
+#line 2325 "A1.tab.c"
     break;
 
   case 50:
-#line 698 "A1.y"
+#line 699 "A1.y"
 {
 	(yyval.genList) = (yyvsp[0].genList);
 }
-#line 2332 "A1.tab.c"
+#line 2333 "A1.tab.c"
     break;
 
   case 51:
-#line 702 "A1.y"
+#line 703 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "new");
@@ -2341,11 +2342,11 @@ yyreduce:
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = insert((yyval.genList), "]");
 }
-#line 2345 "A1.tab.c"
+#line 2346 "A1.tab.c"
     break;
 
   case 52:
-#line 711 "A1.y"
+#line 712 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "new");
@@ -2353,111 +2354,111 @@ yyreduce:
 	(yyval.genList) = insert((yyval.genList), "(");
 	(yyval.genList) = insert((yyval.genList), ")");
 }
-#line 2357 "A1.tab.c"
+#line 2358 "A1.tab.c"
     break;
 
   case 53:
-#line 719 "A1.y"
+#line 720 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "!");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2367 "A1.tab.c"
+#line 2368 "A1.tab.c"
     break;
 
   case 54:
-#line 725 "A1.y"
+#line 726 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "(");
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = insert((yyval.genList), ")");
 }
-#line 2378 "A1.tab.c"
+#line 2379 "A1.tab.c"
     break;
 
   case 55:
-#line 732 "A1.y"
+#line 733 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), (yyvsp[0].name));
 }
-#line 2387 "A1.tab.c"
+#line 2388 "A1.tab.c"
     break;
 
   case 56:
-#line 737 "A1.y"
+#line 738 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "true");
 }
-#line 2396 "A1.tab.c"
+#line 2397 "A1.tab.c"
     break;
 
   case 57:
-#line 742 "A1.y"
+#line 743 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "false");
 }
-#line 2405 "A1.tab.c"
+#line 2406 "A1.tab.c"
     break;
 
   case 58:
-#line 747 "A1.y"
+#line 748 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), (yyvsp[0].name));
 }
-#line 2414 "A1.tab.c"
+#line 2415 "A1.tab.c"
     break;
 
   case 59:
-#line 752 "A1.y"
+#line 753 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), "this");
 }
-#line 2423 "A1.tab.c"
+#line 2424 "A1.tab.c"
     break;
 
   case 60:
-#line 757 "A1.y"
+#line 758 "A1.y"
         {
 	(yyval.genList) = NULL;
 }
-#line 2431 "A1.tab.c"
+#line 2432 "A1.tab.c"
     break;
 
   case 61:
-#line 761 "A1.y"
+#line 762 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = cat((yyval.genList), (yyvsp[-1].genList));
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2441 "A1.tab.c"
+#line 2442 "A1.tab.c"
     break;
 
   case 62:
-#line 767 "A1.y"
+#line 768 "A1.y"
 {
 	(yyval.genList) = (yyvsp[0].genList);
 }
-#line 2449 "A1.tab.c"
+#line 2450 "A1.tab.c"
     break;
 
   case 63:
-#line 771 "A1.y"
+#line 772 "A1.y"
 {
 	(yyval.genList) = (yyvsp[0].genList);
 }
-#line 2457 "A1.tab.c"
+#line 2458 "A1.tab.c"
     break;
 
   case 64:
-#line 775 "A1.y"
+#line 776 "A1.y"
 {
 	(yyval.genList) = NULL;
 	Token* argList = NULL;
@@ -2471,11 +2472,11 @@ yyreduce:
 	tokenStream = insert(tokenStream, "}");
 	registerMacro((yyvsp[-11].name), argList, tokenStream);
 }
-#line 2475 "A1.tab.c"
+#line 2476 "A1.tab.c"
     break;
 
   case 65:
-#line 789 "A1.y"
+#line 790 "A1.y"
 {
 	(yyval.genList) = NULL;
 	Token* argList = NULL;
@@ -2485,11 +2486,11 @@ yyreduce:
 	tokenStream = insert(tokenStream, "}");
 	registerMacro((yyvsp[-5].name), argList, tokenStream);
 }
-#line 2489 "A1.tab.c"
+#line 2490 "A1.tab.c"
     break;
 
   case 66:
-#line 799 "A1.y"
+#line 800 "A1.y"
 {
 	(yyval.genList) = NULL;
 	Token* argList = NULL;
@@ -2500,11 +2501,11 @@ yyreduce:
 	tokenStream = insert(tokenStream, "}");
 	registerMacro((yyvsp[-6].name), argList, tokenStream);
 }
-#line 2504 "A1.tab.c"
+#line 2505 "A1.tab.c"
     break;
 
   case 67:
-#line 810 "A1.y"
+#line 811 "A1.y"
 {
 	(yyval.genList) = NULL;
 	Token* argList = NULL;
@@ -2516,11 +2517,11 @@ yyreduce:
 	tokenStream = insert(tokenStream, "}");
 	registerMacro((yyvsp[-8].name), argList, tokenStream);
 }
-#line 2520 "A1.tab.c"
+#line 2521 "A1.tab.c"
     break;
 
   case 68:
-#line 822 "A1.y"
+#line 823 "A1.y"
 {
 	(yyval.genList) = NULL;
 	Token* argList = NULL;
@@ -2534,11 +2535,11 @@ yyreduce:
 	tokenStream = insert(tokenStream, ")");
 	registerMacro((yyvsp[-11].name), argList, tokenStream);
 }
-#line 2538 "A1.tab.c"
+#line 2539 "A1.tab.c"
     break;
 
   case 69:
-#line 836 "A1.y"
+#line 837 "A1.y"
 {
 	(yyval.genList) = NULL;
 	Token* argList = NULL;
@@ -2548,11 +2549,11 @@ yyreduce:
 	tokenStream = insert(tokenStream, ")");
 	registerMacro((yyvsp[-5].name), argList, tokenStream);
 }
-#line 2552 "A1.tab.c"
+#line 2553 "A1.tab.c"
     break;
 
   case 70:
-#line 846 "A1.y"
+#line 847 "A1.y"
 {
 	(yyval.genList) = NULL;
 	Token* argList = NULL;
@@ -2563,11 +2564,11 @@ yyreduce:
 	tokenStream = insert(tokenStream, ")");
 	registerMacro((yyvsp[-6].name), argList, tokenStream);
 }
-#line 2567 "A1.tab.c"
+#line 2568 "A1.tab.c"
     break;
 
   case 71:
-#line 857 "A1.y"
+#line 858 "A1.y"
 {
 	(yyval.genList) = NULL;
 	Token* argList = NULL;
@@ -2579,51 +2580,51 @@ yyreduce:
 	tokenStream = insert(tokenStream, ")");
 	registerMacro((yyvsp[-8].name), argList, tokenStream);
 }
-#line 2583 "A1.tab.c"
+#line 2584 "A1.tab.c"
     break;
 
   case 72:
-#line 869 "A1.y"
+#line 870 "A1.y"
         {
 	(yyval.genList) = NULL;
 }
-#line 2591 "A1.tab.c"
+#line 2592 "A1.tab.c"
     break;
 
   case 73:
-#line 873 "A1.y"
+#line 874 "A1.y"
 {
 	(yyval.genList) = NULL;
 	(yyval.genList) = insert((yyval.genList), (yyvsp[-1].name));
 	(yyval.genList) = cat((yyval.genList), (yyvsp[0].genList));
 }
-#line 2601 "A1.tab.c"
+#line 2602 "A1.tab.c"
     break;
 
   case 74:
-#line 879 "A1.y"
+#line 880 "A1.y"
 {
 	int len = strlen((yyvsp[0].name));
 	(yyval.name) = (char*) malloc((len + 1) * sizeof(char));
 	(yyval.name)[0] = '\0';
 	strcat((yyval.name),(yyvsp[0].name));
 }
-#line 2612 "A1.tab.c"
+#line 2613 "A1.tab.c"
     break;
 
   case 75:
-#line 886 "A1.y"
+#line 887 "A1.y"
 {
 	int len = strlen((yyvsp[0].name));
 	(yyval.name) = (char*) malloc((len + 1) * sizeof(char));
 	(yyval.name)[0] = '\0';
 	strcat((yyval.name),(yyvsp[0].name));
 }
-#line 2623 "A1.tab.c"
+#line 2624 "A1.tab.c"
     break;
 
 
-#line 2627 "A1.tab.c"
+#line 2628 "A1.tab.c"
 
       default: break;
     }
@@ -2855,7 +2856,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 895 "A1.y"
+#line 896 "A1.y"
 
 int main(int argc, char **argv)
 {
