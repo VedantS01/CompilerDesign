@@ -1,15 +1,16 @@
-#defineExpr FREE(a,b,c,d,e,f,g,h,i,j,l,k) (1+0)
+#defineExpr0 NUM() (10+0)
+#defineStmt0 ONE() {a = NUM();}
 
 class NewJava {
     public static void main(String[] args) {
-        System.out.println(FREE(args [ 0 ] ,0,0,0,0,0,0,0,0,0,0,0));
+        System.out.println(args[0]);
     }
 }
-
-class Test {
-    public int name() {
-        int [ ] art;
-        art [0] = 0;
-        return art[0];
+class NewJava2 {
+    public int id() {
+        ONE();
+        a = NUM();
+        if(NUM()) a[0]=not; else ONE();
+        return 0;
     }
 }
