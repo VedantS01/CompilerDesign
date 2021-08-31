@@ -6,11 +6,11 @@ class NewJava {
         System.out.println(args[0]);
     }
 }
-class NewJava2 {
+class NewJava2 {{
     public int id() {
         ONE();
         a = NUM();
         if(NUM()) a[0]=not; else ONE();
         return 0;
     }
-}
+}}

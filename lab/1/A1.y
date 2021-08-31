@@ -905,5 +905,5 @@ int main(int argc, char **argv)
 void yyerror(char *s)
 {
   fprintf(stderr, "Error: %s\n", s);
-  printf("//Failed to parse macrojava code\n");
+  printf("//Failed to parse input code");
 }

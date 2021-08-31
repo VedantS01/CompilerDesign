@@ -77,6 +77,7 @@ Token* cat(Token* t1, Token* t2) {
 
 typedef struct Macro {
 	char* name;
+	short int isExpr;
 	int nArgs;
 	Token* tokenStream;
 	struct Macro* next;
@@ -88,7 +89,7 @@ int validateMacro(Macro* macro) {
 
 	Macro* m = macros;
 	while(m != NULL) {
-		if(strcmp(m->name,macro->name)==0 && m->nArgs == macro->nArgs) {
+		if(strcmp(m->name,macro->name)==0 && m->nArgs == macro->nArgs && m->isExpr == macro->isExpr) {
 			return 0;
 		}
 		m=m->next;
@@ -96,12 +97,13 @@ int validateMacro(Macro* macro) {
 	return 1;
 }
 
-void registerMacro(char* nameT, /*int nArgsT,*/ Token* argList, Token* tokenStreamT) {
+void registerMacro(char* nameT, /*int nArgsT,*/ Token* argList, Token* tokenStreamT, short int isExpr) {
 	//TODO: validate argList, to eliminate/report duplication
 
 	Macro* m = (Macro*) malloc(sizeof(Macro));
 	m->name = nameT;
 	m->nArgs = 0;
+	m->isExpr = isExpr;
 	m->tokenStream = tokenStreamT;
 
 	// char* s = (char*) malloc(3*sizeof(char));
@@ -169,10 +171,10 @@ void printmacros() {
 }
 
 
-Macro* matchMacro(char* name, int args) {
+Macro* matchMacro(char* name, int args, short int isExpr) {
 	Macro* m = macros;
 	while(m != NULL) {
-		if(strcmp(m->name, name)==0 && m->nArgs == args) {
+		if(strcmp(m->name, name)==0 && m->nArgs == args && m->isExpr == isExpr) {
 			return m;
 		}
 		m=m->next;
@@ -180,7 +182,7 @@ Macro* matchMacro(char* name, int args) {
 	return NULL;
 }
 
-Token* expandMacro(char* nameT, Token* argList) {
+Token* expandMacro(char* nameT, Token* argList, short int isExpr) {
 	//count arguments
 	Token* t1 = argList;
 	int count = 0;
@@ -198,7 +200,7 @@ Token* expandMacro(char* nameT, Token* argList) {
 	}
 
 	//finding macthing macro definition
-	Macro* m1 = matchMacro(nameT, count);
+	Macro* m1 = matchMacro(nameT, count, isExpr);
 	if(m1 == NULL) {
 		yyerror("Macro error: unmatched macro");
 		exit(0);
@@ -530,7 +532,7 @@ Stmt : LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
 }
   | Identifier LEFT_BRAC ExprList RIGHT_BRAC SEMICOLON
 {
-	$$ = expandMacro($1, $3);
+	$$ = expandMacro($1, $3, 0);
 	// $$ = insert($$, $1);
 	// $$ = insert($$, "(");
 	// $$ = cat($$, $3);
@@ -688,7 +690,7 @@ Expr : PE AND PE
 }
   | Identifier LEFT_BRAC ExprList RIGHT_BRAC
 {
-	$$ = expandMacro($1, $3);
+	$$ = expandMacro($1, $3, 1);
 	// $$ = NULL;
 	// $$ = insert($$, $1);
 	// $$ = insert($$, "(");
@@ -784,7 +786,7 @@ MacroDefStmt : DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Id
 	tokenStream = insert(tokenStream, "{");
 	tokenStream = cat(tokenStream, $12);
 	tokenStream = insert(tokenStream, "}");
-	registerMacro($2, argList, tokenStream);
+	registerMacro($2, argList, tokenStream, 0);
 }
   | DEFSTMT0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
 {
@@ -794,7 +796,7 @@ MacroDefStmt : DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Id
 	tokenStream = insert(tokenStream, "{");
 	tokenStream = cat(tokenStream, $6);
 	tokenStream = insert(tokenStream, "}");
-	registerMacro($2, argList, tokenStream);
+	registerMacro($2, argList, tokenStream, 0);
 }
   | DEFSTMT1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
 {
@@ -805,7 +807,7 @@ MacroDefStmt : DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Id
 	tokenStream = insert(tokenStream, "{");
 	tokenStream = cat(tokenStream, $7);
 	tokenStream = insert(tokenStream, "}");
-	registerMacro($2, argList, tokenStream);
+	registerMacro($2, argList, tokenStream, 0);
 }
   | DEFSTMT2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_CURL_BRAC StmtStar RIGHT_CURL_BRAC
 {
@@ -817,7 +819,7 @@ MacroDefStmt : DEFSTMT Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Id
 	tokenStream = insert(tokenStream, "{");
 	tokenStream = cat(tokenStream, $9);
 	tokenStream = insert(tokenStream, "}");
-	registerMacro($2, argList, tokenStream);
+	registerMacro($2, argList, tokenStream, 0);
 };
 MacroDefExpr : DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Identifier CommaIdStar RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
 {
@@ -831,7 +833,7 @@ MacroDefExpr : DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Id
 	tokenStream = insert(tokenStream, "(");
 	tokenStream = cat(tokenStream, $12);
 	tokenStream = insert(tokenStream, ")");
-	registerMacro($2, argList, tokenStream);
+	registerMacro($2, argList, tokenStream, 1);
 }
   | DEFEXPR0 Identifier LEFT_BRAC RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
 {
@@ -841,7 +843,7 @@ MacroDefExpr : DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Id
 	tokenStream = insert(tokenStream, "(");
 	tokenStream = cat(tokenStream, $6);
 	tokenStream = insert(tokenStream, ")");
-	registerMacro($2, argList, tokenStream);
+	registerMacro($2, argList, tokenStream, 1);
 }
   | DEFEXPR1 Identifier LEFT_BRAC Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
 {
@@ -852,7 +854,7 @@ MacroDefExpr : DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Id
 	tokenStream = insert(tokenStream, "(");
 	tokenStream = cat(tokenStream, $7);
 	tokenStream = insert(tokenStream, ")");
-	registerMacro($2, argList, tokenStream);
+	registerMacro($2, argList, tokenStream, 1);
 }
   | DEFEXPR2 Identifier LEFT_BRAC Identifier COMMA Identifier RIGHT_BRAC LEFT_BRAC Expr RIGHT_BRAC
 {
@@ -864,7 +866,7 @@ MacroDefExpr : DEFEXPR Identifier LEFT_BRAC Identifier COMMA Identifier COMMA Id
 	tokenStream = insert(tokenStream, "(");
 	tokenStream = cat(tokenStream, $9);
 	tokenStream = insert(tokenStream, ")");
-	registerMacro($2, argList, tokenStream);
+	registerMacro($2, argList, tokenStream, 1);
 };
 CommaIdStar : 
  %empty {
@@ -903,5 +905,5 @@ int main(int argc, char **argv)
 void yyerror(char *s)
 {
   fprintf(stderr, "Error: %s\n", s);
-  printf("//Failed to parse macrojava code\n");
+  printf("//Failed to parse input code");
 }
