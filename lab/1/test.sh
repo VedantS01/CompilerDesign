@@ -18,7 +18,7 @@ for file in MiniJava/*
 do
     if [ "$file" != "MiniJava/A1" ]
     then
-        javac -d out/MiniJava "$file" 
+        java "$file" > out/MiniJava/$(basename "$file")
     fi
 done
 
@@ -27,11 +27,18 @@ do
     if [ "$file" != "MacroJava/A1" ]
     then
         echo "Comparing $file..."
-        javac -d out/Result "$file"
+        java "$file" > out/Result/$(basename "$file")
     fi
 done
 
 for file1 in out/Result/*
 do
-    diff out/Result/$(basename "$file1") out/MiniJava/$(basename "$file1")
+    echo "Evaluating $(basename "$file1")..."
+    # DIFF=$(diff out/Result/$(basename "$file1") out/MiniJava/$(basename "$file1"))
+    if ! diff -q out/Result/$(basename "$file1") out/MiniJava/$(basename "$file1")
+    then
+        echo "Match failed for $(basename "$file1")."
+    else
+        echo "Match success for $(basename "$file1")."
+    fi
 done
