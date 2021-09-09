@@ -3,6 +3,7 @@
 //
 
 package syntaxtree;
+import visitor.Visitor;
 
 /**
  * Grammar production:
