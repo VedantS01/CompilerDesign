@@ -186,6 +186,21 @@ public interface Visitor {
    public void visit(ArrayAssignmentStatement n);
 
    /**
+    * f0 -> IfthenElseStatement()
+    *       | IfthenStatement()
+    */
+   public void visit(IfStatement n);
+
+   /**
+    * f0 -> "if"
+    * f1 -> "("
+    * f2 -> Expression()
+    * f3 -> ")"
+    * f4 -> Statement()
+    */
+   public void visit(IfthenStatement n);
+
+   /**
     * f0 -> "if"
     * f1 -> "("
     * f2 -> Expression()
@@ -194,7 +209,7 @@ public interface Visitor {
     * f5 -> "else"
     * f6 -> Statement()
     */
-   public void visit(IfStatement n);
+   public void visit(IfthenElseStatement n);
 
    /**
     * f0 -> "while"
@@ -215,11 +230,14 @@ public interface Visitor {
    public void visit(PrintStatement n);
 
    /**
-    * f0 -> AndExpression()
+    * f0 -> OrExpression()
+    *       | AndExpression()
     *       | CompareExpression()
+    *       | neqExpression()
     *       | PlusExpression()
     *       | MinusExpression()
     *       | TimesExpression()
+    *       | DivExpression()
     *       | ArrayLookup()
     *       | ArrayLength()
     *       | MessageSend()
@@ -230,17 +248,31 @@ public interface Visitor {
 
    /**
     * f0 -> PrimaryExpression()
-    * f1 -> "&"
+    * f1 -> "&&"
     * f2 -> PrimaryExpression()
     */
    public void visit(AndExpression n);
 
    /**
     * f0 -> PrimaryExpression()
-    * f1 -> "<"
+    * f1 -> "||"
+    * f2 -> PrimaryExpression()
+    */
+   public void visit(OrExpression n);
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "<="
     * f2 -> PrimaryExpression()
     */
    public void visit(CompareExpression n);
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "!="
+    * f2 -> PrimaryExpression()
+    */
+   public void visit(neqExpression n);
 
    /**
     * f0 -> PrimaryExpression()
@@ -262,6 +294,13 @@ public interface Visitor {
     * f2 -> PrimaryExpression()
     */
    public void visit(TimesExpression n);
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "/"
+    * f2 -> PrimaryExpression()
+    */
+   public void visit(DivExpression n);
 
    /**
     * f0 -> PrimaryExpression()
@@ -376,6 +415,18 @@ public interface Visitor {
     * f2 -> ")"
     */
    public void visit(BracketExpression n);
+
+   /**
+    * f0 -> Identifier()
+    * f1 -> ( IdentifierRest() )*
+    */
+   public void visit(IdentifierList n);
+
+   /**
+    * f0 -> ","
+    * f1 -> Identifier()
+    */
+   public void visit(IdentifierRest n);
 
 }
 

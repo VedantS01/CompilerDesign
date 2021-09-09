@@ -6,14 +6,16 @@ package syntaxtree;
 
 /**
  * Grammar production:
- * f0 -> IfthenElseStatement()
- *       | IfthenStatement()
+ * f0 -> Identifier()
+ * f1 -> ( IdentifierRest() )*
  */
-public class IfStatement implements Node {
-   public NodeChoice f0;
+public class IdentifierList implements Node {
+   public Identifier f0;
+   public NodeListOptional f1;
 
-   public IfStatement(NodeChoice n0) {
+   public IdentifierList(Identifier n0, NodeListOptional n1) {
       f0 = n0;
+      f1 = n1;
    }
 
    public void accept(visitor.Visitor v) {

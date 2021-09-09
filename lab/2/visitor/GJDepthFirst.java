@@ -353,6 +353,33 @@ public class GJDepthFirst<R,A> implements GJVisitor<R,A> {
    }
 
    /**
+    * f0 -> IfthenElseStatement()
+    *       | IfthenStatement()
+    */
+   public R visit(IfStatement n, A argu) {
+      R _ret=null;
+      n.f0.accept(this, argu);
+      return _ret;
+   }
+
+   /**
+    * f0 -> "if"
+    * f1 -> "("
+    * f2 -> Expression()
+    * f3 -> ")"
+    * f4 -> Statement()
+    */
+   public R visit(IfthenStatement n, A argu) {
+      R _ret=null;
+      n.f0.accept(this, argu);
+      n.f1.accept(this, argu);
+      n.f2.accept(this, argu);
+      n.f3.accept(this, argu);
+      n.f4.accept(this, argu);
+      return _ret;
+   }
+
+   /**
     * f0 -> "if"
     * f1 -> "("
     * f2 -> Expression()
@@ -361,7 +388,7 @@ public class GJDepthFirst<R,A> implements GJVisitor<R,A> {
     * f5 -> "else"
     * f6 -> Statement()
     */
-   public R visit(IfStatement n, A argu) {
+   public R visit(IfthenElseStatement n, A argu) {
       R _ret=null;
       n.f0.accept(this, argu);
       n.f1.accept(this, argu);
@@ -408,11 +435,14 @@ public class GJDepthFirst<R,A> implements GJVisitor<R,A> {
    }
 
    /**
-    * f0 -> AndExpression()
+    * f0 -> OrExpression()
+    *       | AndExpression()
     *       | CompareExpression()
+    *       | neqExpression()
     *       | PlusExpression()
     *       | MinusExpression()
     *       | TimesExpression()
+    *       | DivExpression()
     *       | ArrayLookup()
     *       | ArrayLength()
     *       | MessageSend()
@@ -427,7 +457,7 @@ public class GJDepthFirst<R,A> implements GJVisitor<R,A> {
 
    /**
     * f0 -> PrimaryExpression()
-    * f1 -> "&"
+    * f1 -> "&&"
     * f2 -> PrimaryExpression()
     */
    public R visit(AndExpression n, A argu) {
@@ -440,10 +470,36 @@ public class GJDepthFirst<R,A> implements GJVisitor<R,A> {
 
    /**
     * f0 -> PrimaryExpression()
-    * f1 -> "<"
+    * f1 -> "||"
+    * f2 -> PrimaryExpression()
+    */
+   public R visit(OrExpression n, A argu) {
+      R _ret=null;
+      n.f0.accept(this, argu);
+      n.f1.accept(this, argu);
+      n.f2.accept(this, argu);
+      return _ret;
+   }
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "<="
     * f2 -> PrimaryExpression()
     */
    public R visit(CompareExpression n, A argu) {
+      R _ret=null;
+      n.f0.accept(this, argu);
+      n.f1.accept(this, argu);
+      n.f2.accept(this, argu);
+      return _ret;
+   }
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "!="
+    * f2 -> PrimaryExpression()
+    */
+   public R visit(neqExpression n, A argu) {
       R _ret=null;
       n.f0.accept(this, argu);
       n.f1.accept(this, argu);
@@ -483,6 +539,19 @@ public class GJDepthFirst<R,A> implements GJVisitor<R,A> {
     * f2 -> PrimaryExpression()
     */
    public R visit(TimesExpression n, A argu) {
+      R _ret=null;
+      n.f0.accept(this, argu);
+      n.f1.accept(this, argu);
+      n.f2.accept(this, argu);
+      return _ret;
+   }
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "/"
+    * f2 -> PrimaryExpression()
+    */
+   public R visit(DivExpression n, A argu) {
       R _ret=null;
       n.f0.accept(this, argu);
       n.f1.accept(this, argu);
@@ -691,6 +760,28 @@ public class GJDepthFirst<R,A> implements GJVisitor<R,A> {
       n.f0.accept(this, argu);
       n.f1.accept(this, argu);
       n.f2.accept(this, argu);
+      return _ret;
+   }
+
+   /**
+    * f0 -> Identifier()
+    * f1 -> ( IdentifierRest() )*
+    */
+   public R visit(IdentifierList n, A argu) {
+      R _ret=null;
+      n.f0.accept(this, argu);
+      n.f1.accept(this, argu);
+      return _ret;
+   }
+
+   /**
+    * f0 -> ","
+    * f1 -> Identifier()
+    */
+   public R visit(IdentifierRest n, A argu) {
+      R _ret=null;
+      n.f0.accept(this, argu);
+      n.f1.accept(this, argu);
       return _ret;
    }
 

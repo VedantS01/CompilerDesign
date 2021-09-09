@@ -297,6 +297,29 @@ public class DepthFirstVisitor implements Visitor {
    }
 
    /**
+    * f0 -> IfthenElseStatement()
+    *       | IfthenStatement()
+    */
+   public void visit(IfStatement n) {
+      n.f0.accept(this);
+   }
+
+   /**
+    * f0 -> "if"
+    * f1 -> "("
+    * f2 -> Expression()
+    * f3 -> ")"
+    * f4 -> Statement()
+    */
+   public void visit(IfthenStatement n) {
+      n.f0.accept(this);
+      n.f1.accept(this);
+      n.f2.accept(this);
+      n.f3.accept(this);
+      n.f4.accept(this);
+   }
+
+   /**
     * f0 -> "if"
     * f1 -> "("
     * f2 -> Expression()
@@ -305,7 +328,7 @@ public class DepthFirstVisitor implements Visitor {
     * f5 -> "else"
     * f6 -> Statement()
     */
-   public void visit(IfStatement n) {
+   public void visit(IfthenElseStatement n) {
       n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
@@ -346,11 +369,14 @@ public class DepthFirstVisitor implements Visitor {
    }
 
    /**
-    * f0 -> AndExpression()
+    * f0 -> OrExpression()
+    *       | AndExpression()
     *       | CompareExpression()
+    *       | neqExpression()
     *       | PlusExpression()
     *       | MinusExpression()
     *       | TimesExpression()
+    *       | DivExpression()
     *       | ArrayLookup()
     *       | ArrayLength()
     *       | MessageSend()
@@ -363,7 +389,7 @@ public class DepthFirstVisitor implements Visitor {
 
    /**
     * f0 -> PrimaryExpression()
-    * f1 -> "&"
+    * f1 -> "&&"
     * f2 -> PrimaryExpression()
     */
    public void visit(AndExpression n) {
@@ -374,10 +400,32 @@ public class DepthFirstVisitor implements Visitor {
 
    /**
     * f0 -> PrimaryExpression()
-    * f1 -> "<"
+    * f1 -> "||"
+    * f2 -> PrimaryExpression()
+    */
+   public void visit(OrExpression n) {
+      n.f0.accept(this);
+      n.f1.accept(this);
+      n.f2.accept(this);
+   }
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "<="
     * f2 -> PrimaryExpression()
     */
    public void visit(CompareExpression n) {
+      n.f0.accept(this);
+      n.f1.accept(this);
+      n.f2.accept(this);
+   }
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "!="
+    * f2 -> PrimaryExpression()
+    */
+   public void visit(neqExpression n) {
       n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
@@ -411,6 +459,17 @@ public class DepthFirstVisitor implements Visitor {
     * f2 -> PrimaryExpression()
     */
    public void visit(TimesExpression n) {
+      n.f0.accept(this);
+      n.f1.accept(this);
+      n.f2.accept(this);
+   }
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "/"
+    * f2 -> PrimaryExpression()
+    */
+   public void visit(DivExpression n) {
       n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
@@ -586,6 +645,24 @@ public class DepthFirstVisitor implements Visitor {
       n.f0.accept(this);
       n.f1.accept(this);
       n.f2.accept(this);
+   }
+
+   /**
+    * f0 -> Identifier()
+    * f1 -> ( IdentifierRest() )*
+    */
+   public void visit(IdentifierList n) {
+      n.f0.accept(this);
+      n.f1.accept(this);
+   }
+
+   /**
+    * f0 -> ","
+    * f1 -> Identifier()
+    */
+   public void visit(IdentifierRest n) {
+      n.f0.accept(this);
+      n.f1.accept(this);
    }
 
 }

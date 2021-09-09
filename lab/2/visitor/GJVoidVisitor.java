@@ -186,6 +186,21 @@ public interface GJVoidVisitor<A> {
    public void visit(ArrayAssignmentStatement n, A argu);
 
    /**
+    * f0 -> IfthenElseStatement()
+    *       | IfthenStatement()
+    */
+   public void visit(IfStatement n, A argu);
+
+   /**
+    * f0 -> "if"
+    * f1 -> "("
+    * f2 -> Expression()
+    * f3 -> ")"
+    * f4 -> Statement()
+    */
+   public void visit(IfthenStatement n, A argu);
+
+   /**
     * f0 -> "if"
     * f1 -> "("
     * f2 -> Expression()
@@ -194,7 +209,7 @@ public interface GJVoidVisitor<A> {
     * f5 -> "else"
     * f6 -> Statement()
     */
-   public void visit(IfStatement n, A argu);
+   public void visit(IfthenElseStatement n, A argu);
 
    /**
     * f0 -> "while"
@@ -215,11 +230,14 @@ public interface GJVoidVisitor<A> {
    public void visit(PrintStatement n, A argu);
 
    /**
-    * f0 -> AndExpression()
+    * f0 -> OrExpression()
+    *       | AndExpression()
     *       | CompareExpression()
+    *       | neqExpression()
     *       | PlusExpression()
     *       | MinusExpression()
     *       | TimesExpression()
+    *       | DivExpression()
     *       | ArrayLookup()
     *       | ArrayLength()
     *       | MessageSend()
@@ -230,17 +248,31 @@ public interface GJVoidVisitor<A> {
 
    /**
     * f0 -> PrimaryExpression()
-    * f1 -> "&"
+    * f1 -> "&&"
     * f2 -> PrimaryExpression()
     */
    public void visit(AndExpression n, A argu);
 
    /**
     * f0 -> PrimaryExpression()
-    * f1 -> "<"
+    * f1 -> "||"
+    * f2 -> PrimaryExpression()
+    */
+   public void visit(OrExpression n, A argu);
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "<="
     * f2 -> PrimaryExpression()
     */
    public void visit(CompareExpression n, A argu);
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "!="
+    * f2 -> PrimaryExpression()
+    */
+   public void visit(neqExpression n, A argu);
 
    /**
     * f0 -> PrimaryExpression()
@@ -262,6 +294,13 @@ public interface GJVoidVisitor<A> {
     * f2 -> PrimaryExpression()
     */
    public void visit(TimesExpression n, A argu);
+
+   /**
+    * f0 -> PrimaryExpression()
+    * f1 -> "/"
+    * f2 -> PrimaryExpression()
+    */
+   public void visit(DivExpression n, A argu);
 
    /**
     * f0 -> PrimaryExpression()
@@ -376,6 +415,18 @@ public interface GJVoidVisitor<A> {
     * f2 -> ")"
     */
    public void visit(BracketExpression n, A argu);
+
+   /**
+    * f0 -> Identifier()
+    * f1 -> ( IdentifierRest() )*
+    */
+   public void visit(IdentifierList n, A argu);
+
+   /**
+    * f0 -> ","
+    * f1 -> Identifier()
+    */
+   public void visit(IdentifierRest n, A argu);
 
 }
 

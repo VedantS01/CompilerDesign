@@ -6,14 +6,21 @@ package syntaxtree;
 
 /**
  * Grammar production:
- * f0 -> IfthenElseStatement()
- *       | IfthenStatement()
+ * f0 -> ","
+ * f1 -> Identifier()
  */
-public class IfStatement implements Node {
-   public NodeChoice f0;
+public class IdentifierRest implements Node {
+   public NodeToken f0;
+   public Identifier f1;
 
-   public IfStatement(NodeChoice n0) {
+   public IdentifierRest(NodeToken n0, Identifier n1) {
       f0 = n0;
+      f1 = n1;
+   }
+
+   public IdentifierRest(Identifier n0) {
+      f0 = new NodeToken(",");
+      f1 = n0;
    }
 
    public void accept(visitor.Visitor v) {
