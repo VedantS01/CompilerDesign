@@ -3,8 +3,13 @@ import java.util.*;
 
 import syntaxtree.*;
 
-public class MiniJavaTypeChecker extends GJNoArguDepthFirst<String> implements GJNoArguVisitor<String>{
+public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguVisitor<String>{
     // Following class data members essentially represent the symbol table as a whole
+   public SyntaxTable table;
+
+   public void printsyntaxtable() {
+      table.print();
+   }
     
     // divide the program in scopes, associate variables and methods to a scope
 
@@ -33,10 +38,100 @@ public class MiniJavaTypeChecker extends GJNoArguDepthFirst<String> implements G
 
     //for temporary information
     private Stack<ArrayList<String>> tempStack = new Stack<>();
+
+
+      public void extracttable() {
+         if(table == null) table = new SyntaxTable();
+         String gscope = "global::";
+         if(!scopes.containsKey(gscope)) return;
+         for (String c : scopes.get(gscope)) {
+            Class_ class_ = new Class_();
+            class_.name = c;
+            String cscope = "global::"+c+"::";
+            if(scopes.containsKey(cscope))
+            for (String vorm : scopes.get(cscope)) {
+               if(vorm.endsWith("()")) {
+                  //m
+                  Method_ m = new Method_();
+                  m.name = vorm;
+                  m.access = fnaccess.get(cscope+vorm);
+                  Type_ ret = new Type_();
+                  ret.name = typeof.get(cscope+vorm);
+                  if(lookupclass(ret.name) != null) {
+                     ret.isclass = true;
+                  } else {
+                     ret.isclass = false;
+                  }
+                  m.rettype = ret;
+                  String mscope = cscope+vorm+"::";
+                  if(scopes.containsKey(mscope))
+                  for (String formal : scopes.get(mscope)) {
+                     Variable_ v = new Variable_();
+                     v.name = formal;
+                     Type_ t = new Type_();
+                     t.name = typeof.get(mscope+v.name);
+                     if(lookupclass(t.name) != null) {
+                        t.isclass = true;
+                     } else {
+                        t.isclass = false;
+                     }
+                     v.type = t;
+                     m.addFormal(v);
+                  }
+                  mscope = mscope+"body::";
+                  if(scopes.containsKey(mscope))
+                  for (String local : scopes.get(mscope)) {
+                     Variable_ v = new Variable_();
+                     v.name = local;
+                     Type_ t = new Type_();
+                     t.name = typeof.get(mscope+v.name);
+                     if(lookupclass(t.name) != null) {
+                        t.isclass = true;
+                     } else {
+                        t.isclass = false;
+                     }
+                     v.type = t;
+                     m.addLocal(v);
+                  }
+                  class_.addMethod(m);
+               } else {
+                  //v
+                  Variable_ v = new Variable_();
+                  v.name = vorm;
+                  Type_ t = new Type_();
+                  t.name = typeof.get(cscope+v.name);
+                  if(lookupclass(t.name) != null) {
+                     t.isclass = true;
+                  } else {
+                     t.isclass = false;
+                  }
+                  v.type = t;
+                  class_.addVariable(v);
+               }
+            }
+            table.addClass(class_);
+         }
+         for (Class_ c : table.classes) {
+            String name = c.name;
+            String parent = inheritance.get(name);
+            if(parent == null) {
+               c.father = null;
+            } else {
+               for (Class_ par : table.classes) {
+                  if(par.name == parent) {
+                     c.father = par;
+                     break;
+                  }
+               }
+            }
+         }
+      }
+
     /**
      * Public empty constructor
      */
-    public MiniJavaTypeChecker() {
+    public STGenerator() {
+        table = new SyntaxTable();
         currentScopeStack = new Stack<String>();
         scopes = new HashMap<String,HashSet<String>>();
         typeof = new HashMap<String, String>();
@@ -458,6 +553,9 @@ public class MiniJavaTypeChecker extends GJNoArguDepthFirst<String> implements G
         n.f1.accept(this);
         n.f2.accept(this);
         endScope();
+        if(!typecheck) {
+           extracttable();
+        }
         return _ret;
      }
   
