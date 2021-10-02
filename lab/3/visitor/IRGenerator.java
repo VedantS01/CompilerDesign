@@ -10,6 +10,8 @@ import java.util.*;
 public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> implements GJVisitor<AttrSynthesized, AttrInherited>{
     
    public SyntaxTable table;
+   public Integer tempcount = 0;
+   public Integer labelcount = 0; 
    public IRGenerator() {
       table = new SyntaxTable();
    }
@@ -28,11 +30,11 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
     * f2 -> <EOF>
     */
    public AttrSynthesized visit(Goal n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
-    n.f1.accept(this, argu);
-    n.f2.accept(this, argu);
-    return _ret;
+      AttrSynthesized _ret=null;
+      n.f0.accept(this, argu);
+      n.f1.accept(this, argu);
+      n.f2.accept(this, argu);
+      return _ret;
  }
 
  /**
@@ -134,10 +136,12 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> ";"
   */
  public AttrSynthesized visit(VarDeclaration n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret = new AttrSynthesized();
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);
+
+   //  _ret.code = "MOVE TEMP 0 CODE";
     return _ret;
  }
 

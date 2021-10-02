@@ -1,5 +1,6 @@
 package visitor;
 
 public class AttrSynthesized {
-    String code;
+    public String code;
+    public String addr;
 }
