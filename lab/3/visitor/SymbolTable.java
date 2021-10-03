@@ -2,10 +2,13 @@ package visitor;
 
 import java.util.ArrayList;
 
-public class SyntaxTable {
+public class SymbolTable {
     public ArrayList<Class_> classes;
-    public SyntaxTable() {
+    public ArrayList<Method_> allmethods;
+    public ArrayList<Variable_> allvariables;
+    public SymbolTable() {
         classes = new ArrayList<>();
+        allmethods = new ArrayList<>();
     }
     public void print() {
         System.out.println("Classes");
@@ -16,8 +19,10 @@ public class SyntaxTable {
     } 
     public void addClass(Class_ c) {
         if(classes == null) classes = new ArrayList<>();
+        c.ownertable = this;
         classes.add(c);
     }
+
 }
 
 
@@ -25,17 +30,20 @@ class Class_ {
     public String name;
     public ArrayList<Variable_> members;
     public ArrayList<Method_> methods;
-    public Class_ father;
+    public Class_ parent;
+    public SymbolTable ownertable;
+    public Integer size;
+    public Boolean isstored;
     public Class_() {
         members = new ArrayList<>();
         methods = new ArrayList<>();
-        father = null;
+        parent = null;
     }
     public Class_(String name) {
         members = new ArrayList<>();
         methods = new ArrayList<>();
         this.name = name;
-        father = null;
+        parent = null;
     }
     public void print() {
         System.out.println(name);
@@ -50,11 +58,16 @@ class Class_ {
     }
     public void addMethod(Method_ m) {
         if(methods == null) methods = new ArrayList<>();
+        m.owner = this;
         methods.add(m);
+        this.ownertable.allmethods.add(m);
     }
     public void addVariable(Variable_ v) {
         if(members == null) members = new ArrayList<>();
+        v.ownerclass = this;
+        v.ownermethod = null;
         members.add(v);
+        this.ownertable.allvariables.add(v);
     }
 }
 
@@ -70,8 +83,13 @@ class Type_ {
 class Variable_ {
     public String name;
     public Type_ type;
-    public Integer size;
-    public Integer tcount;   //? what was this again ?
+    public Integer size = 0;
+    public String lexeme = null;
+    public Boolean used = false;
+    public Class_ ownerclass = null;
+    public Method_ ownermethod = null;
+    public Boolean islocal;
+    public Integer offset;
     public void print() {
         System.out.println("----"+name+" : "+type.name);
     }
@@ -82,8 +100,9 @@ class Method_ {
     public Type_ rettype;
     public String access;
     public ArrayList<Variable_> formals;
-    // ArrayList<Type_> formaltypes;
     public ArrayList<Variable_> locals;
+    public Class_ owner;
+    public Integer offset;
     public Method_() {
         formals = new ArrayList<>();
         locals = new ArrayList<>();
@@ -114,16 +133,28 @@ class Method_ {
         Variable_ v = new Variable_();
         v.name = nam;
         v.type = t;
+        v.islocal = false;
+        v.ownermethod = this;
+        v.ownerclass = null;
         formals.add(v);
+        this.owner.ownertable.allvariables.add(v);
     }
 
     public void addFormal(Variable_ v) {
         if(formals == null) formals = new ArrayList<>();
+        v.islocal = false;
+        v.ownermethod = this;
+        v.ownerclass = null;
         formals.add(v);
+        this.owner.ownertable.allvariables.add(v);
     }
 
     public void addLocal(Variable_ v) {
         if(locals == null) locals = new ArrayList<>();
+        v.islocal = true;
+        v.ownermethod = this;
+        v.ownerclass = null;
         locals.add(v);
+        this.owner.ownertable.allvariables.add(v);
     }
 }

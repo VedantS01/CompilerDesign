@@ -5,7 +5,7 @@ import syntaxtree.*;
 
 public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguVisitor<String>{
     // Following class data members essentially represent the symbol table as a whole
-   public SyntaxTable table;
+   public SymbolTable table;
 
    public void printsyntaxtable() {
       table.print();
@@ -41,7 +41,7 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
 
 
       public void extracttable() {
-         if(table == null) table = new SyntaxTable();
+         if(table == null) table = new SymbolTable();
          String gscope = "global::";
          if(!scopes.containsKey(gscope)) return;
          for (String c : scopes.get(gscope)) {
@@ -115,11 +115,11 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
             String name = c.name;
             String parent = inheritance.get(name);
             if(parent == null) {
-               c.father = null;
+               c.parent = null;
             } else {
                for (Class_ par : table.classes) {
                   if(par.name == parent) {
-                     c.father = par;
+                     c.parent = par;
                      break;
                   }
                }
@@ -131,7 +131,7 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
      * Public empty constructor
      */
     public STGenerator() {
-        table = new SyntaxTable();
+        table = new SymbolTable();
         currentScopeStack = new Stack<String>();
         scopes = new HashMap<String,HashSet<String>>();
         typeof = new HashMap<String, String>();

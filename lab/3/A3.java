@@ -10,7 +10,7 @@ public class A3 {
 
          root.accept(stGenerator);
 
-         SyntaxTable table = stGenerator.table;
+         SymbolTable table = stGenerator.table;
 
          //Table is ready.
          table.print();

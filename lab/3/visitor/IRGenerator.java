@@ -9,15 +9,115 @@ import java.util.*;
 
 public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> implements GJVisitor<AttrSynthesized, AttrInherited>{
     
-   public SyntaxTable table;
+   public SymbolTable table;
    public Integer tempcount = 0;
    public Integer labelcount = 0; 
+   Stack<String> scopestack = new Stack<>();
    public IRGenerator() {
-      table = new SyntaxTable();
+      table = new SymbolTable();
    }
 
    public void printsyntaxtable() {
       table.print();
+   }
+
+   public void error() {
+      System.err.println("// Error Detected");
+      System.exit(0);
+   }
+
+   public String genTemp() {
+      String r = "TEMP "+tempcount.toString();
+      tempcount += 1;
+      return r;
+   }
+
+   public String lookupvarref(String name, String scope) {
+      Class_ pc = null;
+      String cname = scopestack.get(1);
+      for (Class_ c : table.classes) {
+         if(c.name.equals(cname)) {
+            pc = c;
+            break;
+         }
+      }
+      if(pc == null) error();
+      String mname = scopestack.get(2);
+      Method_ pm = null;
+      for (Method_ m : pc.methods) {
+         if(m.name == mname) {
+            pm = m;
+            break;
+         }
+      }
+      if(pm == null) error();
+
+      //check locals
+      for (Variable_ v : pm.locals) {
+         if(v.name == name) {
+            if(!v.used) {
+               v.lexeme = genTemp();
+               v.used = true;
+            }
+            return v.lexeme;
+         }
+      }
+
+      //check formals
+      for (Variable_ v : pm.formals) {
+         if(v.name == name) {
+            if(!v.used) {
+               v.lexeme = genTemp();
+               v.used = true;
+            }
+            return v.lexeme;
+         }
+      }
+
+      //check class members
+      for (Variable_ v : pc.members) {
+         if(v.name == name) {
+            if(!v.used) {
+               v.lexeme = genTemp();
+               v.used = true;
+            }
+            return v.lexeme;
+         }
+      }
+
+      //check inherited membership
+      Class_ c1 = pc.parent;
+      while(c1 != null) {
+         for (Variable_ v : c1.members) {
+            if(v.name == name) {
+               if(!v.used) {
+                  v.lexeme = genTemp();
+                  v.used = true;
+               }
+               return v.lexeme;
+            }
+         }
+         c1 = c1.parent;
+      }
+      
+      error();
+      return null;
+   }
+
+   public void beginscope(String s) {
+      scopestack.push(s);
+   }
+
+   public void endscope() {
+      scopestack.pop();
+   }
+
+   public String getscope() {
+      String str = "";
+      for(String s : scopestack) {
+         str += s + "::";
+      }
+      return str;
    }
 
     //
@@ -660,44 +760,52 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   *       | BracketExpression()
   */
  public AttrSynthesized visit(PrimaryExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
-    return _ret;
+    AttrSynthesized PE1 = null;
+    PE1 = n.f0.accept(this, argu);
+    
+    AttrSynthesized PE = new AttrSynthesized();
+    PE.code = PE1.code;
+    PE.addr = PE1.addr;
+    return PE;
  }
 
  /**
   * f0 -> <INTEGER_LITERAL>
   */
  public AttrSynthesized visit(IntegerLiteral n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
-    return _ret;
+   AttrSynthesized _ret = new AttrSynthesized();
+   n.f0.accept(this, argu);
+   _ret.tokenImage = n.f0.tokenImage;
+   return _ret;
  }
 
  /**
   * f0 -> "true"
   */
  public AttrSynthesized visit(TrueLiteral n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
-    return _ret;
+   AttrSynthesized _ret = new AttrSynthesized();
+   n.f0.accept(this, argu);
+   _ret.tokenImage = n.f0.tokenImage;
+   return _ret;
  }
 
  /**
   * f0 -> "false"
   */
  public AttrSynthesized visit(FalseLiteral n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
-    return _ret;
+   AttrSynthesized _ret = new AttrSynthesized();
+   n.f0.accept(this, argu);
+   _ret.tokenImage = n.f0.tokenImage;
+   return _ret;
  }
 
  /**
   * f0 -> <IDENTIFIER>
   */
  public AttrSynthesized visit(Identifier n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret = new AttrSynthesized();
     n.f0.accept(this, argu);
+    _ret.tokenImage = n.f0.tokenImage;
     return _ret;
  }
 
