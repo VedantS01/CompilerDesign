@@ -1,21 +1,25 @@
 package visitor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SymbolTable {
+    public HashMap<String, String> typeof = new HashMap<>();
+
     public ArrayList<Class_> classes;
     public ArrayList<Method_> allmethods;
     public ArrayList<Variable_> allvariables;
     public SymbolTable() {
         classes = new ArrayList<>();
         allmethods = new ArrayList<>();
+        allvariables = new ArrayList<>();
     }
     public void print() {
-        System.out.println("Classes");
+        System.out.println("+++++++++++++Classes+++++++++++++");
         for (Class_ c : classes) {
             c.print();
         }
-        System.out.println("++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++");
     } 
     public void addClass(Class_ c) {
         if(classes == null) classes = new ArrayList<>();

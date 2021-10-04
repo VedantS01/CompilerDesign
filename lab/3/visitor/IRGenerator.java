@@ -5,7 +5,18 @@
 
 package visitor;
 import syntaxtree.*;
+
+import java.lang.reflect.Array;
 import java.util.*;
+
+class FuntionTable {
+   //?
+   // public ArrayList<Method_> allmethods = new ArrayList<>();
+   public HashMap<Method_, Integer> fnmaps = new HashMap<>();
+   public HashMap<Method_, HashMap<Variable_, Integer>> fnlocals = new HashMap<>();
+   public HashMap<Method_, HashMap<Variable_, Integer>> fnformals = new HashMap<>();
+
+}
 
 public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> implements GJVisitor<AttrSynthesized, AttrInherited>{
     
@@ -13,26 +24,71 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
    public Integer tempcount = 0;
    public Integer labelcount = 0; 
    Stack<String> scopestack = new Stack<>();
+   Stack<ArrayList<String>> gpstack = new Stack<>();
+
+   HashSet<Integer> tempbin = new HashSet<>();
+   HashSet<Integer> labelbin = new HashSet<>();
+
+   // ObjectAllocationManager objmanager;
+   public HashMap<String, Class_> objMap = new HashMap<>();
+
+   HashMap<Variable_, String> localvarmap = new HashMap<>();
+
+   // Storage Maps
+   public HashMap<Class_, HashMap<Object, Integer>> classmaps = new HashMap<>();   
+
    public IRGenerator() {
       table = new SymbolTable();
    }
 
    public void printsyntaxtable() {
       table.print();
+      System.out.println("++++++++++++Classmaps++++++++++++");
+      for (Class_ c : classmaps.keySet()) {
+         System.out.println(c.name + " of size " + c.size);
+         HashMap<Object, Integer> m = classmaps.get(c);
+         for (Object o : m.keySet()) {
+            if(o.getClass() == Variable_.class) {
+               System.out.println("--var : " + ((Variable_)o).name + " at offset " + m.get(o));
+            } else {
+               System.out.println("--fntable at offset " + m.get(o));
+               FuntionTable fnt = (FuntionTable)o;
+               for (Method_ f : fnt.fnmaps.keySet()) {
+                  System.out.println("----fn : " + f.name + " at offset " + fnt.fnmaps.get(f));
+               }
+            }
+         }
+      }
+      System.out.println("+++++++++++++++++++++++++++++++++");
    }
 
    public void error() {
-      System.err.println("// Error Detected");
+      System.err.println("Error Detected");
       System.exit(0);
    }
 
    public String genTemp() {
+      while(tempbin.contains(tempcount)) tempcount++;
       String r = "TEMP "+tempcount.toString();
-      tempcount += 1;
+      tempbin.add(tempcount++);
       return r;
    }
 
-   public String lookupvarref(String name, String scope) {
+   public String genLabel() {
+      while(labelbin.contains(labelcount)) labelcount++;
+      String r = "L"+labelcount.toString();
+      labelbin.add(labelcount++);
+      return r;
+   }
+
+   /**
+    * Finds a variable and returns it wrapper
+    * @param name
+    * @param scope
+    * @return Variable_ wrapper , null if not found, which is rare because in general you won't get null in a correctly typed program.
+    * NOTE: STRICTLY USE ON A CONFIRMED VARIABLE ONLY
+    */
+   public Variable_ lookupvarref(String name) {
       Class_ pc = null;
       String cname = scopestack.get(1);
       for (Class_ c : table.classes) {
@@ -45,7 +101,7 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
       String mname = scopestack.get(2);
       Method_ pm = null;
       for (Method_ m : pc.methods) {
-         if(m.name == mname) {
+         if(m.name.equals(mname)) {
             pm = m;
             break;
          }
@@ -55,33 +111,33 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
       //check locals
       for (Variable_ v : pm.locals) {
          if(v.name == name) {
-            if(!v.used) {
-               v.lexeme = genTemp();
-               v.used = true;
-            }
-            return v.lexeme;
+            // if(!v.used) {
+            //    v.lexeme = genTemp();
+            //    v.used = true;
+            // }
+            return v;
          }
       }
 
       //check formals
       for (Variable_ v : pm.formals) {
          if(v.name == name) {
-            if(!v.used) {
-               v.lexeme = genTemp();
-               v.used = true;
-            }
-            return v.lexeme;
+            // if(!v.used) {
+            //    v.lexeme = genTemp();
+            //    v.used = true;
+            // }
+            return v;
          }
       }
 
       //check class members
       for (Variable_ v : pc.members) {
          if(v.name == name) {
-            if(!v.used) {
-               v.lexeme = genTemp();
-               v.used = true;
-            }
-            return v.lexeme;
+            // if(!v.used) {
+            //    v.lexeme = genTemp();
+            //    v.used = true;
+            // }
+            return v;
          }
       }
 
@@ -90,17 +146,91 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
       while(c1 != null) {
          for (Variable_ v : c1.members) {
             if(v.name == name) {
-               if(!v.used) {
-                  v.lexeme = genTemp();
-                  v.used = true;
-               }
-               return v.lexeme;
+               // if(!v.used) {
+               //    v.lexeme = genTemp();
+               //    v.used = true;
+               // }
+               return v;
             }
          }
          c1 = c1.parent;
       }
+      // not a var ref
+      // error?
+      // wait, it may be a method, or it may be a class name too
+      // in general, lets push out null
+      return null;
+   }
+
+   public Method_ mdecwhich(String mname) {
+      Class_ pc = null;
+      String cname = scopestack.get(1);
+      for (Class_ c : table.classes) {
+         if(c.name.equals(cname)) {
+            pc = c;
+            break;
+         }
+      }
+      if(pc == null) error();
+      Method_ pm = null;
+      for (Method_ m : pc.methods) {
+         if(m.name.equals(mname)) {
+            pm = m;
+            break;
+         }
+      }
+      // if(pm == null) error();
+      return pm;
+   }
+
+
+   /**
+    * Finds MessendSend method call and returns the Method_ wrrapper
+    * @param fname
+    * @return Method_ wrapper, or null
+    * MUST USE ONLY FOR MessendSend lookups
+    */
+   public Method_ lookupmethodref(String fname, String objtemp){
+      String cname = scopestack.get(1);
+      Class_ objclass = objMap.get(objtemp);
+      if(objclass == null) {
+         System.err.println("Caution! objMap entry is null");
+         error();
+      }
+      Class_ c = objclass;
+      // Method_ m = null;
+      // look for privates
+      // System.out.println("IRGenerator.lookupmethodref()");
+      // for (Class_ c1 : table.classes) {
+      //    if(c1.name == cname) {
+      //       boolean ok = false;
+      //       Class_ ctemp = c;
+      //       while(ctemp != null) {
+      //          if(ctemp == c1) {
+      //             ok = true;
+      //             break;
+      //          }
+      //          ctemp = ctemp.parent;
+      //       }
+      //       if(!ok) continue; // break?
+      //       for (Method_ im : c1.methods) {
+      //          if(im.access == "private" && im.name == fname) {
+      //             return im;
+      //          }
+      //       }
+      //    }
+      // }
+      // others
+      while(c != null) {
+         for (Method_ im : c.methods) {
+            // System.out.println("IRGenerator.lookupmethodref() : " + im.name);
+            if(im.access != "private" && im.name.equals(fname)) {
+               return im;
+            }
+         }
+         c = c.parent;
+      }
       
-      error();
       return null;
    }
 
@@ -120,6 +250,60 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
       return str;
    }
 
+   public void initstoragemaps() {
+      if(classmaps == null) classmaps = new HashMap<>();
+      // Integer totalclasses = table.classes.size();
+      // Integer iter = 0;
+      for (Class_ c : table.classes) {
+         if(classmaps.containsKey(c)) continue;
+         initsmhelper(c);
+      }
+   }
+
+   public void initsmhelper(Class_ c) {
+      if(c.parent != null && !classmaps.containsKey(c.parent)) {
+         initsmhelper(c.parent);
+      }
+      HashMap<Object, Integer> classmap = new HashMap<>();
+      Integer startoffset = 0;
+      if(c.parent != null) {
+         classmap.putAll(classmaps.get(c.parent));
+         startoffset = c.parent.size;
+      }
+      FuntionTable fTable = new FuntionTable();
+      Integer ftableoffset = 0;
+      for (Method_ mc : c.methods) {
+         fTable.fnmaps.put(mc, ftableoffset);
+         ftableoffset += 4;
+         Integer flocaloffset = 0;
+         HashMap<Variable_, Integer> hm1 = new HashMap<>();
+         fTable.fnlocals.put(mc, hm1);
+         for (Variable_ v: mc.locals) {
+            hm1.put(v, flocaloffset);
+            flocaloffset += 4;
+         }
+         Integer fformaloffset = 0;
+         HashMap<Variable_, Integer> hm2 = new HashMap<>();
+         fTable.fnformals.put(mc, hm2);
+         for (Variable_ v: mc.formals) {
+            hm2.put(v, fformaloffset);
+            fformaloffset += 4;
+         }
+      }
+      classmap.put(fTable, startoffset);
+      startoffset += 4;
+      for (Variable_ vc : c.members) {
+         classmap.put(vc, startoffset);
+         startoffset += 4;
+      }
+      c.size = startoffset;
+      classmaps.put(c, classmap);
+   }
+
+
+   public void output(String s) {
+      System.out.println(s);
+   }
     //
    // User-generated visitor methods below
    //
@@ -130,9 +314,14 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
     * f2 -> <EOF>
     */
    public AttrSynthesized visit(Goal n, AttrInherited argu) {
-      AttrSynthesized _ret=null;
+      initstoragemaps();
+      beginscope("global");
+      argu = new AttrInherited();
+      argu.from = "Goal";
+      AttrSynthesized _ret = null;
       n.f0.accept(this, argu);
       n.f1.accept(this, argu);
+      endscope();
       n.f2.accept(this, argu);
       return _ret;
  }
@@ -157,24 +346,33 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f16 -> "}"
   */
  public AttrSynthesized visit(MainClass n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret = new AttrSynthesized();
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
+    beginscope(n.f1.f0.tokenImage);
     n.f2.accept(this, argu);
     n.f3.accept(this, argu);
     n.f4.accept(this, argu);
     n.f5.accept(this, argu);
     n.f6.accept(this, argu);
+    beginscope("main()");
+    output("MAIN");
     n.f7.accept(this, argu);
     n.f8.accept(this, argu);
     n.f9.accept(this, argu);
     n.f10.accept(this, argu);
     n.f11.accept(this, argu);
+    tempbin.add(1);
     n.f12.accept(this, argu);
+    beginscope("body");
     n.f13.accept(this, argu);
-    n.f14.accept(this, argu);
+    _ret = n.f14.accept(this, argu);
     n.f15.accept(this, argu);
     n.f16.accept(this, argu);
+    output("END");
+    endscope();
+    endscope();
+    endscope();
     return _ret;
  }
 
@@ -200,10 +398,12 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
     AttrSynthesized _ret=null;
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
+    beginscope(n.f1.f0.tokenImage);
     n.f2.accept(this, argu);
     n.f3.accept(this, argu);
     n.f4.accept(this, argu);
     n.f5.accept(this, argu);
+    endscope();
     return _ret;
  }
 
@@ -223,10 +423,12 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);
     n.f3.accept(this, argu);
+    beginscope(n.f1.f0.tokenImage);
     n.f4.accept(this, argu);
     n.f5.accept(this, argu);
     n.f6.accept(this, argu);
     n.f7.accept(this, argu);
+    endscope();
     return _ret;
  }
 
@@ -261,20 +463,27 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f12 -> "}"
   */
  public AttrSynthesized visit(MethodDeclaration n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
-    n.f1.accept(this, argu);
-    n.f2.accept(this, argu);
-    n.f3.accept(this, argu);
-    n.f4.accept(this, argu);
-    n.f5.accept(this, argu);
-    n.f6.accept(this, argu);
-    n.f7.accept(this, argu);
-    n.f8.accept(this, argu);
-    n.f9.accept(this, argu);
-    n.f10.accept(this, argu);
-    n.f11.accept(this, argu);
-    n.f12.accept(this, argu);
+    AttrSynthesized _ret =  new AttrSynthesized();
+    AttrInherited fromm = new AttrInherited();
+    fromm.from = "Method";
+    n.f0.accept(this, fromm);
+    n.f1.accept(this, fromm);
+    n.f2.accept(this, fromm);
+    beginscope(n.f2.f0.tokenImage+"()");
+    // Method_ m = lookupmethodref(String m, String scope)
+    n.f3.accept(this, fromm);
+    n.f4.accept(this, fromm);
+    n.f5.accept(this, fromm);
+    beginscope("body");
+    n.f6.accept(this, fromm);
+    n.f7.accept(this, fromm);
+    n.f8.accept(this, fromm);
+    n.f9.accept(this, fromm);
+    n.f10.accept(this, fromm);
+    n.f11.accept(this, fromm);
+    n.f12.accept(this, fromm);
+    endscope();
+    endscope();
     return _ret;
  }
 
@@ -319,7 +528,13 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   */
  public AttrSynthesized visit(Type n, AttrInherited argu) {
     AttrSynthesized _ret=null;
+    if(argu != null && argu.from == "PE") {
+       argu.typelookup = true;
+    }
     n.f0.accept(this, argu);
+    if(argu != null && argu.from == "PE") {
+      argu.typelookup = false;
+   }
     return _ret;
  }
 
@@ -528,10 +743,18 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f4 -> ";"
   */
  public AttrSynthesized visit(PrintStatement n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret = null;
+    argu.from = "Normal";
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
-    n.f2.accept(this, argu);
+    _ret = n.f2.accept(this, argu);
+    if(_ret == null) {
+       System.err.println("Caution! _ret null in PrintStatement");
+    } else {
+       String t = genTemp();
+       output("MOVE " + t + " " + _ret.addr);
+       output("PRINT " + t);
+    }
     n.f3.accept(this, argu);
     n.f4.accept(this, argu);
     return _ret;
@@ -554,7 +777,12 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   */
  public AttrSynthesized visit(Expression n, AttrInherited argu) {
     AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
+    _ret = n.f0.accept(this, argu);
+    if(_ret == null) {
+      System.err.println("Caution! _ret null in Expression");
+    } else {
+      // ?
+    }
     return _ret;
  }
 
@@ -564,7 +792,22 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> PrimaryExpression()
   */
  public AttrSynthesized visit(AndExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret = new AttrSynthesized();
+    if(argu.from == "Normal") {
+      AttrSynthesized pe1, pe2;
+      pe1 = n.f0.accept(this, argu);
+      n.f1.accept(this, argu);
+      pe2 = n.f2.accept(this, argu);
+      _ret = pe1;
+      if(pe1.tokenImage == "true" && pe2.tokenImage == "true") {
+         _ret.tokenImage = "true";
+         _ret.addr = "0";
+      } else {
+         _ret.tokenImage = "false";
+         _ret.addr = "1";
+      }
+      return _ret;
+    }
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);
@@ -577,7 +820,22 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> PrimaryExpression()
   */
  public AttrSynthesized visit(OrExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+   AttrSynthesized _ret = new AttrSynthesized();
+   if(argu.from == "Normal") {
+     AttrSynthesized pe1, pe2;
+     pe1 = n.f0.accept(this, argu);
+     n.f1.accept(this, argu);
+     pe2 = n.f2.accept(this, argu);
+     _ret = pe1;
+     if(pe1.tokenImage == "true" || pe2.tokenImage == "true") {
+        _ret.tokenImage = "true";
+        _ret.addr = "1";
+     } else {
+        _ret.tokenImage = "false";
+        _ret.addr = "0";
+     }
+     return _ret;
+   }
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);
@@ -590,7 +848,17 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> PrimaryExpression()
   */
  public AttrSynthesized visit(CompareExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+   AttrSynthesized _ret = new AttrSynthesized();
+   if(argu.from == "Normal") {
+     AttrSynthesized pe1, pe2;
+     pe1 = n.f0.accept(this, argu);
+     n.f1.accept(this, argu);
+     pe2 = n.f2.accept(this, argu);
+     String t = genTemp();
+     output("MOVE " + t + " LT " + pe1.addr + " " + pe2.addr);
+     _ret.addr = t;
+     return _ret;
+   }
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);
@@ -603,7 +871,17 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> PrimaryExpression()
   */
  public AttrSynthesized visit(neqExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+   AttrSynthesized _ret = new AttrSynthesized();
+   if(argu.from == "Normal") {
+     AttrSynthesized pe1, pe2;
+     pe1 = n.f0.accept(this, argu);
+     n.f1.accept(this, argu);
+     pe2 = n.f2.accept(this, argu);
+     String t = genTemp();
+     output("MOVE " + t + " NE " + pe1.addr + " " + pe2.addr);
+     _ret.addr = t;
+     return _ret;
+   }
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);
@@ -616,10 +894,25 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> PrimaryExpression()
   */
  public AttrSynthesized visit(PlusExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
+    AttrSynthesized _ret = new AttrSynthesized();
+    AttrSynthesized pe1;
+    AttrSynthesized pe2;
+    pe1 = n.f0.accept(this, argu);
     n.f1.accept(this, argu);
-    n.f2.accept(this, argu);
+    pe2 = n.f2.accept(this, argu);
+    if(pe1.isconstant && pe2.isconstant) {
+       //must be integer constants
+       _ret.isconstant = true;
+       _ret.type = "int";
+       _ret.istypedefault = true;
+       Integer i = (Integer.parseInt(pe1.tokenImage) + Integer.parseInt(pe2.tokenImage));
+       _ret.tokenImage = ""+i;
+       _ret.addr = _ret.tokenImage;
+       return _ret;
+    }
+    String t = genTemp();
+    output("MOVE " + t + " PLUS " + pe1.addr + pe2.addr);
+    _ret.addr = t;
     return _ret;
  }
 
@@ -629,11 +922,26 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> PrimaryExpression()
   */
  public AttrSynthesized visit(MinusExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
-    n.f1.accept(this, argu);
-    n.f2.accept(this, argu);
-    return _ret;
+   AttrSynthesized _ret = new AttrSynthesized();
+   AttrSynthesized pe1;
+   AttrSynthesized pe2;
+   pe1 = n.f0.accept(this, argu);
+   n.f1.accept(this, argu);
+   pe2 = n.f2.accept(this, argu);
+   if(pe1.isconstant && pe2.isconstant) {
+      //must be integer constants
+      _ret.isconstant = true;
+      _ret.type = "int";
+      _ret.istypedefault = true;
+      Integer i = (Integer.parseInt(pe1.tokenImage) - Integer.parseInt(pe2.tokenImage));
+      _ret.tokenImage = ""+i;
+      _ret.addr = _ret.tokenImage;
+      return _ret;
+   }
+   String t = genTemp();
+   output("MOVE " + t + " MINUS " + pe1.addr + pe2.addr);
+   _ret.addr = t;
+   return _ret;
  }
 
  /**
@@ -642,11 +950,26 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> PrimaryExpression()
   */
  public AttrSynthesized visit(TimesExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
-    n.f1.accept(this, argu);
-    n.f2.accept(this, argu);
-    return _ret;
+   AttrSynthesized _ret = new AttrSynthesized();
+   AttrSynthesized pe1;
+   AttrSynthesized pe2;
+   pe1 = n.f0.accept(this, argu);
+   n.f1.accept(this, argu);
+   pe2 = n.f2.accept(this, argu);
+   if(pe1.isconstant && pe2.isconstant) {
+      //must be integer constants
+      _ret.isconstant = true;
+      _ret.type = "int";
+      _ret.istypedefault = true;
+      Integer i = (Integer.parseInt(pe1.tokenImage) * Integer.parseInt(pe2.tokenImage));
+      _ret.tokenImage = ""+i;
+      _ret.addr = _ret.tokenImage;
+      return _ret;
+   }
+   String t = genTemp();
+   output("MOVE " + t + " TIMES " + pe1.addr + pe2.addr);
+   _ret.addr = t;
+   return _ret;
  }
 
  /**
@@ -655,11 +978,26 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> PrimaryExpression()
   */
  public AttrSynthesized visit(DivExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
-    n.f1.accept(this, argu);
-    n.f2.accept(this, argu);
-    return _ret;
+   AttrSynthesized _ret = new AttrSynthesized();
+   AttrSynthesized pe1;
+   AttrSynthesized pe2;
+   pe1 = n.f0.accept(this, argu);
+   n.f1.accept(this, argu);
+   pe2 = n.f2.accept(this, argu);
+   if(pe1.isconstant && pe2.isconstant) {
+      //must be integer constants
+      _ret.isconstant = true;
+      _ret.type = "int";
+      _ret.istypedefault = true;
+      Integer i = (Integer.parseInt(pe1.tokenImage) / Integer.parseInt(pe2.tokenImage));
+      _ret.tokenImage = ""+i;
+      _ret.addr = _ret.tokenImage;
+      return _ret;
+   }
+   String t = genTemp();
+   output("MOVE " + t + " DIV " + pe1.addr + pe2.addr);
+   _ret.addr = t;
+   return _ret;
  }
 
  /**
@@ -669,11 +1007,16 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f3 -> "]"
   */
  public AttrSynthesized visit(ArrayLookup n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
+    AttrSynthesized _ret = new AttrSynthesized();
+    AttrSynthesized pe1 = n.f0.accept(this, argu);
     n.f1.accept(this, argu);
-    n.f2.accept(this, argu);
+    AttrSynthesized pe2 = n.f2.accept(this, argu);
     n.f3.accept(this, argu);
+    String t1 = genTemp();
+    output("MOVE " + t1  + " TIMES " + pe2.addr + " 4");
+    String t2 = genTemp();
+    output("HLOAD " + t2 + " " + t1 + " 4");
+    _ret.addr = t2;
     return _ret;
  }
 
@@ -684,9 +1027,16 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   */
  public AttrSynthesized visit(ArrayLength n, AttrInherited argu) {
     AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
+    _ret = n.f0.accept(this, argu);
+    if(_ret == null) {
+       System.err.println("Caution! _ret null in ArrayLength");
+       error();
+    }
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);
+    String t = genTemp();
+    output("HLOAD " + t + " " + _ret.addr + " 0");
+    _ret.addr = t;
     return _ret;
  }
 
@@ -699,13 +1049,37 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f5 -> ")"
   */
  public AttrSynthesized visit(MessageSend n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
-    n.f0.accept(this, argu);
+    AttrSynthesized _ret = new AttrSynthesized();
+    AttrSynthesized t ;
+    t = n.f0.accept(this, argu);
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);
+    String fname = n.f2.f0.tokenImage + "()";
+    Method_ m = lookupmethodref(fname, t.addr);
+    if(m == null) error();
+    Integer fntableoffset = 0;
+    if(m.owner.parent != null) fntableoffset += m.owner.parent.size;
+    String t3 = genTemp();
+    output("HLOAD " + t3 + " " + t.addr + " " + fntableoffset);
+    Integer fnoffset = m.owner.methods.indexOf(m);
+    fnoffset *= 4;
+    String t4 = genTemp();
+    output("HLOAD " + t4 + " " + t3 + " " + fnoffset);
     n.f3.accept(this, argu);
+    String t1 = genTemp();
+    output("MOVE " + t1 + " " + t.addr);
+    gpstack.push(new ArrayList<>());
+    gpstack.peek().add(t1);
     n.f4.accept(this, argu);
+    String t2 = genTemp();
+    output("MOVE " + t2 + " CALL "+ t4 + " ( ");
+    for (String s : gpstack.peek()) {
+       output(s);
+    }
+    output(")");
     n.f5.accept(this, argu);
+    output("MOVE " + t.addr + " " + t1);
+    _ret.addr = t2;
     return _ret;
  }
 
@@ -731,8 +1105,21 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f1 -> ( ExpressionRest() )*
   */
  public AttrSynthesized visit(ExpressionList n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret=new AttrSynthesized();
+    AttrSynthesized t =
     n.f0.accept(this, argu);
+    if(t.isconstant) {
+      String t1 = genTemp();
+      if(t.type.equals("int")) {
+         output("MOVE " + t1 + " " + t.addr);
+      } else {
+         System.err.println("Caution! boolean constants not handled");
+         error();
+      }
+      // add conditions for boolean constants
+      t.addr = t1;
+   }
+    gpstack.peek().add(t.addr);
     n.f1.accept(this, argu);
     return _ret;
  }
@@ -744,7 +1131,19 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
  public AttrSynthesized visit(ExpressionRest n, AttrInherited argu) {
     AttrSynthesized _ret=null;
     n.f0.accept(this, argu);
-    n.f1.accept(this, argu);
+    _ret = n.f1.accept(this, argu);
+    if(_ret.isconstant) {
+       String t = genTemp();
+       if(_ret.type.equals("int")) {
+          output("MOVE " + t + " " + _ret.addr);
+       } else {
+          System.err.println("Caution! boolean constants not handled");
+          error();
+       }
+       // add conditions for boolean constants
+       _ret.addr = t;
+    }
+    gpstack.peek().add(_ret.addr);
     return _ret;
  }
 
@@ -761,12 +1160,14 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   */
  public AttrSynthesized visit(PrimaryExpression n, AttrInherited argu) {
     AttrSynthesized PE1 = null;
-    PE1 = n.f0.accept(this, argu);
-    
-    AttrSynthesized PE = new AttrSynthesized();
-    PE.code = PE1.code;
-    PE.addr = PE1.addr;
-    return PE;
+
+    AttrInherited frompe = new AttrInherited();
+    frompe.from = "PE";
+    PE1 = n.f0.accept(this, frompe);
+    if(PE1.isconstant) {
+       PE1.addr = PE1.tokenImage;
+    }
+    return PE1;
  }
 
  /**
@@ -776,6 +1177,11 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
    AttrSynthesized _ret = new AttrSynthesized();
    n.f0.accept(this, argu);
    _ret.tokenImage = n.f0.tokenImage;
+   _ret.isconstant = true;
+   _ret.istypedefault = true;
+   _ret.type = "int";
+   // String t = genTemp();
+   // output("MOVE " + t + " " + _ret.tokenImage);
    return _ret;
  }
 
@@ -786,6 +1192,9 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
    AttrSynthesized _ret = new AttrSynthesized();
    n.f0.accept(this, argu);
    _ret.tokenImage = n.f0.tokenImage;
+   _ret.isconstant = true;
+   _ret.istypedefault = true;
+   _ret.type = "boolean";
    return _ret;
  }
 
@@ -796,6 +1205,9 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
    AttrSynthesized _ret = new AttrSynthesized();
    n.f0.accept(this, argu);
    _ret.tokenImage = n.f0.tokenImage;
+   _ret.isconstant = true;
+   _ret.istypedefault = true;
+   _ret.type = "boolean";
    return _ret;
  }
 
@@ -806,6 +1218,50 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
     AttrSynthesized _ret = new AttrSynthesized();
     n.f0.accept(this, argu);
     _ret.tokenImage = n.f0.tokenImage;
+    _ret.isconstant = false;
+    if(argu != null && argu.from == "PE" && !argu.typelookup) {
+       // Came from PE
+       // Should be a variable
+       // Or maybe a type?? no
+       System.err.println(getscope()+n.f0.tokenImage);
+       Variable_ v = lookupvarref(n.f0.tokenImage);
+       if(v == null) error();
+       if(v.ownerclass == null) {
+          // not a class member
+          // peace
+          _ret.code = "";
+          if(v.islocal) {
+             // local variable it is
+             if(localvarmap.containsKey(v)) {
+                _ret.addr = localvarmap.get(v);
+             } else {
+                _ret.addr = genTemp();
+             }
+
+          } else {
+             // formal variable it is
+             Integer ind = v.ownermethod.formals.indexOf(v) + 1;
+             _ret.addr = "TEMP " + ind;
+             if(!tempbin.contains(ind)) {
+                System.err.println("Caution! tempbin authority error");
+                tempbin.add(ind);
+             }
+          }
+       } else {
+          // v is a class variable
+          // since we only need to read a variable in case it occurs from pe
+          // object instance in TEMP 0
+          // variable is at corresponding offset in classmap
+          Integer offset = classmaps.get(v.ownerclass).get(v);
+          String t = genTemp();
+          _ret.code = " HLOAD " + t + " TEMP 0 " + offset + "\n";
+          _ret.addr = t; 
+       }
+    }
+    if(argu != null && argu.from == "PE" && argu.typelookup) {
+       //well if it is typelookup, then what??
+       
+    }
     return _ret;
  }
 
@@ -813,8 +1269,11 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f0 -> "this"
   */
  public AttrSynthesized visit(ThisExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret=new AttrSynthesized();
     n.f0.accept(this, argu);
+    String t = genTemp();
+    output("MOVE " + t + " TEMP 0");
+    _ret.addr = t;
     return _ret;
  }
 
@@ -826,7 +1285,7 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f4 -> "]"
   */
  public AttrSynthesized visit(ArrayAllocationExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret=new AttrSynthesized();
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);
@@ -842,11 +1301,57 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f3 -> ")"
   */
  public AttrSynthesized visit(AllocationExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret=new AttrSynthesized();
     n.f0.accept(this, argu);
+    if(argu != null && argu.from == "PE") {
+       argu.typelookup = true;
+    }
     n.f1.accept(this, argu);
+    if(argu != null && argu.from == "PE") {
+      argu.typelookup = false;
+    }
+    
     n.f2.accept(this, argu);
     n.f3.accept(this, argu);
+    String cname = n.f1.f0.tokenImage;
+    Class_ c = null;
+    for (Class_ iter : table.classes) {
+       if(cname == iter.name) {
+          c = iter;
+          break;
+       }
+    }
+    if(c == null) error();
+    Integer size = c.size;
+    String s = genTemp();
+    output("MOVE " + s + " " + size);
+    String o = genTemp();
+    output("MOVE " + o + " HALLOCATE " + s);
+    for(Object obj : classmaps.get(c).keySet()) {
+       if(obj.getClass() == FuntionTable.class) {
+         FuntionTable ft = (FuntionTable)obj;
+         Integer ftoffset = classmaps.get(c).get(obj);
+         String t1 = genTemp();
+         output("MOVE " + t1 + " " + ftoffset);
+         Integer ftsize = ft.fnmaps.size() * 4;
+         String t2 = genTemp();
+         output("MOVE " + t2 + " HALLOCATE " + ftsize);
+         for (Method_ m : ft.fnmaps.keySet()) {
+            String label = m.owner.name+"_"+m.name;
+            if(label.endsWith("()")) {
+               label = label.substring(0, label.length()-2);
+            }
+            String t3 = genTemp();
+            output("MOVE " + t3 + " " + label);
+            Integer mind = ft.fnmaps.get(m);
+            output("HSTORE " + t2 + " " + mind + " " + t3);
+         }
+         output("HSTORE " + o + " " + t1 + " " + t2);
+       }
+    }
+    objMap.put(o, c);
+    _ret.addr = o;
+    
     return _ret;
  }
 
@@ -855,7 +1360,7 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f1 -> Expression()
   */
  public AttrSynthesized visit(NotExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret=new AttrSynthesized();
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
     return _ret;
@@ -867,7 +1372,7 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   * f2 -> ")"
   */
  public AttrSynthesized visit(BracketExpression n, AttrInherited argu) {
-    AttrSynthesized _ret=null;
+    AttrSynthesized _ret=new AttrSynthesized();
     n.f0.accept(this, argu);
     n.f1.accept(this, argu);
     n.f2.accept(this, argu);

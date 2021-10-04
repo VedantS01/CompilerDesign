@@ -13,7 +13,7 @@ public class A3 {
          SymbolTable table = stGenerator.table;
 
          //Table is ready.
-         table.print();
+         // table.print();
 
          IRGenerator generator = new IRGenerator();
 
@@ -21,6 +21,7 @@ public class A3 {
 
          // AttrSynthesized a = root.accept(generator, null);
          root.accept(generator, null);
+         // generator.printsyntaxtable();
          //Print now, or whatever man!
         //  System.out.println("Program parsed successfully");
       }

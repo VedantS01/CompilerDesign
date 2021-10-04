@@ -42,10 +42,12 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
 
       public void extracttable() {
          if(table == null) table = new SymbolTable();
+         table.typeof = typeof;
          String gscope = "global::";
          if(!scopes.containsKey(gscope)) return;
          for (String c : scopes.get(gscope)) {
             Class_ class_ = new Class_();
+            table.addClass(class_);
             class_.name = c;
             String cscope = "global::"+c+"::";
             if(scopes.containsKey(cscope))
@@ -53,6 +55,7 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
                if(vorm.endsWith("()")) {
                   //m
                   Method_ m = new Method_();
+                  class_.addMethod(m);
                   m.name = vorm;
                   m.access = fnaccess.get(cscope+vorm);
                   Type_ ret = new Type_();
@@ -93,7 +96,6 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
                      v.type = t;
                      m.addLocal(v);
                   }
-                  class_.addMethod(m);
                } else {
                   //v
                   Variable_ v = new Variable_();
@@ -109,7 +111,6 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
                   class_.addVariable(v);
                }
             }
-            table.addClass(class_);
          }
          for (Class_ c : table.classes) {
             String name = c.name;

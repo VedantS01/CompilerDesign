@@ -1,13 +1,14 @@
 class Temp {
     public static void main(String[] args) {
-        System.out.println(1);
+        System.out.println(new A().run(1,2));
     }
 }
 
 class A {
-    int a;
-    public int run(int x) {
-        int y;
-        return 2;
+    public int run(int x, int y) {
+        return 0;
+    }
+    public int one() {
+        return 1;
     }
 }
