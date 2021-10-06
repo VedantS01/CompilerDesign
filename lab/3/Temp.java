@@ -5,8 +5,13 @@ class Temp {
 }
 
 class A {
+    int x;
+    int x1;
+    int x2;
     public int run(int x, int y) {
-        return 0;
+        x1 = x;
+        x2 = y;
+        return (1 + (2 * 5)) - 3;
     }
     public int one() {
         return 1;

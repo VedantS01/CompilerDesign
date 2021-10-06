@@ -21,8 +21,8 @@ class FuntionTable {
 public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> implements GJVisitor<AttrSynthesized, AttrInherited>{
     
    public SymbolTable table;
-   public Integer tempcount = 0;
-   public Integer labelcount = 0; 
+   public Integer tempcount = 100;
+   public Integer labelcount = 20; 
    Stack<String> scopestack = new Stack<>();
    Stack<ArrayList<String>> gpstack = new Stack<>();
 
@@ -36,6 +36,10 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
 
    // Storage Maps
    public HashMap<Class_, HashMap<Object, Integer>> classmaps = new HashMap<>();   
+
+   private Method_ mMethod_;
+   private HashMap<Variable_, String> localMap = new HashMap<>();
+   private HashMap<Variable_, String> formalMap = new HashMap<>();
 
    public IRGenerator() {
       table = new SymbolTable();
@@ -470,18 +474,47 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
     n.f1.accept(this, fromm);
     n.f2.accept(this, fromm);
     beginscope(n.f2.f0.tokenImage+"()");
-    // Method_ m = lookupmethodref(String m, String scope)
+    Method_ m = mdecwhich(n.f2.f0.tokenImage+"()");
+    if(m == null) {
+       System.err.println("Line 479: Caution! m is null");
+       error();
+    }
+    mMethod_ = m;
+    String l = m.owner.name + "_" + m.name;
+    if(l.endsWith("()")) {
+       l = l.substring(0, l.length()-2);
+    }
+    Integer argsnum = m.formals.size() + 1;
+    output(l + " [" + argsnum + "]");
     n.f3.accept(this, fromm);
     n.f4.accept(this, fromm);
     n.f5.accept(this, fromm);
+    formalMap.clear();
+    for (Variable_ fv : mMethod_.formals) {
+       Integer i = mMethod_.formals.indexOf(fv) + 1;
+       String t = "TEMP " + i;
+       if(!tempbin.contains(i)) tempbin.add(i);
+       formalMap.put(fv, t);
+    }
     beginscope("body");
+    output("BEGIN");
     n.f6.accept(this, fromm);
     n.f7.accept(this, fromm);
+    localMap.clear();
+    for (Variable_ fv : mMethod_.locals) {
+       String t = genTemp();
+       formalMap.put(fv, t);
+    }
     n.f8.accept(this, fromm);
     n.f9.accept(this, fromm);
-    n.f10.accept(this, fromm);
+    _ret = n.f10.accept(this, fromm);
+    output("RETURN " + _ret.addr);
     n.f11.accept(this, fromm);
     n.f12.accept(this, fromm);
+    output("END");
+    localMap.clear();
+    formalMap.clear();
+    mMethod_ = null;
     endscope();
     endscope();
     return _ret;
@@ -642,10 +675,29 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
   */
  public AttrSynthesized visit(AssignmentStatement n, AttrInherited argu) {
     AttrSynthesized _ret=null;
+    AttrSynthesized exp;
     n.f0.accept(this, argu);
+    Variable_ id = lookupvarref(n.f0.f0.tokenImage);
+    if(id == null) {
+       System.err.println("Fatal error! id to be assigned is null");
+       error();
+    }
     n.f1.accept(this, argu);
-    n.f2.accept(this, argu);
+    exp = n.f2.accept(this, argu);
     n.f3.accept(this, argu);
+    if(localMap.containsKey(id)) {
+       // is local
+       String t = localMap.get(id);
+       output("MOVE " + t + " " + exp.addr);
+    } else if (formalMap.containsKey(id)) {
+       String t = formalMap.get(id);
+       output("MOVE " + t + " " + exp.addr);
+    } else {
+       // class variable
+       // what instance? well, tis Temp 0, no? yes, tis Temp 0
+       Integer offset = classmaps.get(id.ownerclass).get(id);
+       output("HSTORE TEMP 0 " + offset + " " + exp.addr);
+    }
     return _ret;
  }
 
@@ -910,8 +962,9 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
        _ret.addr = _ret.tokenImage;
        return _ret;
     }
+    _ret.isconstant = false;
     String t = genTemp();
-    output("MOVE " + t + " PLUS " + pe1.addr + pe2.addr);
+    output("MOVE " + t + " PLUS " + pe1.addr + " " + pe2.addr);
     _ret.addr = t;
     return _ret;
  }
@@ -939,7 +992,7 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
       return _ret;
    }
    String t = genTemp();
-   output("MOVE " + t + " MINUS " + pe1.addr + pe2.addr);
+   output("MOVE " + t + " MINUS " + pe1.addr + " " + pe2.addr);
    _ret.addr = t;
    return _ret;
  }
@@ -967,7 +1020,7 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
       return _ret;
    }
    String t = genTemp();
-   output("MOVE " + t + " TIMES " + pe1.addr + pe2.addr);
+   output("MOVE " + t + " TIMES " + pe1.addr + " " + pe2.addr);
    _ret.addr = t;
    return _ret;
  }
@@ -995,7 +1048,7 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
       return _ret;
    }
    String t = genTemp();
-   output("MOVE " + t + " DIV " + pe1.addr + pe2.addr);
+   output("MOVE " + t + " DIV " + pe1.addr + " " + pe2.addr);
    _ret.addr = t;
    return _ret;
  }
@@ -1066,19 +1119,16 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
     String t4 = genTemp();
     output("HLOAD " + t4 + " " + t3 + " " + fnoffset);
     n.f3.accept(this, argu);
-    String t1 = genTemp();
-    output("MOVE " + t1 + " " + t.addr);
     gpstack.push(new ArrayList<>());
-    gpstack.peek().add(t1);
+    gpstack.peek().add(t.addr);
     n.f4.accept(this, argu);
     String t2 = genTemp();
-    output("MOVE " + t2 + " CALL "+ t4 + " ( ");
+    System.out.print("MOVE " + t2 + " CALL "+ t4 + " ( ");
     for (String s : gpstack.peek()) {
-       output(s);
+       System.out.print(s + " ");
     }
     output(")");
     n.f5.accept(this, argu);
-    output("MOVE " + t.addr + " " + t1);
     _ret.addr = t2;
     return _ret;
  }
@@ -1223,40 +1273,58 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
        // Came from PE
        // Should be a variable
        // Or maybe a type?? no
-       System.err.println(getscope()+n.f0.tokenImage);
+      //  System.err.println(getscope()+n.f0.tokenImage);
        Variable_ v = lookupvarref(n.f0.tokenImage);
-       if(v == null) error();
-       if(v.ownerclass == null) {
-          // not a class member
-          // peace
-          _ret.code = "";
-          if(v.islocal) {
-             // local variable it is
-             if(localvarmap.containsKey(v)) {
-                _ret.addr = localvarmap.get(v);
-             } else {
-                _ret.addr = genTemp();
-             }
-
-          } else {
-             // formal variable it is
-             Integer ind = v.ownermethod.formals.indexOf(v) + 1;
-             _ret.addr = "TEMP " + ind;
-             if(!tempbin.contains(ind)) {
-                System.err.println("Caution! tempbin authority error");
-                tempbin.add(ind);
-             }
-          }
+       if(localMap.containsKey(v)) {
+          // is in local map
+          _ret.addr = localMap.get(v);
+       } else if (formalMap.containsKey(v)) {
+          // is in formal map
+          _ret.addr = formalMap.get(v);
        } else {
-          // v is a class variable
-          // since we only need to read a variable in case it occurs from pe
-          // object instance in TEMP 0
-          // variable is at corresponding offset in classmap
+          // is class variable
+          if(v.ownerclass == null) {
+             System.err.println("Fatal error: class not found!");
+             error();
+          }
           Integer offset = classmaps.get(v.ownerclass).get(v);
           String t = genTemp();
-          _ret.code = " HLOAD " + t + " TEMP 0 " + offset + "\n";
-          _ret.addr = t; 
+          output("HLOAD " + t + " TEMP 0 " + offset);
+          _ret.addr = t;
        }
+       return _ret;
+      //  if(v == null) error();
+      //  if(v.ownerclass == null) {
+      //     // not a class member
+      //     // peace
+      //     _ret.code = "";
+      //     if(v.islocal) {
+      //        // local variable it is
+      //        if(localvarmap.containsKey(v)) {
+      //           _ret.addr = localvarmap.get(v);
+      //        } else {
+      //           _ret.addr = genTemp();
+      //        }
+
+      //     } else {
+      //        // formal variable it is
+      //        Integer ind = v.ownermethod.formals.indexOf(v) + 1;
+      //        _ret.addr = "TEMP " + ind;
+      //        if(!tempbin.contains(ind)) {
+      //           System.err.println("Caution! tempbin authority error");
+      //           tempbin.add(ind);
+      //        }
+      //     }
+      //  } else {
+      //     // v is a class variable
+      //     // since we only need to read a variable in case it occurs from pe
+      //     // object instance in TEMP 0
+      //     // variable is at corresponding offset in classmap
+         //  Integer offset = classmaps.get(v.ownerclass).get(v);
+         //  String t = genTemp();
+         //  _ret.code = " HLOAD " + t + " TEMP 0 " + offset + "\n";
+         //  _ret.addr = t; 
+      //  }
     }
     if(argu != null && argu.from == "PE" && argu.typelookup) {
        //well if it is typelookup, then what??
@@ -1273,6 +1341,16 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
     n.f0.accept(this, argu);
     String t = genTemp();
     output("MOVE " + t + " TEMP 0");
+    String cname = scopestack.get(1);
+    Class_ c = null;
+    for (Class_ c1 : table.classes) {
+       if(c1.name.equals(cname)) {
+          c = c1;
+          break;
+       }
+    }
+    if(c == null) error();
+    objMap.put(t, c);
     _ret.addr = t;
     return _ret;
  }
@@ -1331,11 +1409,13 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
        if(obj.getClass() == FuntionTable.class) {
          FuntionTable ft = (FuntionTable)obj;
          Integer ftoffset = classmaps.get(c).get(obj);
-         String t1 = genTemp();
-         output("MOVE " + t1 + " " + ftoffset);
+         // String t1 = genTemp();
+         // output("MOVE " + t1 + " " + ftoffset);
          Integer ftsize = ft.fnmaps.size() * 4;
+         String t4 = genTemp();
+         output("MOVE " + t4 + " " + ftsize);
          String t2 = genTemp();
-         output("MOVE " + t2 + " HALLOCATE " + ftsize);
+         output("MOVE " + t2 + " HALLOCATE " + t4);
          for (Method_ m : ft.fnmaps.keySet()) {
             String label = m.owner.name+"_"+m.name;
             if(label.endsWith("()")) {
@@ -1346,7 +1426,7 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
             Integer mind = ft.fnmaps.get(m);
             output("HSTORE " + t2 + " " + mind + " " + t3);
          }
-         output("HSTORE " + o + " " + t1 + " " + t2);
+         output("HSTORE " + o + " " + ftoffset + " " + t2);
        }
     }
     objMap.put(o, c);
@@ -1362,7 +1442,20 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
  public AttrSynthesized visit(NotExpression n, AttrInherited argu) {
     AttrSynthesized _ret=new AttrSynthesized();
     n.f0.accept(this, argu);
-    n.f1.accept(this, argu);
+    _ret = n.f1.accept(this, argu);
+    if(_ret.isconstant) {
+       if(_ret.tokenImage.equals("true")) {
+          _ret.tokenImage = "false";
+          _ret.addr = "0";
+       } else {
+         _ret.tokenImage = "true";
+         _ret.addr = "1";
+       }
+    } else {
+       String t = genTemp();
+       output("MOVE " + t + " NE " + _ret.addr + " 1");
+       _ret.addr = t;
+    }
     return _ret;
  }
 
@@ -1374,7 +1467,7 @@ public class IRGenerator extends GJDepthFirst<AttrSynthesized, AttrInherited> im
  public AttrSynthesized visit(BracketExpression n, AttrInherited argu) {
     AttrSynthesized _ret=new AttrSynthesized();
     n.f0.accept(this, argu);
-    n.f1.accept(this, argu);
+    _ret = n.f1.accept(this, argu);
     n.f2.accept(this, argu);
     return _ret;
  }
