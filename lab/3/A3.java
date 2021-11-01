@@ -22,8 +22,6 @@ public class A3 {
          // AttrSynthesized a = root.accept(generator, null);
          root.accept(generator, null);
          // generator.printsyntaxtable();
-         //Print now, or whatever man!
-        //  System.out.println("Program parsed successfully");
       }
       catch (ParseException e) {
          System.out.println(e.toString());

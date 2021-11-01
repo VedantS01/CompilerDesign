@@ -26,6 +26,7 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
     private HashMap<String,HashSet<String>> scopes; //maintains visibility of scopes
     private HashMap<String,String> typeof; //maintains symbol table
     private HashMap<String,ArrayList<String>> fnargs; //maintains signature of a function
+    private HashMap<String,ArrayList<String>> fnargnames; //maintains more than signature of a function
     private HashMap<String,String> inheritance; //maintain inheritance information
     private HashMap<String,String> fnaccess; //maintains signature of a function
 
@@ -35,6 +36,7 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
 
     //for aiding method declarations
     ArrayList<String> tempArgTypes = new ArrayList<>(); //for recording fn arg types
+    ArrayList<String> tempArgNames = new ArrayList<>();
 
     //for temporary information
     private Stack<ArrayList<String>> tempStack = new Stack<>();
@@ -67,8 +69,9 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
                   }
                   m.rettype = ret;
                   String mscope = cscope+vorm+"::";
+                  String fname = cscope + vorm;
                   if(scopes.containsKey(mscope))
-                  for (String formal : scopes.get(mscope)) {
+                  for (String formal : fnargnames.get(fname)) {
                      Variable_ v = new Variable_();
                      v.name = formal;
                      Type_ t = new Type_();
@@ -137,6 +140,7 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
         scopes = new HashMap<String,HashSet<String>>();
         typeof = new HashMap<String, String>();
         fnargs = new HashMap<String, ArrayList<String>>();
+        fnargnames = new HashMap<String, ArrayList<String>>();
         inheritance = new HashMap<String, String>();
         fnaccess = new HashMap<String, String>();
         typecheck = false;
@@ -236,11 +240,12 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
      * @param fullMethod
      * @param argTypes
      */
-    private void addFnArgs(String fullMethod, ArrayList<String> argTypes, String access) {
+    private void addFnArgs(String fullMethod, ArrayList<String> argTypes, String access, ArrayList<String> argNames) {
         if(fnargs.containsKey(fullMethod) || fnaccess.containsKey(fullMethod)) {
             error();
         }
         fnargs.put(fullMethod, new ArrayList<>(argTypes));
+        fnargnames.put(fullMethod, new ArrayList<>(argNames));
         fnaccess.put(fullMethod, access);
     }
 
@@ -607,7 +612,9 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
             addVariable(args, "String[]");
             tempArgTypes.clear();
             tempArgTypes.add("String[]");
-            addFnArgs(pscope+"main()", tempArgTypes, "public");
+            ArrayList<String> a = new ArrayList<>();
+            a.add(args);
+            addFnArgs(pscope+"main()", tempArgTypes, "public", a);
             tempArgTypes.clear();
         // } else {
         //     _type = lookupname(args);
@@ -742,12 +749,14 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
         startScope(fnname+"()");
         n.f3.accept(this);
         tempArgTypes.clear();
+        tempArgNames.clear();
         n.f4.accept(this);
         if(!typecheck) {
             validdatemethod(fnname+"()", currentScopeStack.get(1), accessType, rettype, tempArgTypes);
-            addFnArgs(pscope+fnname+"()", tempArgTypes, accessType);
+            addFnArgs(pscope+fnname+"()", tempArgTypes, accessType, tempArgNames);
         }
         tempArgTypes.clear();
+        tempArgNames.clear();
         n.f5.accept(this);
         n.f6.accept(this);
         startScope("body");
@@ -796,6 +805,7 @@ public class STGenerator extends GJNoArguDepthFirst<String> implements GJNoArguV
         if(!typecheck){
             addVariable(varname, type);
             tempArgTypes.add(type);
+            tempArgNames.add(varname);
         }
         return _ret;
      }

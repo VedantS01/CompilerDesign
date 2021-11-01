@@ -20,7 +20,10 @@ LinearSearch:
 	java -jar ../3/interpreter/pgi.jar < LinearSearch.microIR
 
 QuickSort:
-	java -jar ../3/interpreter.pgi.jar < QuickSort.microIR
+	java -jar ../3/interpreter/pgi.jar < QuickSort.microIR
 
 TreeVisitor:
-	java -jar ../3/interpreter.pgi.jar < TreeVisitor.microIR
+	java -jar ../3/interpreter/pgi.jar < TreeVisitor.microIR
+
+BS:
+	java -jar ../3/interpreter/pgi.jar < BS.microIR
