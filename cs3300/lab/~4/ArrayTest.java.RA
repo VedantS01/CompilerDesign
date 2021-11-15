@@ -1,0 +1,170 @@
+++PROC: MAIN
+----Line:0 :  :: IN=[] ; OUT=[]
+----Line:1 : MOVE TEMP 2 4 :: IN=[] ; OUT=[TEMP 2]
+----Line:2 : MOVE TEMP 3 HALLOCATE TEMP 2 :: IN=[TEMP 2] ; OUT=[TEMP 3]
+----Line:3 : MOVE TEMP 4 4 :: IN=[TEMP 3] ; OUT=[TEMP 3, TEMP 4]
+----Line:4 : MOVE TEMP 5 HALLOCATE TEMP 4 :: IN=[TEMP 3, TEMP 4] ; OUT=[TEMP 3, TEMP 5]
+----Line:5 : MOVE TEMP 6 Test_start :: IN=[TEMP 3, TEMP 5] ; OUT=[TEMP 3, TEMP 6, TEMP 5]
+----Line:6 : HSTORE TEMP 5 0 TEMP 6 :: IN=[TEMP 3, TEMP 6, TEMP 5] ; OUT=[TEMP 3, TEMP 5]
+----Line:7 : HSTORE TEMP 3 0 TEMP 5 :: IN=[TEMP 3, TEMP 5] ; OUT=[TEMP 3]
+----Line:8 : HLOAD TEMP 7 TEMP 3 0 :: IN=[TEMP 3] ; OUT=[TEMP 3, TEMP 7]
+----Line:9 : HLOAD TEMP 8 TEMP 7 0 :: IN=[TEMP 3, TEMP 7] ; OUT=[TEMP 3, TEMP 8]
+----Line:10 : MOVE TEMP 9 10 :: IN=[TEMP 3, TEMP 8] ; OUT=[TEMP 3, TEMP 9, TEMP 8]
+----Line:11 : MOVE TEMP 10 CALL TEMP 8 ( TEMP 3 TEMP 9 ) :: IN=[TEMP 3, TEMP 9, TEMP 8] ; OUT=[TEMP 10]
+----Line:12 : PRINT TEMP 10 :: IN=[TEMP 10] ; OUT=[]
+----Line:13 :  :: IN=[] ; OUT=[]
+---Interval of T: TEMP 2 starts at lno 1 and ends at lno 2
+---Interval of T: TEMP 3 starts at lno 2 and ends at lno 11
+---Interval of T: TEMP 4 starts at lno 3 and ends at lno 4
+---Interval of T: TEMP 5 starts at lno 4 and ends at lno 7
+---Interval of T: TEMP 6 starts at lno 5 and ends at lno 6
+---Interval of T: TEMP 7 starts at lno 8 and ends at lno 9
+---Interval of T: TEMP 8 starts at lno 9 and ends at lno 11
+---Interval of T: TEMP 9 starts at lno 10 and ends at lno 11
+---Interval of T: TEMP 10 starts at lno 11 and ends at lno 12
+----T: TEMP 2 is allocated s0
+----T: TEMP 3 is allocated s1
+----T: TEMP 4 is allocated s0
+----T: TEMP 5 is allocated s2
+----T: TEMP 6 is allocated s0
+----T: TEMP 7 is allocated s2
+----T: TEMP 8 is allocated s0
+----T: TEMP 9 is allocated s2
+----T: TEMP 10 is allocated s3
+++PROC: Test_start
+----Line:0 :  :: IN=[TEMP 1] ; OUT=[TEMP 1]
+----Line:1 : MOVE TEMP 14 PLUS TEMP 1 1 :: IN=[TEMP 1] ; OUT=[TEMP 1, TEMP 14]
+----Line:2 : MOVE TEMP 15 TIMES TEMP 14 4 :: IN=[TEMP 1, TEMP 14] ; OUT=[TEMP 1, TEMP 15]
+----Line:3 : MOVE TEMP 16 HALLOCATE TEMP 15 :: IN=[TEMP 1, TEMP 15] ; OUT=[TEMP 1, TEMP 16]
+----Line:4 : HSTORE TEMP 16 0 TEMP 1 :: IN=[TEMP 1, TEMP 16] ; OUT=[TEMP 16]
+----Line:5 : MOVE TEMP 11 TEMP 16 :: IN=[TEMP 16] ; OUT=[TEMP 11]
+----Line:6 : HLOAD TEMP 17 TEMP 11 0 :: IN=[TEMP 11] ; OUT=[TEMP 11, TEMP 17]
+----Line:7 : MOVE TEMP 13 TEMP 17 :: IN=[TEMP 11, TEMP 17] ; OUT=[TEMP 13, TEMP 11]
+----Line:8 : MOVE TEMP 18 0 :: IN=[TEMP 13, TEMP 11] ; OUT=[TEMP 13, TEMP 11, TEMP 18]
+----Line:9 : MOVE TEMP 12 TEMP 18 :: IN=[TEMP 13, TEMP 11, TEMP 18] ; OUT=[TEMP 13, TEMP 12, TEMP 11]
+----Line:10 : L0 :: IN=[TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 13, TEMP 12, TEMP 11]
+----Line:11 : NOOP :: IN=[TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 13, TEMP 12, TEMP 11]
+----Line:12 : MOVE TEMP 19 1 :: IN=[TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 13, TEMP 12, TEMP 11, TEMP 19]
+----Line:13 : MOVE TEMP 20 MINUS TEMP 13 TEMP 19 :: IN=[TEMP 13, TEMP 12, TEMP 11, TEMP 19] ; OUT=[TEMP 20, TEMP 13, TEMP 12, TEMP 11]
+----Line:14 : MOVE TEMP 21 LE TEMP 12 TEMP 20 :: IN=[TEMP 20, TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 21, TEMP 13, TEMP 12, TEMP 11]
+----Line:15 : CJUMP TEMP 21 L1 :: IN=[TEMP 21, TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 13, TEMP 12, TEMP 11]
+----Line:16 : MOVE TEMP 22 TIMES TEMP 12 4 :: IN=[TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 13, TEMP 12, TEMP 11, TEMP 22]
+----Line:17 : MOVE TEMP 23 PLUS TEMP 11 TEMP 22 :: IN=[TEMP 13, TEMP 12, TEMP 11, TEMP 22] ; OUT=[TEMP 13, TEMP 12, TEMP 23, TEMP 11]
+----Line:18 : HSTORE TEMP 23 4 TEMP 12 :: IN=[TEMP 13, TEMP 12, TEMP 23, TEMP 11] ; OUT=[TEMP 13, TEMP 12, TEMP 11]
+----Line:19 : MOVE TEMP 24 TIMES TEMP 12 4 :: IN=[TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 13, TEMP 24, TEMP 12, TEMP 11]
+----Line:20 : MOVE TEMP 25 PLUS TEMP 11 TEMP 24 :: IN=[TEMP 13, TEMP 24, TEMP 12, TEMP 11] ; OUT=[TEMP 25, TEMP 13, TEMP 12, TEMP 11]
+----Line:21 : HLOAD TEMP 26 TEMP 25 4 :: IN=[TEMP 25, TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 13, TEMP 12, TEMP 11, TEMP 26]
+----Line:22 : PRINT TEMP 26 :: IN=[TEMP 13, TEMP 12, TEMP 11, TEMP 26] ; OUT=[TEMP 13, TEMP 12, TEMP 11]
+----Line:23 : MOVE TEMP 27 1 :: IN=[TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 13, TEMP 12, TEMP 11, TEMP 27]
+----Line:24 : MOVE TEMP 28 PLUS TEMP 12 TEMP 27 :: IN=[TEMP 13, TEMP 12, TEMP 11, TEMP 27] ; OUT=[TEMP 13, TEMP 11, TEMP 28]
+----Line:25 : MOVE TEMP 12 TEMP 28 :: IN=[TEMP 13, TEMP 11, TEMP 28] ; OUT=[TEMP 13, TEMP 12, TEMP 11]
+----Line:26 : JUMP L0 :: IN=[TEMP 13, TEMP 12, TEMP 11] ; OUT=[TEMP 13, TEMP 12, TEMP 11]
+----Line:27 : L1 :: IN=[] ; OUT=[]
+----Line:28 : NOOP :: IN=[] ; OUT=[]
+----Line:29 : MOVE TEMP 29 1 :: IN=[] ; OUT=[TEMP 29]
+----Line:30 : RETURN TEMP 29 :: IN=[TEMP 29] ; OUT=[]
+----Line:31 :  :: IN=[] ; OUT=[]
+---Interval of T: TEMP 1 starts at lno 0 and ends at lno 4
+---Interval of T: TEMP 14 starts at lno 1 and ends at lno 2
+---Interval of T: TEMP 15 starts at lno 2 and ends at lno 3
+---Interval of T: TEMP 16 starts at lno 3 and ends at lno 5
+---Interval of T: TEMP 11 starts at lno 5 and ends at lno 27
+---Interval of T: TEMP 17 starts at lno 6 and ends at lno 7
+---Interval of T: TEMP 13 starts at lno 7 and ends at lno 27
+---Interval of T: TEMP 18 starts at lno 8 and ends at lno 9
+---Interval of T: TEMP 12 starts at lno 9 and ends at lno 24
+---Interval of T: TEMP 19 starts at lno 12 and ends at lno 13
+---Interval of T: TEMP 20 starts at lno 13 and ends at lno 14
+---Interval of T: TEMP 21 starts at lno 14 and ends at lno 15
+---Interval of T: TEMP 22 starts at lno 16 and ends at lno 17
+---Interval of T: TEMP 23 starts at lno 17 and ends at lno 18
+---Interval of T: TEMP 24 starts at lno 19 and ends at lno 20
+---Interval of T: TEMP 25 starts at lno 20 and ends at lno 21
+---Interval of T: TEMP 26 starts at lno 21 and ends at lno 22
+---Interval of T: TEMP 27 starts at lno 23 and ends at lno 24
+---Interval of T: TEMP 28 starts at lno 24 and ends at lno 25
+---Interval of T: TEMP 12 starts at lno 25 and ends at lno 27
+---Interval of T: TEMP 29 starts at lno 29 and ends at lno 30
+----T: TEMP 1 is allocated s0
+----T: TEMP 14 is allocated s1
+----T: TEMP 15 is allocated s2
+----T: TEMP 16 is allocated s1
+----T: TEMP 11 is allocated s0
+----T: TEMP 17 is allocated s1
+----T: TEMP 13 is allocated s2
+----T: TEMP 18 is allocated s1
+----T: TEMP 12 is allocated s3
+----T: TEMP 19 is allocated s1
+----T: TEMP 20 is allocated s4
+----T: TEMP 21 is allocated s1
+----T: TEMP 22 is allocated s1
+----T: TEMP 23 is allocated s4
+----T: TEMP 24 is allocated s4
+----T: TEMP 25 is allocated s1
+----T: TEMP 26 is allocated s4
+----T: TEMP 27 is allocated s4
+----T: TEMP 28 is allocated s1
+----T: TEMP 12 is allocated s4
+----T: TEMP 29 is allocated s4
+MAIN [0][0][2]
+MOVE s0 4
+MOVE s1 HALLOCATE s0
+MOVE s0 4
+MOVE s2 HALLOCATE s0
+MOVE s0 Test_start
+HSTORE s2 0 s0
+HSTORE s1 0 s2
+HLOAD s2 s1 0
+HLOAD s0 s2 0
+MOVE s2 10
+MOVE a0 s1
+MOVE a1 s2
+CALL s0
+MOVE s3 v0
+PRINT s3
+
+END
+Test_start [2][5][0]
+ASTORE SPILLEDARG 0 s0
+ASTORE SPILLEDARG 1 s1
+ASTORE SPILLEDARG 2 s2
+ASTORE SPILLEDARG 3 s3
+ASTORE SPILLEDARG 4 s4
+MOVE s0 a1
+MOVE s1 PLUS s0 1
+MOVE s2 TIMES s1 4
+MOVE s1 HALLOCATE s2
+HSTORE s1 0 s0
+MOVE s0 s1
+HLOAD s1 s0 0
+MOVE s2 s1
+MOVE s1 0
+MOVE s3 s1
+L0
+NOOP
+MOVE s1 1
+MOVE s4 MINUS s2 s1
+MOVE s1 LE s3 s4
+CJUMP s1 L1
+MOVE s1 TIMES s3 4
+MOVE s4 PLUS s0 s1
+HSTORE s4 4 s3
+MOVE s4 TIMES s3 4
+MOVE s1 PLUS s0 s4
+HLOAD s4 s1 4
+PRINT s4
+MOVE s4 1
+MOVE s1 PLUS s3 s4
+MOVE s4 s1
+JUMP L0
+L1
+NOOP
+MOVE s4 1
+MOVE v0 s4
+ALOAD s0 SPILLEDARG 0
+ALOAD s1 SPILLEDARG 1
+ALOAD s2 SPILLEDARG 2
+ALOAD s3 SPILLEDARG 3
+ALOAD s4 SPILLEDARG 4
+
+END

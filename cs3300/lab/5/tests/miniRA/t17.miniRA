@@ -1,0 +1,40 @@
+MAIN[0][3][0]
+MOVE s0 Fun
+CALL  s0 
+MOVE s1  v0 
+MOVE s0  s1 
+PRINT  s0 
+END
+
+Fun[0][3][0]
+ASTORE SPILLEDARG 0 s0
+ASTORE SPILLEDARG 1 s1
+MOVE s0 0
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+MOVE s1  s0 
+MOVE s0  s1 
+PRINT  s0 
+MOVE v0  s0 
+ALOAD s0 SPILLEDARG 0
+ALOAD s1 SPILLEDARG 1
+END
+

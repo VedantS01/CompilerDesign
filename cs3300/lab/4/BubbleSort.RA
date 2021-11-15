@@ -1,0 +1,1109 @@
+++PROC: MAIN
+----T: TEMP 2 is allocated s0
+----T: TEMP 3 is allocated s0
+----T: TEMP 1 is allocated s0
+----T: TEMP 5 is allocated s1
+----T: TEMP 6 is allocated s1
+----T: TEMP 4 is allocated s1
+----T: TEMP 7 is allocated s2
+----T: TEMP 8 is allocated s2
+----T: TEMP 9 is allocated s2
+----T: TEMP 10 is allocated s2
+----T: TEMP 0 is allocated s1
+----T: TEMP 19 is allocated s0
+----T: TEMP 20 is allocated s0
+----T: TEMP 21 is allocated s2
+----T: TEMP 22 is allocated s2
+++PROC: BBS_Start
+----T: TEMP 1 is allocated s0
+----T: TEMP 0 is allocated s1
+----T: TEMP 4 is allocated s2
+----T: TEMP 5 is allocated s3
+----T: TEMP 6 is allocated s3
+----T: TEMP 7 is allocated s3
+----T: TEMP 3 is allocated s3
+----T: TEMP 8 is allocated s2
+----T: TEMP 9 is allocated s0
+----T: TEMP 10 is allocated s0
+----T: TEMP 11 is allocated s0
+----T: TEMP 12 is allocated s0
+----T: TEMP 13 is allocated s0
+----T: TEMP 14 is allocated s2
+----T: TEMP 15 is allocated s2
+----T: TEMP 16 is allocated s2
+----T: TEMP 17 is allocated s1
+----T: TEMP 18 is allocated s2
+----T: TEMP 19 is allocated s2
+----T: TEMP 20 is allocated s2
+----T: TEMP 21 is allocated s2
+++PROC: BBS_Sort
+----T: TEMP 0 is allocated s0
+----T: TEMP 3 is allocated s1
+----T: TEMP 4 is allocated s2
+----T: TEMP 5 is allocated s2
+----T: TEMP 2 is allocated s2
+----T: TEMP 7 is allocated s1
+----T: TEMP 8 is allocated s3
+----T: TEMP 9 is allocated s3
+----T: TEMP 6 is allocated s3
+----T: TEMP 10 is allocated s1
+----T: TEMP 11 is allocated s1
+----T: TEMP 12 is allocated s1
+----T: TEMP 14 is allocated s1
+----T: TEMP 13 is allocated s1
+----T: TEMP 15 is allocated s4
+----T: TEMP 17 is allocated s4
+----T: TEMP 18 is allocated s4
+----T: TEMP 16 is allocated s4
+----T: TEMP 21 is allocated s5
+----T: TEMP 23 is allocated s6
+----T: TEMP 24 is allocated s6
+----T: TEMP 22 is allocated s6
+----T: TEMP 25 is allocated s4
+----T: TEMP 26 is allocated s7
+----T: TEMP 27 is allocated t0
+----T: TEMP 28 is allocated t0
+----T: TEMP 29 is allocated t0
+----T: TEMP 30 is allocated t0
+----T: TEMP 31 is allocated t0
+----T: TEMP 32 is allocated t0
+----T: TEMP 33 is allocated t0
+----T: TEMP 20 is allocated t0
+----T: TEMP 19 is allocated t0
+----T: TEMP 36 is allocated s5
+----T: TEMP 38 is allocated s6
+----T: TEMP 39 is allocated s6
+----T: TEMP 37 is allocated s6
+----T: TEMP 40 is allocated s7
+----T: TEMP 41 is allocated s4
+----T: TEMP 42 is allocated t1
+----T: TEMP 43 is allocated t1
+----T: TEMP 44 is allocated t1
+----T: TEMP 45 is allocated t1
+----T: TEMP 46 is allocated t1
+----T: TEMP 47 is allocated t1
+----T: TEMP 48 is allocated t1
+----T: TEMP 35 is allocated t1
+----T: TEMP 34 is allocated t1
+----T: TEMP 49 is allocated s5
+----T: TEMP 50 is allocated s5
+----T: TEMP 51 is allocated s5
+----T: TEMP 53 is allocated s5
+----T: TEMP 54 is allocated s5
+----T: TEMP 52 is allocated s5
+----T: TEMP 57 is allocated t1
+----T: TEMP 59 is allocated t0
+----T: TEMP 60 is allocated t0
+----T: TEMP 58 is allocated t0
+----T: TEMP 61 is allocated s6
+----T: TEMP 62 is allocated s4
+----T: TEMP 63 is allocated s7
+----T: TEMP 64 is allocated s7
+----T: TEMP 65 is allocated s7
+----T: TEMP 66 is allocated s7
+----T: TEMP 67 is allocated s7
+----T: TEMP 68 is allocated s7
+----T: TEMP 69 is allocated s7
+----T: TEMP 56 is allocated s7
+----T: TEMP 55 is allocated s7
+----T: TEMP 71 is allocated t1
+----T: TEMP 72 is allocated t0
+----T: TEMP 73 is allocated t0
+----T: TEMP 70 is allocated t0
+----T: TEMP 75 is allocated t1
+----T: TEMP 74 is allocated t1
+----T: TEMP 77 is allocated s4
+----T: TEMP 78 is allocated s4
+----T: TEMP 76 is allocated s4
+----T: TEMP 80 is allocated s5
+----T: TEMP 81 is allocated s6
+----T: TEMP 82 is allocated s6
+----T: TEMP 83 is allocated t0
+----T: TEMP 79 is allocated t0
+----T: TEMP 84 is allocated s6
+----T: TEMP 85 is allocated s5
+----T: TEMP 86 is allocated s5
+----T: TEMP 87 is allocated s5
+----T: TEMP 88 is allocated s5
+----T: TEMP 89 is allocated s5
+----T: TEMP 90 is allocated s5
+----T: TEMP 91 is allocated s5
+----T: TEMP 93 is allocated t1
+----T: TEMP 95 is allocated s4
+----T: TEMP 96 is allocated s4
+----T: TEMP 94 is allocated s4
+----T: TEMP 97 is allocated s6
+----T: TEMP 98 is allocated t0
+----T: TEMP 99 is allocated t2
+----T: TEMP 100 is allocated t2
+----T: TEMP 101 is allocated t2
+----T: TEMP 102 is allocated t2
+----T: TEMP 103 is allocated t2
+----T: TEMP 104 is allocated t2
+----T: TEMP 105 is allocated t2
+----T: TEMP 92 is allocated t2
+----T: TEMP 107 is allocated t2
+----T: TEMP 108 is allocated s5
+----T: TEMP 109 is allocated s5
+----T: TEMP 106 is allocated s5
+----T: TEMP 111 is allocated t2
+----T: TEMP 110 is allocated t2
+----T: TEMP 113 is allocated t1
+----T: TEMP 114 is allocated t1
+----T: TEMP 112 is allocated t1
+----T: TEMP 116 is allocated s4
+----T: TEMP 117 is allocated t0
+----T: TEMP 118 is allocated t0
+----T: TEMP 119 is allocated s5
+----T: TEMP 115 is allocated s5
+----T: TEMP 120 is allocated t0
+----T: TEMP 121 is allocated s4
+----T: TEMP 122 is allocated s4
+----T: TEMP 123 is allocated s4
+----T: TEMP 124 is allocated s4
+----T: TEMP 125 is allocated s4
+----T: TEMP 126 is allocated s4
+----T: TEMP 127 is allocated s4
+----T: TEMP 129 is allocated s4
+----T: TEMP 128 is allocated s4
+----T: TEMP 130 is allocated s4
+----T: TEMP 131 is allocated s4
+----T: TEMP 132 is allocated s1
+----T: TEMP 133 is allocated s1
+----T: TEMP 134 is allocated s3
+++PROC: BBS_Print
+----T: TEMP 0 is allocated s0
+----T: TEMP 3 is allocated s1
+----T: TEMP 2 is allocated s1
+----T: TEMP 4 is allocated s2
+----T: TEMP 6 is allocated s3
+----T: TEMP 7 is allocated s3
+----T: TEMP 5 is allocated s3
+----T: TEMP 8 is allocated s3
+----T: TEMP 10 is allocated s3
+----T: TEMP 12 is allocated s2
+----T: TEMP 13 is allocated s2
+----T: TEMP 11 is allocated s2
+----T: TEMP 14 is allocated s4
+----T: TEMP 15 is allocated s5
+----T: TEMP 16 is allocated s6
+----T: TEMP 17 is allocated s6
+----T: TEMP 18 is allocated s6
+----T: TEMP 19 is allocated s6
+----T: TEMP 20 is allocated s6
+----T: TEMP 21 is allocated s6
+----T: TEMP 22 is allocated s6
+----T: TEMP 9 is allocated s6
+----T: TEMP 23 is allocated s6
+----T: TEMP 24 is allocated s6
+----T: TEMP 25 is allocated s1
+++PROC: BBS_Init
+----T: TEMP 1 is allocated s0
+----T: TEMP 0 is allocated s1
+----T: TEMP 4 is allocated s2
+----T: TEMP 5 is allocated s2
+----T: TEMP 6 is allocated s3
+----T: TEMP 7 is allocated s3
+----T: TEMP 8 is allocated s3
+----T: TEMP 3 is allocated s3
+----T: TEMP 10 is allocated s2
+----T: TEMP 9 is allocated s2
+----T: TEMP 11 is allocated s4
+----T: TEMP 12 is allocated s4
+----T: TEMP 13 is allocated s5
+----T: TEMP 14 is allocated s5
+----T: TEMP 15 is allocated s4
+----T: TEMP 16 is allocated s4
+----T: TEMP 17 is allocated s4
+----T: TEMP 18 is allocated s4
+----T: TEMP 19 is allocated s5
+----T: TEMP 20 is allocated s5
+----T: TEMP 21 is allocated s5
+----T: TEMP 22 is allocated s2
+----T: TEMP 23 is allocated s2
+----T: TEMP 25 is allocated s3
+----T: TEMP 26 is allocated s2
+----T: TEMP 27 is allocated s2
+----T: TEMP 24 is allocated s2
+----T: TEMP 29 is allocated s3
+----T: TEMP 28 is allocated s3
+----T: TEMP 31 is allocated s0
+----T: TEMP 32 is allocated s5
+----T: TEMP 33 is allocated s5
+----T: TEMP 30 is allocated s5
+----T: TEMP 35 is allocated s0
+----T: TEMP 36 is allocated s4
+----T: TEMP 37 is allocated s4
+----T: TEMP 38 is allocated s2
+----T: TEMP 34 is allocated s2
+----T: TEMP 39 is allocated s4
+----T: TEMP 40 is allocated s0
+----T: TEMP 41 is allocated s0
+----T: TEMP 42 is allocated s0
+----T: TEMP 43 is allocated s0
+----T: TEMP 44 is allocated s0
+----T: TEMP 45 is allocated s0
+----T: TEMP 46 is allocated s0
+----T: TEMP 47 is allocated s3
+----T: TEMP 49 is allocated s3
+----T: TEMP 50 is allocated s0
+----T: TEMP 51 is allocated s0
+----T: TEMP 48 is allocated s0
+----T: TEMP 53 is allocated s3
+----T: TEMP 52 is allocated s3
+----T: TEMP 55 is allocated s5
+----T: TEMP 56 is allocated s4
+----T: TEMP 57 is allocated s4
+----T: TEMP 54 is allocated s4
+----T: TEMP 59 is allocated s5
+----T: TEMP 60 is allocated s2
+----T: TEMP 61 is allocated s2
+----T: TEMP 62 is allocated s0
+----T: TEMP 58 is allocated s0
+----T: TEMP 63 is allocated s2
+----T: TEMP 64 is allocated s5
+----T: TEMP 65 is allocated s5
+----T: TEMP 66 is allocated s5
+----T: TEMP 67 is allocated s5
+----T: TEMP 68 is allocated s5
+----T: TEMP 69 is allocated s5
+----T: TEMP 70 is allocated s5
+----T: TEMP 71 is allocated s3
+----T: TEMP 73 is allocated s3
+----T: TEMP 74 is allocated s5
+----T: TEMP 75 is allocated s5
+----T: TEMP 72 is allocated s5
+----T: TEMP 77 is allocated s3
+----T: TEMP 76 is allocated s3
+----T: TEMP 79 is allocated s4
+----T: TEMP 80 is allocated s2
+----T: TEMP 81 is allocated s2
+----T: TEMP 78 is allocated s2
+----T: TEMP 83 is allocated s4
+----T: TEMP 84 is allocated s0
+----T: TEMP 85 is allocated s0
+----T: TEMP 86 is allocated s5
+----T: TEMP 82 is allocated s5
+----T: TEMP 87 is allocated s0
+----T: TEMP 88 is allocated s4
+----T: TEMP 89 is allocated s4
+----T: TEMP 90 is allocated s4
+----T: TEMP 91 is allocated s4
+----T: TEMP 92 is allocated s4
+----T: TEMP 93 is allocated s4
+----T: TEMP 94 is allocated s4
+----T: TEMP 95 is allocated s3
+----T: TEMP 97 is allocated s3
+----T: TEMP 98 is allocated s4
+----T: TEMP 99 is allocated s4
+----T: TEMP 96 is allocated s4
+----T: TEMP 101 is allocated s3
+----T: TEMP 100 is allocated s3
+----T: TEMP 103 is allocated s2
+----T: TEMP 104 is allocated s0
+----T: TEMP 105 is allocated s0
+----T: TEMP 102 is allocated s0
+----T: TEMP 107 is allocated s2
+----T: TEMP 108 is allocated s5
+----T: TEMP 109 is allocated s5
+----T: TEMP 110 is allocated s4
+----T: TEMP 106 is allocated s4
+----T: TEMP 111 is allocated s5
+----T: TEMP 112 is allocated s2
+----T: TEMP 113 is allocated s2
+----T: TEMP 114 is allocated s2
+----T: TEMP 115 is allocated s2
+----T: TEMP 116 is allocated s2
+----T: TEMP 117 is allocated s2
+----T: TEMP 118 is allocated s2
+----T: TEMP 119 is allocated s3
+----T: TEMP 121 is allocated s3
+----T: TEMP 122 is allocated s2
+----T: TEMP 123 is allocated s2
+----T: TEMP 120 is allocated s2
+----T: TEMP 125 is allocated s3
+----T: TEMP 124 is allocated s3
+----T: TEMP 127 is allocated s0
+----T: TEMP 128 is allocated s5
+----T: TEMP 129 is allocated s5
+----T: TEMP 126 is allocated s5
+----T: TEMP 131 is allocated s0
+----T: TEMP 132 is allocated s4
+----T: TEMP 133 is allocated s4
+----T: TEMP 134 is allocated s2
+----T: TEMP 130 is allocated s2
+----T: TEMP 135 is allocated s4
+----T: TEMP 136 is allocated s0
+----T: TEMP 137 is allocated s0
+----T: TEMP 138 is allocated s0
+----T: TEMP 139 is allocated s0
+----T: TEMP 140 is allocated s0
+----T: TEMP 141 is allocated s0
+----T: TEMP 142 is allocated s0
+----T: TEMP 143 is allocated s3
+----T: TEMP 145 is allocated s3
+----T: TEMP 146 is allocated s0
+----T: TEMP 147 is allocated s0
+----T: TEMP 144 is allocated s0
+----T: TEMP 149 is allocated s3
+----T: TEMP 148 is allocated s3
+----T: TEMP 151 is allocated s5
+----T: TEMP 152 is allocated s4
+----T: TEMP 153 is allocated s4
+----T: TEMP 150 is allocated s4
+----T: TEMP 155 is allocated s5
+----T: TEMP 156 is allocated s2
+----T: TEMP 157 is allocated s2
+----T: TEMP 158 is allocated s0
+----T: TEMP 154 is allocated s0
+----T: TEMP 159 is allocated s2
+----T: TEMP 160 is allocated s5
+----T: TEMP 161 is allocated s5
+----T: TEMP 162 is allocated s5
+----T: TEMP 163 is allocated s5
+----T: TEMP 164 is allocated s5
+----T: TEMP 165 is allocated s5
+----T: TEMP 166 is allocated s5
+----T: TEMP 167 is allocated s3
+----T: TEMP 169 is allocated s3
+----T: TEMP 170 is allocated s5
+----T: TEMP 171 is allocated s5
+----T: TEMP 168 is allocated s5
+----T: TEMP 173 is allocated s3
+----T: TEMP 172 is allocated s3
+----T: TEMP 175 is allocated s4
+----T: TEMP 176 is allocated s2
+----T: TEMP 177 is allocated s2
+----T: TEMP 174 is allocated s2
+----T: TEMP 179 is allocated s4
+----T: TEMP 180 is allocated s0
+----T: TEMP 181 is allocated s0
+----T: TEMP 182 is allocated s5
+----T: TEMP 178 is allocated s5
+----T: TEMP 183 is allocated s0
+----T: TEMP 184 is allocated s4
+----T: TEMP 185 is allocated s4
+----T: TEMP 186 is allocated s4
+----T: TEMP 187 is allocated s4
+----T: TEMP 188 is allocated s4
+----T: TEMP 189 is allocated s4
+----T: TEMP 190 is allocated s4
+----T: TEMP 191 is allocated s3
+----T: TEMP 193 is allocated s3
+----T: TEMP 194 is allocated s4
+----T: TEMP 195 is allocated s4
+----T: TEMP 192 is allocated s4
+----T: TEMP 197 is allocated s3
+----T: TEMP 196 is allocated s3
+----T: TEMP 199 is allocated s2
+----T: TEMP 200 is allocated s0
+----T: TEMP 201 is allocated s0
+----T: TEMP 198 is allocated s0
+----T: TEMP 203 is allocated s2
+----T: TEMP 204 is allocated s5
+----T: TEMP 205 is allocated s5
+----T: TEMP 206 is allocated s4
+----T: TEMP 202 is allocated s4
+----T: TEMP 207 is allocated s5
+----T: TEMP 208 is allocated s2
+----T: TEMP 209 is allocated s2
+----T: TEMP 210 is allocated s2
+----T: TEMP 211 is allocated s2
+----T: TEMP 212 is allocated s2
+----T: TEMP 213 is allocated s2
+----T: TEMP 214 is allocated s2
+----T: TEMP 215 is allocated s3
+----T: TEMP 217 is allocated s3
+----T: TEMP 218 is allocated s2
+----T: TEMP 219 is allocated s2
+----T: TEMP 216 is allocated s2
+----T: TEMP 221 is allocated s3
+----T: TEMP 220 is allocated s3
+----T: TEMP 223 is allocated s0
+----T: TEMP 224 is allocated s5
+----T: TEMP 225 is allocated s5
+----T: TEMP 222 is allocated s5
+----T: TEMP 227 is allocated s0
+----T: TEMP 228 is allocated s4
+----T: TEMP 229 is allocated s4
+----T: TEMP 230 is allocated s2
+----T: TEMP 226 is allocated s2
+----T: TEMP 231 is allocated s4
+----T: TEMP 232 is allocated s0
+----T: TEMP 233 is allocated s0
+----T: TEMP 234 is allocated s0
+----T: TEMP 235 is allocated s0
+----T: TEMP 236 is allocated s0
+----T: TEMP 237 is allocated s0
+----T: TEMP 238 is allocated s0
+----T: TEMP 239 is allocated s3
+----T: TEMP 241 is allocated s3
+----T: TEMP 242 is allocated s0
+----T: TEMP 243 is allocated s0
+----T: TEMP 240 is allocated s0
+----T: TEMP 245 is allocated s3
+----T: TEMP 244 is allocated s3
+----T: TEMP 247 is allocated s5
+----T: TEMP 248 is allocated s4
+----T: TEMP 249 is allocated s4
+----T: TEMP 246 is allocated s4
+----T: TEMP 251 is allocated s5
+----T: TEMP 252 is allocated s2
+----T: TEMP 253 is allocated s2
+----T: TEMP 254 is allocated s0
+----T: TEMP 250 is allocated s0
+----T: TEMP 255 is allocated s1
+----T: TEMP 256 is allocated s2
+----T: TEMP 257 is allocated s2
+----T: TEMP 258 is allocated s2
+----T: TEMP 259 is allocated s2
+----T: TEMP 260 is allocated s2
+----T: TEMP 261 is allocated s2
+----T: TEMP 262 is allocated s2
+----T: TEMP 263 is allocated s3
+----T: TEMP 264 is allocated s3
+MAIN [0][0][2]
+MOVE s0 16
+MOVE s0 HALLOCATE s0
+MOVE s1 12
+MOVE s1 HALLOCATE s1
+MOVE s2 BBS_Init
+HSTORE s0 12 s2
+MOVE s2 BBS_Print
+HSTORE s0 8 s2
+MOVE s2 BBS_Sort
+HSTORE s0 4 s2
+MOVE s2 BBS_Start
+HSTORE s0 0 s2
+HSTORE s1 0 s0
+HLOAD s0 s1 0
+HLOAD s0 s0 0
+MOVE s2 10
+MOVE a0 s1
+MOVE a1 s2
+CALL s0
+MOVE s2 v0
+PRINT s2
+
+END
+BBS_Start [2][4][2]
+ASTORE SPILLEDARG 0 s0
+ASTORE SPILLEDARG 1 s1
+ASTORE SPILLEDARG 2 s2
+ASTORE SPILLEDARG 3 s3
+MOVE s0 a1
+MOVE s1 a0
+MOVE s2 s1
+HLOAD s3 s2 0
+HLOAD s3 s3 12
+MOVE a0 s2
+MOVE a1 s0
+CALL s3
+MOVE s3 v0
+MOVE s2 s1
+HLOAD s0 s2 0
+HLOAD s0 s0 8
+MOVE a0 s2
+CALL s0
+MOVE s0 v0
+MOVE s3 s0
+MOVE s0 99999
+PRINT s0
+MOVE s0 s1
+HLOAD s2 s0 0
+HLOAD s2 s2 4
+MOVE a0 s0
+CALL s2
+MOVE s2 v0
+MOVE s3 s2
+HLOAD s2 s1 0
+HLOAD s2 s2 8
+MOVE a0 s1
+CALL s2
+MOVE s2 v0
+MOVE s3 s2
+MOVE s2 0
+MOVE v0 s2
+ALOAD s0 SPILLEDARG 0
+ALOAD s1 SPILLEDARG 1
+ALOAD s2 SPILLEDARG 2
+ALOAD s3 SPILLEDARG 3
+
+END
+BBS_Sort [1][8][0]
+ASTORE SPILLEDARG 0 s0
+ASTORE SPILLEDARG 1 s1
+ASTORE SPILLEDARG 2 s2
+ASTORE SPILLEDARG 3 s3
+ASTORE SPILLEDARG 4 s4
+ASTORE SPILLEDARG 5 s5
+ASTORE SPILLEDARG 6 s6
+ASTORE SPILLEDARG 7 s7
+MOVE s0 a0
+HLOAD s1 s0 8
+MOVE s2 1
+MOVE s2 MINUS s1 s2
+MOVE s1 0
+MOVE s3 1
+MOVE s3 MINUS s1 s3
+L2
+MOVE s1 1
+MOVE s1 MINUS s2 s1
+MOVE s1 LE s3 s1
+CJUMP s1 L3
+MOVE s1 1
+L4
+MOVE s4 LE s1 s2
+CJUMP s4 L5
+MOVE s4 1
+MOVE s4 MINUS s1 s4
+HLOAD s5 s0 4
+MOVE s6 4
+MOVE s6 TIMES s4 s6
+HLOAD s5 s0 4
+HLOAD s4 s5 0
+MOVE s7 1
+MOVE t0 1
+MOVE t0 MINUS s4 t0
+MOVE t0 LE s6 t0
+MOVE t0 MINUS s7 t0
+CJUMP t0 L6
+ERROR
+L6
+NOOP
+MOVE t0 4
+MOVE t0 PLUS s6 t0
+MOVE t0 PLUS s5 t0
+HLOAD t0 t0 0
+HLOAD s5 s0 4
+MOVE s6 4
+MOVE s6 TIMES s1 s6
+HLOAD s5 s0 4
+HLOAD s7 s5 0
+MOVE s4 1
+MOVE t1 1
+MOVE t1 MINUS s7 t1
+MOVE t1 LE s6 t1
+MOVE t1 MINUS s4 t1
+CJUMP t1 L7
+ERROR
+L7
+NOOP
+MOVE t1 4
+MOVE t1 PLUS s6 t1
+MOVE t1 PLUS s5 t1
+HLOAD t1 t1 0
+MOVE s5 1
+MOVE s5 MINUS t0 s5
+MOVE s5 LE t1 s5
+CJUMP s5 L8
+MOVE s5 1
+MOVE s5 MINUS s1 s5
+HLOAD t1 s0 4
+MOVE t0 4
+MOVE t0 TIMES s5 t0
+HLOAD t1 s0 4
+HLOAD s6 t1 0
+MOVE s4 1
+MOVE s7 1
+MOVE s7 MINUS s6 s7
+MOVE s7 LE t0 s7
+MOVE s7 MINUS s4 s7
+CJUMP s7 L10
+ERROR
+L10
+NOOP
+MOVE s7 4
+MOVE s7 PLUS t0 s7
+MOVE s7 PLUS t1 s7
+HLOAD s7 s7 0
+MOVE t1 1
+MOVE t0 4
+MOVE t0 TIMES t1 t0
+MOVE t1 PLUS s0 t0
+HLOAD t1 t1 0
+MOVE s4 4
+MOVE s4 TIMES s5 s4
+MOVE s5 1
+MOVE s6 4
+MOVE s6 TIMES s5 s6
+MOVE t0 s6
+MOVE t0 PLUS s0 t0
+HLOAD t1 t0 0
+HLOAD t0 t1 0
+MOVE s6 1
+MOVE s5 1
+MOVE s5 MINUS t0 s5
+MOVE s5 LE s4 s5
+MOVE s5 MINUS s6 s5
+CJUMP s5 L11
+ERROR
+L11
+NOOP
+MOVE s5 4
+MOVE s5 PLUS s4 s5
+MOVE s5 PLUS t1 s5
+HLOAD t1 s0 4
+MOVE s4 4
+MOVE s4 TIMES s1 s4
+HLOAD t1 s0 4
+HLOAD s6 t1 0
+MOVE t0 1
+MOVE t2 1
+MOVE t2 MINUS s6 t2
+MOVE t2 LE s4 t2
+MOVE t2 MINUS t0 t2
+CJUMP t2 L12
+ERROR
+L12
+NOOP
+MOVE t2 4
+MOVE t2 PLUS s4 t2
+MOVE t2 PLUS t1 t2
+HLOAD t2 t2 0
+HSTORE s5 0 t2
+MOVE t2 1
+MOVE s5 4
+MOVE s5 TIMES t2 s5
+MOVE t2 PLUS s0 s5
+HLOAD t2 t2 0
+MOVE t1 4
+MOVE t1 TIMES s1 t1
+MOVE s4 1
+MOVE t0 4
+MOVE t0 TIMES s4 t0
+MOVE s5 t0
+MOVE s5 PLUS s0 s5
+HLOAD t2 s5 0
+HLOAD s5 t2 0
+MOVE t0 1
+MOVE s4 1
+MOVE s4 MINUS s5 s4
+MOVE s4 LE t1 s4
+MOVE s4 MINUS t0 s4
+CJUMP s4 L13
+ERROR
+L13
+NOOP
+MOVE s4 4
+MOVE s4 PLUS t1 s4
+MOVE s4 PLUS t2 s4
+HSTORE s4 0 s7
+JUMP L9
+L8
+MOVE s4 0
+L9
+NOOP
+MOVE s4 1
+MOVE s4 PLUS s1 s4
+MOVE s1 s4
+JUMP L4
+L5
+NOOP
+MOVE s1 1
+MOVE s1 MINUS s2 s1
+MOVE s2 s1
+JUMP L2
+L3
+NOOP
+MOVE s3 0
+MOVE v0 s3
+ALOAD s0 SPILLEDARG 0
+ALOAD s1 SPILLEDARG 1
+ALOAD s2 SPILLEDARG 2
+ALOAD s3 SPILLEDARG 3
+ALOAD s4 SPILLEDARG 4
+ALOAD s5 SPILLEDARG 5
+ALOAD s6 SPILLEDARG 6
+ALOAD s7 SPILLEDARG 7
+
+END
+BBS_Print [1][7][0]
+ASTORE SPILLEDARG 0 s0
+ASTORE SPILLEDARG 1 s1
+ASTORE SPILLEDARG 2 s2
+ASTORE SPILLEDARG 3 s3
+ASTORE SPILLEDARG 4 s4
+ASTORE SPILLEDARG 5 s5
+ASTORE SPILLEDARG 6 s6
+MOVE s0 a0
+MOVE s1 0
+L14
+HLOAD s2 s0 8
+MOVE s3 1
+MOVE s3 MINUS s2 s3
+MOVE s3 LE s1 s3
+CJUMP s3 L15
+HLOAD s3 s0 4
+MOVE s2 4
+MOVE s2 TIMES s1 s2
+HLOAD s3 s0 4
+HLOAD s4 s3 0
+MOVE s5 1
+MOVE s6 1
+MOVE s6 MINUS s4 s6
+MOVE s6 LE s2 s6
+MOVE s6 MINUS s5 s6
+CJUMP s6 L16
+ERROR
+L16
+NOOP
+MOVE s6 4
+MOVE s6 PLUS s2 s6
+MOVE s6 PLUS s3 s6
+HLOAD s6 s6 0
+PRINT s6
+MOVE s6 1
+MOVE s6 PLUS s1 s6
+MOVE s1 s6
+JUMP L14
+L15
+NOOP
+MOVE s1 0
+MOVE v0 s1
+ALOAD s0 SPILLEDARG 0
+ALOAD s1 SPILLEDARG 1
+ALOAD s2 SPILLEDARG 2
+ALOAD s3 SPILLEDARG 3
+ALOAD s4 SPILLEDARG 4
+ALOAD s5 SPILLEDARG 5
+ALOAD s6 SPILLEDARG 6
+
+END
+BBS_Init [2][6][0]
+ASTORE SPILLEDARG 0 s0
+ASTORE SPILLEDARG 1 s1
+ASTORE SPILLEDARG 2 s2
+ASTORE SPILLEDARG 3 s3
+ASTORE SPILLEDARG 4 s4
+ASTORE SPILLEDARG 5 s5
+MOVE s0 a1
+MOVE s1 a0
+HSTORE s1 8 s0
+MOVE s2 1
+MOVE s2 PLUS s0 s2
+MOVE s3 4
+MOVE s3 TIMES s2 s3
+MOVE s3 HALLOCATE s3
+MOVE s2 4
+L17
+MOVE s4 1
+MOVE s4 PLUS s0 s4
+MOVE s5 4
+MOVE s5 TIMES s4 s5
+MOVE s4 1
+MOVE s4 MINUS s5 s4
+MOVE s4 LE s2 s4
+CJUMP s4 L18
+MOVE s4 PLUS s3 s2
+MOVE s5 0
+HSTORE s4 0 s5
+MOVE s5 4
+MOVE s5 PLUS s2 s5
+MOVE s2 s5
+JUMP L17
+L18
+MOVE s2 4
+MOVE s2 TIMES s0 s2
+HSTORE s3 0 s2
+HSTORE s1 4 s3
+MOVE s3 1
+MOVE s2 4
+MOVE s2 TIMES s3 s2
+MOVE s3 PLUS s1 s2
+HLOAD s3 s3 0
+MOVE s0 0
+MOVE s5 4
+MOVE s5 TIMES s0 s5
+MOVE s0 1
+MOVE s4 4
+MOVE s4 TIMES s0 s4
+MOVE s2 s4
+MOVE s2 PLUS s1 s2
+HLOAD s3 s2 0
+HLOAD s2 s3 0
+MOVE s4 1
+MOVE s0 1
+MOVE s0 MINUS s2 s0
+MOVE s0 LE s5 s0
+MOVE s0 MINUS s4 s0
+CJUMP s0 L19
+ERROR
+L19
+NOOP
+MOVE s0 4
+MOVE s0 PLUS s5 s0
+MOVE s0 PLUS s3 s0
+MOVE s3 20
+HSTORE s0 0 s3
+MOVE s3 1
+MOVE s0 4
+MOVE s0 TIMES s3 s0
+MOVE s3 PLUS s1 s0
+HLOAD s3 s3 0
+MOVE s5 1
+MOVE s4 4
+MOVE s4 TIMES s5 s4
+MOVE s5 1
+MOVE s2 4
+MOVE s2 TIMES s5 s2
+MOVE s0 s2
+MOVE s0 PLUS s1 s0
+HLOAD s3 s0 0
+HLOAD s0 s3 0
+MOVE s2 1
+MOVE s5 1
+MOVE s5 MINUS s0 s5
+MOVE s5 LE s4 s5
+MOVE s5 MINUS s2 s5
+CJUMP s5 L20
+ERROR
+L20
+NOOP
+MOVE s5 4
+MOVE s5 PLUS s4 s5
+MOVE s5 PLUS s3 s5
+MOVE s3 7
+HSTORE s5 0 s3
+MOVE s3 1
+MOVE s5 4
+MOVE s5 TIMES s3 s5
+MOVE s3 PLUS s1 s5
+HLOAD s3 s3 0
+MOVE s4 2
+MOVE s2 4
+MOVE s2 TIMES s4 s2
+MOVE s4 1
+MOVE s0 4
+MOVE s0 TIMES s4 s0
+MOVE s5 s0
+MOVE s5 PLUS s1 s5
+HLOAD s3 s5 0
+HLOAD s5 s3 0
+MOVE s0 1
+MOVE s4 1
+MOVE s4 MINUS s5 s4
+MOVE s4 LE s2 s4
+MOVE s4 MINUS s0 s4
+CJUMP s4 L21
+ERROR
+L21
+NOOP
+MOVE s4 4
+MOVE s4 PLUS s2 s4
+MOVE s4 PLUS s3 s4
+MOVE s3 12
+HSTORE s4 0 s3
+MOVE s3 1
+MOVE s4 4
+MOVE s4 TIMES s3 s4
+MOVE s3 PLUS s1 s4
+HLOAD s3 s3 0
+MOVE s2 3
+MOVE s0 4
+MOVE s0 TIMES s2 s0
+MOVE s2 1
+MOVE s5 4
+MOVE s5 TIMES s2 s5
+MOVE s4 s5
+MOVE s4 PLUS s1 s4
+HLOAD s3 s4 0
+HLOAD s4 s3 0
+MOVE s5 1
+MOVE s2 1
+MOVE s2 MINUS s4 s2
+MOVE s2 LE s0 s2
+MOVE s2 MINUS s5 s2
+CJUMP s2 L22
+ERROR
+L22
+NOOP
+MOVE s2 4
+MOVE s2 PLUS s0 s2
+MOVE s2 PLUS s3 s2
+MOVE s3 18
+HSTORE s2 0 s3
+MOVE s3 1
+MOVE s2 4
+MOVE s2 TIMES s3 s2
+MOVE s3 PLUS s1 s2
+HLOAD s3 s3 0
+MOVE s0 4
+MOVE s5 4
+MOVE s5 TIMES s0 s5
+MOVE s0 1
+MOVE s4 4
+MOVE s4 TIMES s0 s4
+MOVE s2 s4
+MOVE s2 PLUS s1 s2
+HLOAD s3 s2 0
+HLOAD s2 s3 0
+MOVE s4 1
+MOVE s0 1
+MOVE s0 MINUS s2 s0
+MOVE s0 LE s5 s0
+MOVE s0 MINUS s4 s0
+CJUMP s0 L23
+ERROR
+L23
+NOOP
+MOVE s0 4
+MOVE s0 PLUS s5 s0
+MOVE s0 PLUS s3 s0
+MOVE s3 2
+HSTORE s0 0 s3
+MOVE s3 1
+MOVE s0 4
+MOVE s0 TIMES s3 s0
+MOVE s3 PLUS s1 s0
+HLOAD s3 s3 0
+MOVE s5 5
+MOVE s4 4
+MOVE s4 TIMES s5 s4
+MOVE s5 1
+MOVE s2 4
+MOVE s2 TIMES s5 s2
+MOVE s0 s2
+MOVE s0 PLUS s1 s0
+HLOAD s3 s0 0
+HLOAD s0 s3 0
+MOVE s2 1
+MOVE s5 1
+MOVE s5 MINUS s0 s5
+MOVE s5 LE s4 s5
+MOVE s5 MINUS s2 s5
+CJUMP s5 L24
+ERROR
+L24
+NOOP
+MOVE s5 4
+MOVE s5 PLUS s4 s5
+MOVE s5 PLUS s3 s5
+MOVE s3 11
+HSTORE s5 0 s3
+MOVE s3 1
+MOVE s5 4
+MOVE s5 TIMES s3 s5
+MOVE s3 PLUS s1 s5
+HLOAD s3 s3 0
+MOVE s4 6
+MOVE s2 4
+MOVE s2 TIMES s4 s2
+MOVE s4 1
+MOVE s0 4
+MOVE s0 TIMES s4 s0
+MOVE s5 s0
+MOVE s5 PLUS s1 s5
+HLOAD s3 s5 0
+HLOAD s5 s3 0
+MOVE s0 1
+MOVE s4 1
+MOVE s4 MINUS s5 s4
+MOVE s4 LE s2 s4
+MOVE s4 MINUS s0 s4
+CJUMP s4 L25
+ERROR
+L25
+NOOP
+MOVE s4 4
+MOVE s4 PLUS s2 s4
+MOVE s4 PLUS s3 s4
+MOVE s3 6
+HSTORE s4 0 s3
+MOVE s3 1
+MOVE s4 4
+MOVE s4 TIMES s3 s4
+MOVE s3 PLUS s1 s4
+HLOAD s3 s3 0
+MOVE s2 7
+MOVE s0 4
+MOVE s0 TIMES s2 s0
+MOVE s2 1
+MOVE s5 4
+MOVE s5 TIMES s2 s5
+MOVE s4 s5
+MOVE s4 PLUS s1 s4
+HLOAD s3 s4 0
+HLOAD s4 s3 0
+MOVE s5 1
+MOVE s2 1
+MOVE s2 MINUS s4 s2
+MOVE s2 LE s0 s2
+MOVE s2 MINUS s5 s2
+CJUMP s2 L26
+ERROR
+L26
+NOOP
+MOVE s2 4
+MOVE s2 PLUS s0 s2
+MOVE s2 PLUS s3 s2
+MOVE s3 9
+HSTORE s2 0 s3
+MOVE s3 1
+MOVE s2 4
+MOVE s2 TIMES s3 s2
+MOVE s3 PLUS s1 s2
+HLOAD s3 s3 0
+MOVE s0 8
+MOVE s5 4
+MOVE s5 TIMES s0 s5
+MOVE s0 1
+MOVE s4 4
+MOVE s4 TIMES s0 s4
+MOVE s2 s4
+MOVE s2 PLUS s1 s2
+HLOAD s3 s2 0
+HLOAD s2 s3 0
+MOVE s4 1
+MOVE s0 1
+MOVE s0 MINUS s2 s0
+MOVE s0 LE s5 s0
+MOVE s0 MINUS s4 s0
+CJUMP s0 L27
+ERROR
+L27
+NOOP
+MOVE s0 4
+MOVE s0 PLUS s5 s0
+MOVE s0 PLUS s3 s0
+MOVE s3 19
+HSTORE s0 0 s3
+MOVE s3 1
+MOVE s0 4
+MOVE s0 TIMES s3 s0
+MOVE s3 PLUS s1 s0
+HLOAD s3 s3 0
+MOVE s5 9
+MOVE s4 4
+MOVE s4 TIMES s5 s4
+MOVE s5 1
+MOVE s2 4
+MOVE s2 TIMES s5 s2
+MOVE s0 s2
+MOVE s0 PLUS s1 s0
+HLOAD s3 s0 0
+HLOAD s0 s3 0
+MOVE s1 1
+MOVE s2 1
+MOVE s2 MINUS s0 s2
+MOVE s2 LE s4 s2
+MOVE s2 MINUS s1 s2
+CJUMP s2 L28
+ERROR
+L28
+NOOP
+MOVE s2 4
+MOVE s2 PLUS s4 s2
+MOVE s2 PLUS s3 s2
+MOVE s3 5
+HSTORE s2 0 s3
+MOVE s3 0
+MOVE v0 s3
+ALOAD s0 SPILLEDARG 0
+ALOAD s1 SPILLEDARG 1
+ALOAD s2 SPILLEDARG 2
+ALOAD s3 SPILLEDARG 3
+ALOAD s4 SPILLEDARG 4
+ALOAD s5 SPILLEDARG 5
+
+END
